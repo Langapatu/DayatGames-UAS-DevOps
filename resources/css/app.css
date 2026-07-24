@@ -102,10 +102,21 @@ body {
 
 .featured-swiper {
     overflow: hidden;
+    margin: -.4rem 0 -.75rem;
+    padding: .4rem 0 .75rem;
+}
+
+.featured-swiper .swiper-wrapper {
+    align-items: stretch;
 }
 
 .featured-swiper .swiper-slide {
+    display: flex;
     height: auto;
+}
+
+.featured-swiper [data-game-card] {
+    width: 100%;
 }
 
 .carousel-button {

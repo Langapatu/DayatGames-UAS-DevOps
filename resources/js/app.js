@@ -80,7 +80,7 @@ document.querySelectorAll('form[data-confirm]').forEach((form) => {
 if (document.querySelector('.featured-swiper')) {
     new Swiper('.featured-swiper', {
         modules: [A11y, Keyboard, Navigation],
-        slidesPerView: 1.15,
+        slidesPerView: 1,
         spaceBetween: 16,
         keyboard: { enabled: true, onlyInViewport: true },
         navigation: {
@@ -93,7 +93,7 @@ if (document.querySelector('.featured-swiper')) {
             nextSlideMessage: 'Game berikutnya',
         },
         breakpoints: {
-            640: { slidesPerView: 2.2 },
+            640: { slidesPerView: 2 },
             1024: { slidesPerView: 4 },
         },
     });
@@ -147,7 +147,13 @@ if (!reducedMotion) {
         });
     });
 
-    ScrollTrigger.batch('[data-game-card]', {
+    const staticCarouselCards = new Set(
+        document.querySelectorAll('.featured-swiper [data-game-card]'),
+    );
+    const animatedGridCards = [...document.querySelectorAll('[data-game-card]')]
+        .filter((card) => !staticCarouselCards.has(card));
+
+    ScrollTrigger.batch(animatedGridCards, {
         start: 'top 92%',
         once: true,
         onEnter: (cards) => gsap.from(cards, {

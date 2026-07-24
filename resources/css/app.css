@@ -27,6 +27,129 @@ body {
         var(--dg-bg);
 }
 
+@view-transition {
+    navigation: auto;
+}
+
+.storefront-workspace {
+    position: relative;
+    isolation: isolate;
+    background: #050811;
+}
+
+.ambient-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+    view-transition-name: ambient-backdrop;
+    background:
+        radial-gradient(circle at 50% 45%, transparent 0 25%, rgb(2 6 23 / 35%) 72%),
+        linear-gradient(180deg, #050811 0%, #07101d 48%, #050811 100%);
+}
+
+.storefront-workspace .site-main,
+.storefront-workspace .site-footer {
+    position: relative;
+    z-index: 1;
+}
+
+.ambient-aurora,
+.ambient-stars {
+    position: absolute;
+    inset: -20%;
+    will-change: transform;
+}
+
+.ambient-aurora {
+    filter: blur(80px);
+    opacity: .34;
+}
+
+.ambient-aurora-one {
+    background:
+        radial-gradient(ellipse at 22% 28%, rgb(34 211 238 / 40%), transparent 34%),
+        radial-gradient(ellipse at 70% 62%, rgb(59 130 246 / 30%), transparent 36%);
+    animation: aurora-drift-one 22s ease-in-out infinite alternate;
+}
+
+.ambient-aurora-two {
+    background:
+        radial-gradient(ellipse at 78% 18%, rgb(124 58 237 / 28%), transparent 31%),
+        radial-gradient(ellipse at 38% 78%, rgb(14 165 233 / 22%), transparent 34%);
+    animation: aurora-drift-two 28s ease-in-out infinite alternate;
+}
+
+.ambient-stars {
+    opacity: .42;
+    background-repeat: repeat;
+}
+
+.ambient-stars-near {
+    background-image:
+        radial-gradient(circle, rgb(186 230 253 / 80%) 0 1px, transparent 1.5px),
+        radial-gradient(circle, rgb(196 181 253 / 58%) 0 1.2px, transparent 1.7px);
+    background-position: 0 0, 47px 83px;
+    background-size: 137px 149px, 211px 227px;
+    animation: stars-drift-near 34s linear infinite;
+}
+
+.ambient-stars-far {
+    opacity: .24;
+    background-image: radial-gradient(circle, white 0 .7px, transparent 1.2px);
+    background-size: 83px 97px;
+    animation: stars-drift-far 48s linear infinite;
+}
+
+.storefront-workspace .site-header {
+    view-transition-name: site-header;
+}
+
+.storefront-workspace [data-page-content] {
+    view-transition-name: page-content;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+}
+
+::view-transition-old(page-content) {
+    animation: dayatgames-page-out 180ms ease both;
+}
+
+::view-transition-new(page-content) {
+    animation: dayatgames-page-in 360ms cubic-bezier(.22, 1, .36, 1) both;
+}
+
+@keyframes dayatgames-page-out {
+    to { opacity: 0; transform: translateY(-8px); }
+}
+
+@keyframes dayatgames-page-in {
+    from { opacity: 0; transform: translateY(14px); }
+}
+
+@keyframes aurora-drift-one {
+    from { transform: translate3d(-4%, -2%, 0) scale(1); }
+    to { transform: translate3d(5%, 3%, 0) scale(1.08); }
+}
+
+@keyframes aurora-drift-two {
+    from { transform: translate3d(4%, -3%, 0) scale(1.05); }
+    to { transform: translate3d(-5%, 4%, 0) scale(.98); }
+}
+
+@keyframes stars-drift-near {
+    to { transform: translate3d(-70px, 95px, 0); }
+}
+
+@keyframes stars-drift-far {
+    to { transform: translate3d(55px, 70px, 0); }
+}
+
 :where(a, button, input, select, textarea):focus-visible {
     outline: 3px solid var(--dg-accent);
     outline-offset: 3px;
@@ -162,6 +285,13 @@ body {
     [data-game-card]:hover {
         transform: none;
     }
+
+    .ambient-aurora,
+    .ambient-stars,
+    ::view-transition-old(page-content),
+    ::view-transition-new(page-content) {
+        animation: none !important;
+    }
 }
 
 /* DayatGames interface refresh */
@@ -226,6 +356,29 @@ button, a, input, select, textarea {
 }
 
 .brand-mark img { width: 100%; height: 100%; object-fit: cover; }
+
+.site-brand {
+    min-width: 3.15rem;
+    min-height: 3.15rem;
+    justify-content: center;
+    border: 1px solid rgb(56 189 248 / 30%);
+    border-radius: .95rem;
+    background: rgb(8 20 36 / 72%);
+    box-shadow: 0 10px 28px rgb(14 165 233 / 10%);
+}
+
+.site-brand .brand-mark {
+    width: 2.85rem;
+    height: 2.85rem;
+    border: 0;
+    background: transparent;
+}
+
+.site-brand:hover {
+    border-color: rgb(34 211 238 / 58%);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgb(14 165 233 / 20%);
+}
 
 .mobile-menu-button {
     display: inline-flex;

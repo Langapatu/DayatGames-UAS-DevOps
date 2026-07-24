@@ -12,6 +12,17 @@ const menuButton = document.querySelector('[data-menu-toggle]');
 const navigation = document.querySelector('[data-site-navigation]');
 const adminMenuButton = document.querySelector('[data-admin-menu-toggle]');
 const adminSidebar = document.querySelector('.admin-sidebar');
+const pageContent = document.querySelector('[data-page-content]');
+
+if (!reducedMotion && pageContent && !document.startViewTransition) {
+    gsap.from(pageContent, {
+        y: 14,
+        opacity: 0,
+        duration: 0.36,
+        ease: 'power2.out',
+        clearProps: 'transform,opacity',
+    });
+}
 
 menuButton?.addEventListener('click', () => {
     const isOpen = navigation?.dataset.open === 'true';

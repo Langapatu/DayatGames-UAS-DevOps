@@ -7,6 +7,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 const header = document.querySelector('[data-site-header]');
 const menuButton = document.querySelector('[data-menu-toggle]');
 const navigation = document.querySelector('[data-site-navigation]');
@@ -202,6 +203,56 @@ if (catalogResults) {
     } catch {
         sessionStorage.removeItem(catalogIntentKey);
     }
+}
+
+if (!reducedMotion && finePointer) {
+    const auroraOne = document.querySelector('[data-aurora-layer="one"]');
+    const auroraTwo = document.querySelector('[data-aurora-layer="two"]');
+
+    if (auroraOne && auroraTwo) {
+        const moveAuroraOneX = gsap.quickTo(auroraOne, '--aurora-x', { duration: 1.2, ease: 'power3.out' });
+        const moveAuroraOneY = gsap.quickTo(auroraOne, '--aurora-y', { duration: 1.35, ease: 'power3.out' });
+        const moveAuroraTwoX = gsap.quickTo(auroraTwo, '--aurora-x', { duration: 1.45, ease: 'power3.out' });
+        const moveAuroraTwoY = gsap.quickTo(auroraTwo, '--aurora-y', { duration: 1.6, ease: 'power3.out' });
+
+        window.addEventListener('pointermove', (event) => {
+            const normalizedX = (event.clientX / window.innerWidth - 0.5) * 2;
+            const normalizedY = (event.clientY / window.innerHeight - 0.5) * 2;
+
+            moveAuroraOneX(`${normalizedX * 3}%`);
+            moveAuroraOneY(`${normalizedY * 2.4}%`);
+            moveAuroraTwoX(`${normalizedX * -1.8}%`);
+            moveAuroraTwoY(`${normalizedY * -1.4}%`);
+        }, { passive: true });
+    }
+
+    document.querySelectorAll('[data-game-card]').forEach((card) => {
+        const rotateXTo = gsap.quickTo(card, '--card-rx', { duration: 0.16, ease: 'power2.out' });
+        const rotateYTo = gsap.quickTo(card, '--card-ry', { duration: 0.16, ease: 'power2.out' });
+
+        card.addEventListener('pointermove', (event) => {
+            const bounds = card.getBoundingClientRect();
+            const normalizedX = (event.clientX - bounds.left) / bounds.width;
+            const normalizedY = (event.clientY - bounds.top) / bounds.height;
+
+            rotateXTo(`${(0.5 - normalizedY) * 8}deg`);
+            rotateYTo(`${(normalizedX - 0.5) * 8}deg`);
+            card.style.setProperty('--spot-x', `${normalizedX * 100}%`);
+            card.style.setProperty('--spot-y', `${normalizedY * 100}%`);
+        });
+
+        card.addEventListener('pointerleave', () => {
+            rotateXTo('0deg');
+            rotateYTo('0deg');
+            gsap.to(card, {
+                '--spot-x': '50%',
+                '--spot-y': '50%',
+                duration: 0.45,
+                ease: 'power3.out',
+                overwrite: true,
+            });
+        });
+    });
 }
 
 if (!reducedMotion) {

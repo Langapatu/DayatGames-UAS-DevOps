@@ -4,11 +4,11 @@
             @if ($paginator->onFirstPage())
                 <span class="is-disabled">{{ __('Previous') }}</span>
             @else
-                <a href="{{ $paginator->previousPageUrl() }}" rel="prev">{{ __('Previous') }}</a>
+                <a href="{{ $paginator->previousPageUrl() }}" rel="prev" data-pagination-direction="previous">{{ __('Previous') }}</a>
             @endif
 
             @if ($paginator->hasMorePages())
-                <a href="{{ $paginator->nextPageUrl() }}" rel="next">{{ __('Next') }}</a>
+                <a href="{{ $paginator->nextPageUrl() }}" rel="next" data-pagination-direction="next">{{ __('Next') }}</a>
             @else
                 <span class="is-disabled">{{ __('Next') }}</span>
             @endif
@@ -31,7 +31,7 @@
                         <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
                     </span>
                 @else
-                    <a class="dg-page-arrow" href="{{ $paginator->previousPageUrl() }}" rel="prev" aria-label="{{ __('pagination.previous') }}">
+                    <a class="dg-page-arrow" href="{{ $paginator->previousPageUrl() }}" rel="prev" data-pagination-direction="previous" aria-label="{{ __('pagination.previous') }}">
                         <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
                     </a>
                 @endif
@@ -46,14 +46,17 @@
                             @if ($page == $paginator->currentPage())
                                 <span class="dg-page-number is-current" aria-current="page">{{ $page }}</span>
                             @else
-                                <a class="dg-page-number" href="{{ $url }}" aria-label="{{ __('Go to page :page', ['page' => $page]) }}">{{ $page }}</a>
+                                <a class="dg-page-number"
+                                   href="{{ $url }}"
+                                   data-pagination-direction="{{ $page > $paginator->currentPage() ? 'next' : 'previous' }}"
+                                   aria-label="{{ __('Go to page :page', ['page' => $page]) }}">{{ $page }}</a>
                             @endif
                         @endforeach
                     @endif
                 @endforeach
 
                 @if ($paginator->hasMorePages())
-                    <a class="dg-page-arrow" href="{{ $paginator->nextPageUrl() }}" rel="next" aria-label="{{ __('pagination.next') }}">
+                    <a class="dg-page-arrow" href="{{ $paginator->nextPageUrl() }}" rel="next" data-pagination-direction="next" aria-label="{{ __('pagination.next') }}">
                         <svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
                     </a>
                 @else

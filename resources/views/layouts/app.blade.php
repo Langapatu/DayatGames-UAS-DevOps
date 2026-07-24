@@ -26,8 +26,17 @@
         ['label' => 'Review', 'route' => 'admin.reviews.index', 'match' => 'admin.reviews.*', 'icon' => '★'],
     ];
 @endphp
-<body class="min-h-screen bg-[#070A12] text-slate-100 antialiased {{ $isAdminArea ? 'admin-workspace' : '' }} {{ $isAuthPage ? 'auth-workspace' : '' }}">
+<body class="min-h-screen bg-[#070A12] text-slate-100 antialiased {{ $isAdminArea ? 'admin-workspace' : '' }} {{ $isAuthPage ? 'auth-workspace' : '' }} {{ !$isAdminArea && !$isAuthPage ? 'storefront-workspace' : '' }}">
     <a href="#main-content" class="skip-link">Lewati ke konten utama</a>
+
+    @if(!$isAdminArea && !$isAuthPage)
+        <div data-ambient-backdrop class="ambient-backdrop" aria-hidden="true">
+            <span class="ambient-aurora ambient-aurora-one"></span>
+            <span class="ambient-aurora ambient-aurora-two"></span>
+            <span class="ambient-stars ambient-stars-near"></span>
+            <span class="ambient-stars ambient-stars-far"></span>
+        </div>
+    @endif
 
     @if($isAdminArea)
         <aside id="admin-sidebar" class="admin-sidebar" aria-label="Navigasi admin">
@@ -70,7 +79,6 @@
             <div class="site-header-inner">
                 <a href="{{ route('home') }}" aria-label="DayatGames — kembali ke home" class="site-brand">
                     <span class="brand-mark"><img src="{{ asset('images/brand/dayatgames-logo.png') }}" alt=""></span>
-                    <span>Dayat<span>Games</span></span>
                 </a>
                 <button type="button" data-menu-toggle aria-controls="main-navigation" aria-expanded="false" class="mobile-menu-button">
                     <span aria-hidden="true">☰</span> Menu
@@ -113,7 +121,9 @@
         </header>
     @endif
 
-    <main id="main-content" class="{{ $isAdminArea ? 'admin-main' : ($isAuthPage ? 'auth-main' : 'site-main') }}">
+    <main id="main-content"
+          @if(!$isAdminArea && !$isAuthPage) data-page-content @endif
+          class="{{ $isAdminArea ? 'admin-main' : ($isAuthPage ? 'auth-main' : 'site-main') }}">
         @if(session('success'))
             <div data-flash role="status" class="mb-5 flex items-start justify-between gap-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-emerald-200">
                 <span>{{ session('success') }}</span><button type="button" data-flash-close aria-label="Tutup pesan">×</button>

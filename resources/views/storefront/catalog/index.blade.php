@@ -41,10 +41,12 @@
             <a href="{{ route('catalog.index') }}" class="mt-5 inline-block text-cyan-300">Tampilkan semua game</a>
         </x-empty-state>
     @else
-        <p class="mb-5 text-sm text-slate-400">Menampilkan {{ $games->firstItem() }}–{{ $games->lastItem() }} dari {{ $games->total() }} game.</p>
-        <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            @foreach($games as $game)<x-game-card :game="$game" />@endforeach
-        </div>
-        <div class="mt-8">{{ $games->links() }}</div>
+        <section id="catalog-results" data-catalog-results tabindex="-1" class="scroll-mt-24">
+            <p class="mb-5 text-sm text-slate-400">Menampilkan {{ $games->firstItem() }}–{{ $games->lastItem() }} dari {{ $games->total() }} game.</p>
+            <div data-catalog-grid class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                @foreach($games as $game)<x-game-card :game="$game" />@endforeach
+            </div>
+            <div class="mt-8">{{ $games->links() }}</div>
+        </section>
     @endif
 @endsection

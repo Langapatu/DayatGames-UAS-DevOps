@@ -420,6 +420,11 @@ document.querySelectorAll('[data-preview-gallery]').forEach((gallery) => {
         if (event.target === lightbox) lightbox.close();
     });
     lightbox?.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            lightbox.close();
+            return;
+        }
         if (event.key === 'ArrowLeft') {
             event.preventDefault();
             updateLightbox(lightboxIndex - 1);

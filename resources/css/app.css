@@ -1166,7 +1166,11 @@ button, a, input, select, textarea {
     gap: .55rem;
     overflow-x: auto;
     padding: .15rem .05rem .35rem;
-    scrollbar-width: thin;
+    scrollbar-width: none;
+}
+
+.preview-lightbox-thumbs::-webkit-scrollbar {
+    display: none;
 }
 
 .preview-lightbox-thumbs button {

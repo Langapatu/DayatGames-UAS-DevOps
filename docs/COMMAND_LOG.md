@@ -36,3 +36,17 @@ Catatan ini merangkum perintah penting dan hasil aktual. Password atau rahasia t
 | `php artisan migrate --force` | Tiga migration framework baseline berhasil dijalankan pada database baru `dayatgames`. |
 | HTTP smoke test | `http://localhost:8080` mengembalikan 200 dengan title DayatGames; `http://localhost:8081` mengembalikan 200 dengan title phpMyAdmin. |
 | `docker compose ps` | app, webserver, db, dan phpmyadmin Up; db healthy. |
+
+## 24 Juli 2026 — Fase 3
+
+| Perintah/aktivitas | Hasil |
+|---|---|
+| PHP lint pada `app` dan `database` | Tidak ada syntax error. |
+| `php artisan migrate --force` | Migration users extension, katalog, dan commerce berhasil pada MySQL. |
+| `php artisan db:seed --force` | Admin, customer, 16 developer, publisher, 12 genre, dan 17 game dibuat/di-update tanpa duplikasi. |
+| Query `INFORMATION_SCHEMA` | Tepat 15 tabel bisnis inti dan 20 foreign key ditemukan. |
+| Steam Storefront API `cc=id` | 16 App ID terverifikasi; 15 harga IDR tersedia, satu harga tidak tersedia; Ghost of Yōtei tetap data demo. |
+| Normalisasi aset dengan Sharp | 17 gambar user dikonversi ke WebP; logo dan favicon diturunkan tanpa menimpa source. |
+| Mermaid CLI + Chrome lokal | `ERD.png` dan `ARCHITECTURE.png` berhasil dirender dari source `.mmd`. |
+| `php artisan test --testsuite=Feature` | 3 feature test lulus dengan 24 assertion, termasuk 15 tabel dan relasi katalog. |
+| `php artisan test` | Verifikasi penuh fase database: 4 test lulus dengan 25 assertion. |

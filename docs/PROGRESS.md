@@ -9,8 +9,8 @@ Pembaruan terakhir: 24 Juli 2026 (Asia/Jakarta)
 | 0. Pemeriksaan dan backup | Selesai | Docker Desktop aktif; container lama ditemukan; project lama berada di `C:\Coding\laravel-docker`; workspace final dibuat terpisah dan Git diinisialisasi. |
 | 1. Spesifikasi | Selesai | Project spec, 20 FR, 12 NFR, 24 backlog, traceability, skema 15 tabel, ERD, dan arsitektur awal tersedia. |
 | 2. Docker dan Laravel baseline | Selesai | Compose valid; image build berhasil; app/webserver/db/phpMyAdmin Up; DB healthy; Laravel dan phpMyAdmin merespons HTTP 200. |
-| 3. Database | Sedang dikerjakan | Migration/model 15 tabel bisnis dan seeder akan diimplementasikan. |
-| 4. Auth dan role | Belum dimulai |  |
+| 3. Database | Selesai | 15 tabel bisnis, 20 FK, model/relasi, seeder idempotent, 17 game, mapping aset, 15 harga Steam terverifikasi, ERD/arsitektur PNG, dan test skema tersedia. |
+| 4. Auth dan role | Sedang dikerjakan | Auth session, registrasi, login/logout, middleware role, dan test authorization akan dibuat. |
 | 5. CRUD admin | Belum dimulai |  |
 | 6. Marketplace customer | Belum dimulai |  |
 | 7. Checkout dan payment | Belum dimulai |  |

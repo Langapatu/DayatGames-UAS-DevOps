@@ -85,7 +85,10 @@ def find_placeholder_after(doc, heading_text):
             for candidate in paragraphs[idx + 1 :]:
                 if candidate.style and candidate.style.name == "Heading 1":
                     break
-                if candidate.text.strip() == "No table of contents entries found.":
+                if candidate.text.strip() in {
+                    "No table of contents entries found.",
+                    "Daftar akan diperbarui otomatis saat dokumen dibuka.",
+                }:
                     return candidate
     raise RuntimeError(f"Placeholder untuk {heading_text} tidak ditemukan")
 

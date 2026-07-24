@@ -143,3 +143,18 @@ Catatan ini merangkum perintah penting dan hasil aktual. Password atau rahasia t
 | Pembuatan PDF final | HTML A4 dari struktur DOCX dicetak lokal melalui Chrome headless dengan pemetaan halaman dua-pass. |
 | Validasi PDF | 47 halaman A4; 48 heading, 31 gambar, dan 9 tabel seluruhnya terpetakan; page map stabil pada render kedua. |
 | Pemeriksaan visual | Seluruh 52 halaman DOCX dan 47 halaman PDF diperiksa; tidak ada clipping, overlap, halaman kosong, placeholder, atau footer ganda. |
+
+## 24 Juli 2026 - Fase 12
+
+| Perintah/aktivitas | Hasil |
+|---|---|
+| Redesign auth dan navbar | Login/registrasi menjadi split-panel modern; navbar customer diringkas dengan active state dan menu mobile. |
+| Redesign admin CRUD | Sembilan menu admin dipindahkan ke sidebar; topbar, filter, tabel, form, thumbnail, dan aksi memiliki hierarchy konsisten. |
+| Koreksi gambar game | Card, detail, cart, checkout, order, library, dan thumbnail admin memakai frame `object-fit: contain`; browser mengukur seluruh card 303x188 di dalam frame 303x189. |
+| Browser QA desktop | Login, registrasi, dashboard, games index, form create, katalog, dan detail tampil tanpa error/warning console. |
+| Browser QA mobile 390x844 | Navbar customer dan drawer admin berfungsi; `scrollWidth` kembali 375 px dan tidak ada overflow horizontal. |
+| Screenshot refresh | 26 screenshot UI diambil ulang; empat bukti tambahan mencakup registrasi serta auth, katalog, dan admin mobile. |
+| `npm run build` | 44 modul ditransformasi; build Vite berhasil. |
+| `php artisan test` | 26 test dan 145 assertion lulus. |
+| Regenerasi laporan | DOCX dan PDF Word menjadi 53 halaman dengan 35 gambar dan 9 tabel. |
+| Visual QA final | Seluruh 53 halaman PDF diraster menggunakan Poppler dan diperiksa tanpa clipping, overlap, atau gambar rusak. |

@@ -639,7 +639,8 @@ def chapter_four(doc):
     para(
         doc,
         "Repository lokal menggunakan branch feature/dayatgames-uas. Perubahan dipisahkan menjadi commit "
-        "inspeksi, spesifikasi, Docker, database, autentikasi, admin, customer, transaksi, antarmuka, dan QA. "
+        "inspeksi, spesifikasi, Docker, database, autentikasi, admin, customer, transaksi, antarmuka, QA, "
+        "dan iterasi redesign berbasis hasil evaluasi pengguna. "
         "File .env, vendor, dan node_modules diabaikan. Pemeriksaan pola token/private key pada source "
         "terlacak tidak menemukan rahasia. URL repository belum dicantumkan karena gh tidak tersedia dan "
         "tidak ada push yang dapat dibuktikan.",
@@ -655,6 +656,7 @@ def chapter_four(doc):
         ("402f288", "feat: implement transaction and library workflow"),
         ("6cfeba8", "feat: add responsive interface and motion"),
         ("29a3952", "test: document end-to-end QA evidence"),
+        ("4dd0f87", "feat: redesign auth navigation and admin ui"),
     ]
     add_table(doc, ("Commit", "Pesan"), commits, [3.0, 12.5], "Tabel 5. Riwayat commit bertahap sebelum laporan")
 

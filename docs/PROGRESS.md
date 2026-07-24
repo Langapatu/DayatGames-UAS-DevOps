@@ -14,10 +14,11 @@ Pembaruan terakhir: 24 Juli 2026 (Asia/Jakarta)
 | 5. CRUD admin | Selesai | CRUD genre, publisher, developer, dan game dilengkapi search, pagination, slug route binding, validasi Form Request, relasi genre, upload image, serta 4 test dengan 29 assertion. |
 | 6. Marketplace customer | Selesai | Home, katalog published, search/filter/sort, detail, related games, wishlist, dan cart tersedia; 5 test marketplace lulus dengan 32 assertion. |
 | 7. Checkout dan payment | Selesai | Checkout server-side, snapshot order, tiga metode payment simulasi, proof upload, admin verify/reject idempotent, library, review, moderasi, users/orders admin, dan 6 test transaksi tersedia. |
-| 8. UI dan motion | Selesai | Concept board, responsive menu, GSAP/ScrollTrigger, Lenis, Swiper keyboard/touch, card motion, focus/skip link, fallback JS, dan reduced motion tersedia serta diuji di desktop/mobile. |
+| 8. UI dan motion | Selesai | Auth split-panel, navbar customer ringkas, sidebar admin, CRUD shell modern, gambar tanpa crop, GSAP/ScrollTrigger, Lenis, Swiper, focus/skip link, fallback JS, dan reduced motion tersedia serta diuji di desktop/mobile. |
 | 9. QA | Selesai | Compose/build/migrate/seed, 26 test/145 assertion, build/audit, HTTP, browser MySQL end-to-end, phpMyAdmin, restart, dan persistensi ID 13 terverifikasi. |
-| 10. Evidence dan Git | Selesai | 31 screenshot browser/phpMyAdmin nyata, 5 item manual transparan, test matrix, troubleshooting, traceability final, secret scan, dan commit bertahap tersedia; GitHub CLI tidak terpasang. |
-| 11. Laporan | Selesai | DOCX 52 halaman dan PDF 47 halaman tersedia; daftar isi/gambar/tabel, 31 gambar, 9 tabel, sitasi primer, lampiran, serta pemeriksaan visual seluruh halaman lulus. |
+| 10. Evidence dan Git | Selesai | 35 screenshot browser/phpMyAdmin nyata, 5 item manual transparan, test matrix, troubleshooting, traceability final, secret scan, dan commit bertahap tersedia; GitHub CLI tidak terpasang. |
+| 11. Laporan | Selesai | DOCX dan PDF 53 halaman tersedia; daftar isi/gambar/tabel, 35 gambar, 9 tabel, sitasi primer, lampiran redesign, serta pemeriksaan visual seluruh halaman lulus. |
+| 12. Iterasi redesign | Selesai | Login, registrasi, navbar, frame artwork, admin CRUD, responsive overflow, screenshot, dan laporan diperbarui sesuai evaluasi pengguna. |
 
 ## Kondisi awal terverifikasi
 

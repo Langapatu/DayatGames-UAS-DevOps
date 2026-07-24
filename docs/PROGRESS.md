@@ -11,8 +11,8 @@ Pembaruan terakhir: 24 Juli 2026 (Asia/Jakarta)
 | 2. Docker dan Laravel baseline | Selesai | Compose valid; image build berhasil; app/webserver/db/phpMyAdmin Up; DB healthy; Laravel dan phpMyAdmin merespons HTTP 200. |
 | 3. Database | Selesai | 15 tabel bisnis, 20 FK, model/relasi, seeder idempotent, 17 game, mapping aset, 15 harga Steam terverifikasi, ERD/arsitektur PNG, dan test skema tersedia. |
 | 4. Auth dan role | Selesai | Registrasi customer, login/logout, rate limit, profile, upload avatar, role middleware, dashboard admin, dan 7 test auth/role tersedia. |
-| 5. CRUD admin | Sedang dikerjakan | CRUD genres, publishers, developers, dan games berikut Form Request dan test akan dibuat. |
-| 6. Marketplace customer | Belum dimulai |  |
+| 5. CRUD admin | Selesai | CRUD genre, publisher, developer, dan game dilengkapi search, pagination, slug route binding, validasi Form Request, relasi genre, upload image, serta 4 test dengan 29 assertion. |
+| 6. Marketplace customer | Sedang dikerjakan | Katalog publik, detail game, wishlist, dan cart sedang dibangun. |
 | 7. Checkout dan payment | Belum dimulai |  |
 | 8. UI dan motion | Belum dimulai |  |
 | 9. QA | Belum dimulai |  |

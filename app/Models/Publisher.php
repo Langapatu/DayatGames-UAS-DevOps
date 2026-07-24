@@ -16,5 +16,9 @@ class Publisher extends Model
     {
         return $this->hasMany(Game::class);
     }
-}
 
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+}

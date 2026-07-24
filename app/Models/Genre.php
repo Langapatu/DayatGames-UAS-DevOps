@@ -16,5 +16,9 @@ class Genre extends Model
     {
         return $this->belongsToMany(Game::class);
     }
-}
 
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+}

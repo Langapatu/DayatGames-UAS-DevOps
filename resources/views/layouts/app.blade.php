@@ -17,6 +17,10 @@
             @auth
                 @if(auth()->user()->isAdmin())
                     <a href="{{ route('admin.dashboard') }}">Admin</a>
+                    <a href="{{ route('admin.games.index') }}">Games</a>
+                    <a href="{{ route('admin.genres.index') }}">Genres</a>
+                    <a href="{{ route('admin.publishers.index') }}">Publishers</a>
+                    <a href="{{ route('admin.developers.index') }}">Developers</a>
                 @endif
                 <a href="{{ route('profile.edit') }}">Profil</a>
                 <form method="POST" action="{{ route('logout') }}">
@@ -34,9 +38,11 @@
         @if(session('success'))
             <div role="status">{{ session('success') }}</div>
         @endif
+        @if(session('error'))
+            <div role="alert">{{ session('error') }}</div>
+        @endif
 
         @yield('content')
     </main>
 </body>
 </html>
-

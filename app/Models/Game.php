@@ -103,5 +103,9 @@ class Game extends Model
     {
         return $this->discount_price ?? $this->original_price;
     }
-}
 
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+}

@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DeveloperController;
+use App\Http\Controllers\Admin\GameController;
+use App\Http\Controllers\Admin\GenreController;
+use App\Http\Controllers\Admin\PublisherController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ProfileController;
@@ -29,4 +33,8 @@ Route::prefix('admin')
     ->middleware(['auth', 'role:admin'])
     ->group(function () {
         Route::get('/', DashboardController::class)->name('dashboard');
+        Route::resource('genres', GenreController::class)->except('show');
+        Route::resource('publishers', PublisherController::class)->except('show');
+        Route::resource('developers', DeveloperController::class)->except('show');
+        Route::resource('games', GameController::class);
     });

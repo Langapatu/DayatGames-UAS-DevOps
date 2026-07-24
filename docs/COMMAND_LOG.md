@@ -61,3 +61,15 @@ Catatan ini merangkum perintah penting dan hasil aktual. Password atau rahasia t
 | `php artisan test --filter='AuthenticationTest\|RoleAuthorizationTest'` | 7 test lulus dengan 22 assertion. |
 | `npm run build` | Percobaan awal gagal karena font plugin mencoba fetch eksternal; remote font dihapus, build ulang berhasil dalam 118 ms. |
 | HTTP smoke test | `/login` dan `/register` mengembalikan 200; `/admin` guest mengembalikan 302 ke login. |
+
+## 24 Juli 2026 — Fase 5
+
+| Perintah/aktivitas | Hasil |
+|---|---|
+| Implementasi CRUD katalog admin | Genre, publisher, developer, dan game memiliki index/search/pagination, create, update, serta delete terproteksi. |
+| Form Request katalog | Slug unik, URL, relasi, status, upload image, rentang harga, dan konsistensi diskon divalidasi server-side. |
+| `php artisan route:list --path=admin` | 26 route admin terdaftar, termasuk empat resource katalog. |
+| PHP lint controller/request/model/test | Seluruh file yang diperiksa bebas syntax error. |
+| `php artisan test --filter=AdminCatalogCrudTest` | 4 test lulus dengan 29 assertion. |
+| `php artisan test` | Regresi penuh: 15 test lulus dengan 76 assertion. |
+| `npm run build` | Vite production build berhasil dalam 126 ms. |

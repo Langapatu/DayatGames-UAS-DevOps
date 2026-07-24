@@ -73,3 +73,15 @@ Catatan ini merangkum perintah penting dan hasil aktual. Password atau rahasia t
 | `php artisan test --filter=AdminCatalogCrudTest` | 4 test lulus dengan 29 assertion. |
 | `php artisan test` | Regresi penuh: 15 test lulus dengan 76 assertion. |
 | `npm run build` | Vite production build berhasil dalam 126 ms. |
+
+## 24 Juli 2026 — Fase 6
+
+| Perintah/aktivitas | Hasil |
+|---|---|
+| Implementasi storefront | Home, katalog published, detail, game terkait, search, filter genre/harga, serta sort tersedia. |
+| Implementasi fitur customer | Wishlist dan cart mendukung add/remove, idempotensi duplikasi, dan larangan cart untuk game yang sudah dimiliki. |
+| `php artisan test --filter=CustomerMarketplaceTest` | 5 test lulus dengan 32 assertion. |
+| Filter harga MySQL nyata | Query awal menemukan perbedaan sintaks cast SQLite/MySQL; diperbaiki dengan `DECIMAL(15,2)` dan endpoint kembali HTTP 200. |
+| HTTP smoke test | `/`, `/games`, dan detail `ghost-of-tsushima` masing-masing mengembalikan HTTP 200. |
+| `npm run build` | Vite production build berhasil dalam 137 ms setelah view storefront ditambahkan. |
+| `php artisan test` | Regresi penuh setelah test home memakai `RefreshDatabase`: 20 test lulus dengan 108 assertion. |

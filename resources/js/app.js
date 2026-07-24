@@ -147,21 +147,4 @@ if (!reducedMotion) {
         });
     });
 
-    const staticCarouselCards = new Set(
-        document.querySelectorAll('.featured-swiper [data-game-card]'),
-    );
-    const animatedGridCards = [...document.querySelectorAll('[data-game-card]')]
-        .filter((card) => !staticCarouselCards.has(card));
-
-    ScrollTrigger.batch(animatedGridCards, {
-        start: 'top 92%',
-        once: true,
-        onEnter: (cards) => gsap.from(cards, {
-            y: 22,
-            opacity: 0,
-            duration: 0.5,
-            stagger: 0.06,
-            ease: 'power2.out',
-        }),
-    });
 }

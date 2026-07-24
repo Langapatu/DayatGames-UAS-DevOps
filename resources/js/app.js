@@ -2,9 +2,19 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import Swiper from 'swiper';
-import { A11y, Keyboard, Navigation } from 'swiper/modules';
+import {
+    A11y,
+    Autoplay,
+    EffectFade,
+    Keyboard,
+    Navigation,
+    Pagination,
+    Thumbs,
+} from 'swiper/modules';
 import 'swiper/css';
+import 'swiper/css/effect-fade';
 import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -152,6 +162,280 @@ if (document.querySelector('.featured-swiper')) {
     });
 }
 
+const bindAutoplayPause = (container, swiper, onStateChange = () => {}) => {
+    if (reducedMotion || !swiper.autoplay) {
+        return { setForced: () => {} };
+    }
+
+    const pauseState = {
+        hovered: false,
+        focused: false,
+        hidden: document.hidden,
+        forced: false,
+    };
+
+    const sync = () => {
+        const shouldPause = Object.values(pauseState).some(Boolean);
+
+        if (shouldPause) {
+            swiper.autoplay.stop();
+        } else {
+            swiper.autoplay.start();
+        }
+
+        onStateChange(shouldPause);
+    };
+
+    container.addEventListener('pointerenter', () => {
+        pauseState.hovered = true;
+        sync();
+    });
+    container.addEventListener('pointerleave', () => {
+        pauseState.hovered = false;
+        sync();
+    });
+    container.addEventListener('focusin', () => {
+        pauseState.focused = true;
+        sync();
+    });
+    container.addEventListener('focusout', () => {
+        requestAnimationFrame(() => {
+            pauseState.focused = container.contains(document.activeElement);
+            sync();
+        });
+    });
+    document.addEventListener('visibilitychange', () => {
+        pauseState.hidden = document.hidden;
+        sync();
+    });
+
+    return {
+        setForced(value) {
+            pauseState.forced = value;
+            sync();
+        },
+    };
+};
+
+const homeHero = document.querySelector('[data-home-hero]');
+
+if (homeHero) {
+    const heroSlides = homeHero.querySelectorAll('[data-hero-slide]');
+    const hasMultipleHeroes = heroSlides.length > 1;
+    const animateActiveHero = (swiper) => {
+        if (reducedMotion) return;
+
+        const activeSlide = swiper.slides[swiper.activeIndex];
+        if (!activeSlide) return;
+
+        gsap.fromTo(
+            activeSlide.querySelectorAll('[data-hero-item]'),
+            { y: 18, opacity: 0 },
+            {
+                y: 0,
+                opacity: 1,
+                duration: 0.65,
+                stagger: 0.08,
+                ease: 'power3.out',
+                overwrite: true,
+            },
+        );
+        gsap.fromTo(
+            activeSlide.querySelector('[data-hero-image]'),
+            { scale: 1.035, opacity: 0.32 },
+            {
+                scale: 1,
+                opacity: 0.58,
+                duration: 1,
+                ease: 'power2.out',
+                overwrite: true,
+            },
+        );
+    };
+
+    const heroSwiper = new Swiper(homeHero.querySelector('.home-hero-swiper'), {
+        modules: [A11y, Autoplay, EffectFade, Keyboard, Navigation, Pagination],
+        effect: 'fade',
+        fadeEffect: { crossFade: true },
+        speed: reducedMotion ? 0 : 720,
+        loop: hasMultipleHeroes,
+        allowTouchMove: hasMultipleHeroes,
+        keyboard: { enabled: hasMultipleHeroes, onlyInViewport: true },
+        autoplay: !reducedMotion && hasMultipleHeroes
+            ? { delay: 6000, disableOnInteraction: false }
+            : false,
+        navigation: {
+            nextEl: homeHero.querySelector('[data-hero-next]'),
+            prevEl: homeHero.querySelector('[data-hero-prev]'),
+        },
+        pagination: {
+            el: homeHero.querySelector('[data-hero-pagination]'),
+            clickable: true,
+            bulletElement: 'button',
+        },
+        a11y: {
+            enabled: true,
+            prevSlideMessage: 'Game hero sebelumnya',
+            nextSlideMessage: 'Game hero berikutnya',
+            paginationBulletMessage: 'Buka game hero {{index}}',
+        },
+        on: {
+            init: animateActiveHero,
+            slideChangeTransitionStart: animateActiveHero,
+        },
+    });
+
+    if (hasMultipleHeroes) {
+        bindAutoplayPause(homeHero, heroSwiper);
+    }
+}
+
+document.querySelectorAll('[data-preview-gallery]').forEach((gallery) => {
+    const previewCount = Number(gallery.dataset.previewCount || 1);
+    const hasMultiplePreviews = previewCount > 1;
+    const mainElement = gallery.querySelector('[data-preview-main]');
+    const thumbsElement = gallery.querySelector('[data-preview-thumbs]');
+    const currentLabel = gallery.querySelector('[data-preview-current]');
+    const progress = gallery.querySelector('[data-preview-progress]');
+
+    if (!mainElement) return;
+
+    const thumbSwiper = thumbsElement
+        ? new Swiper(thumbsElement, {
+            modules: [A11y, Keyboard],
+            slidesPerView: 2.35,
+            spaceBetween: 10,
+            watchSlidesProgress: true,
+            slideToClickedSlide: true,
+            keyboard: { enabled: true, onlyInViewport: true },
+            breakpoints: {
+                640: { slidesPerView: 3.25, spaceBetween: 12 },
+                1024: { slidesPerView: 4, spaceBetween: 14 },
+            },
+        })
+        : null;
+
+    const restartProgress = (paused = false) => {
+        if (!progress) return;
+
+        progress.classList.remove('is-running', 'is-paused');
+        void progress.offsetWidth;
+
+        if (!reducedMotion) {
+            progress.classList.add('is-running');
+            progress.classList.toggle('is-paused', paused);
+        }
+    };
+
+    const mainSwiper = new Swiper(mainElement, {
+        modules: [A11y, Autoplay, Keyboard, Navigation, Thumbs],
+        speed: reducedMotion ? 0 : 450,
+        loop: hasMultiplePreviews,
+        allowTouchMove: hasMultiplePreviews,
+        keyboard: { enabled: hasMultiplePreviews, onlyInViewport: true },
+        autoplay: !reducedMotion && hasMultiplePreviews
+            ? { delay: 5000, disableOnInteraction: false }
+            : false,
+        navigation: {
+            nextEl: gallery.querySelector('.preview-next'),
+            prevEl: gallery.querySelector('.preview-prev'),
+        },
+        thumbs: thumbSwiper ? { swiper: thumbSwiper } : undefined,
+        a11y: {
+            enabled: true,
+            prevSlideMessage: 'Screenshot sebelumnya',
+            nextSlideMessage: 'Screenshot berikutnya',
+        },
+        on: {
+            init(swiper) {
+                if (currentLabel) currentLabel.textContent = String(swiper.realIndex + 1);
+                restartProgress();
+            },
+            slideChange(swiper) {
+                if (currentLabel) currentLabel.textContent = String(swiper.realIndex + 1);
+                restartProgress();
+            },
+        },
+    });
+
+    const autoplayControl = hasMultiplePreviews
+        ? bindAutoplayPause(gallery, mainSwiper, restartProgress)
+        : { setForced: () => {} };
+    const lightbox = gallery.querySelector('[data-preview-lightbox]');
+    const lightboxImage = lightbox?.querySelector('[data-lightbox-image]');
+    const lightboxCurrent = lightbox?.querySelector('[data-lightbox-current]');
+    const lightboxThumbnails = [...(lightbox?.querySelectorAll('[data-lightbox-thumbnail]') || [])];
+    const sourceImages = [...gallery.querySelectorAll('[data-preview-slide] img')].slice(0, previewCount);
+    let lightboxIndex = 0;
+    let lightboxTrigger = null;
+
+    const updateLightbox = (index) => {
+        if (!lightboxImage || sourceImages.length === 0) return;
+
+        lightboxIndex = (index + sourceImages.length) % sourceImages.length;
+        const source = sourceImages[lightboxIndex];
+        lightboxImage.src = source.currentSrc || source.src;
+        lightboxImage.alt = source.alt;
+        if (lightboxCurrent) lightboxCurrent.textContent = String(lightboxIndex + 1);
+
+        lightboxThumbnails.forEach((thumbnail, thumbnailIndex) => {
+            if (thumbnailIndex === lightboxIndex) {
+                thumbnail.setAttribute('aria-current', 'true');
+            } else {
+                thumbnail.removeAttribute('aria-current');
+            }
+        });
+
+        if (hasMultiplePreviews && mainSwiper.realIndex !== lightboxIndex) {
+            mainSwiper.slideToLoop(lightboxIndex, reducedMotion ? 0 : 450);
+        }
+    };
+
+    const openLightbox = (trigger, index) => {
+        if (!lightbox?.showModal) return;
+
+        lightboxTrigger = trigger;
+        updateLightbox(index);
+        autoplayControl.setForced(true);
+        document.documentElement.classList.add('preview-lightbox-open');
+        lightbox.showModal();
+        lightbox.querySelector('[data-lightbox-close]')?.focus({ preventScroll: true });
+    };
+
+    gallery.addEventListener('click', (event) => {
+        const target = event.target instanceof Element ? event.target : null;
+        const trigger = target?.closest('[data-preview-open]');
+        if (!trigger) return;
+
+        openLightbox(trigger, Number(trigger.dataset.previewIndex || mainSwiper.realIndex));
+    });
+
+    lightbox?.querySelector('[data-lightbox-prev]')?.addEventListener('click', () => updateLightbox(lightboxIndex - 1));
+    lightbox?.querySelector('[data-lightbox-next]')?.addEventListener('click', () => updateLightbox(lightboxIndex + 1));
+    lightbox?.querySelector('[data-lightbox-close]')?.addEventListener('click', () => lightbox.close());
+    lightboxThumbnails.forEach((thumbnail) => {
+        thumbnail.addEventListener('click', () => updateLightbox(Number(thumbnail.dataset.previewIndex)));
+    });
+    lightbox?.addEventListener('click', (event) => {
+        if (event.target === lightbox) lightbox.close();
+    });
+    lightbox?.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowLeft') {
+            event.preventDefault();
+            updateLightbox(lightboxIndex - 1);
+        }
+        if (event.key === 'ArrowRight') {
+            event.preventDefault();
+            updateLightbox(lightboxIndex + 1);
+        }
+    });
+    lightbox?.addEventListener('close', () => {
+        document.documentElement.classList.remove('preview-lightbox-open');
+        autoplayControl.setForced(false);
+        lightboxTrigger?.focus({ preventScroll: true });
+    });
+});
+
 const catalogResults = document.querySelector('[data-catalog-results]');
 const catalogIntentKey = 'dayatgames:catalog-navigation';
 
@@ -282,7 +566,7 @@ if (!reducedMotion) {
     gsap.ticker.add((time) => lenis.raf(time * 1000));
     gsap.ticker.lagSmoothing(0);
 
-    const hero = document.querySelector('[data-hero]');
+    const hero = document.querySelector('[data-hero]:not([data-home-hero])');
     if (hero) {
         gsap.from(hero.querySelectorAll('[data-hero-item]'), {
             y: 24,

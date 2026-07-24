@@ -28,6 +28,9 @@ IMPLEMENTASI DEVOPS DAN PENGEMBANGAN AGILE PADA APLIKASI PENJUALAN GAME DIGITAL 
 - Uji restart: genre ID 13 `QA Persistence` tetap ditemukan setelah MySQL kembali healthy.
 - 31 screenshot browser/phpMyAdmin nyata tersedia; lima screenshot editor/terminal masih ditandai Manual dan tidak disintesis.
 - Git lokal berisi commit bertahap; URL GitHub belum tersedia sampai push dilakukan.
+- Laporan final tersedia sebagai DOCX 52 halaman dan PDF 47 halaman A4.
+- DOCX memuat 88 entri navigasi tanpa placeholder: daftar isi, 31 gambar, dan 9 tabel.
+- Render Word dan render PDF diperiksa pada setiap halaman; tidak ditemukan clipping, overlap, halaman kosong, atau footer ganda.
 
 ## Kendala nyata
 

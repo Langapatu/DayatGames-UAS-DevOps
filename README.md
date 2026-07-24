@@ -112,6 +112,13 @@ Dokumentasi lebih lengkap tersedia di folder `docs`.
 
 Detail aktual tersedia di [docs/TESTING.md](docs/TESTING.md), [docs/COMMAND_LOG.md](docs/COMMAND_LOG.md), dan [docs/SCREENSHOT_CHECKLIST.md](docs/SCREENSHOT_CHECKLIST.md).
 
+## Laporan akhir
+
+- DOCX: `docs/report/Laporan_Akhir_DayatGames_Galang_Rispai.docx` (52 halaman pada render Microsoft Word).
+- PDF: `docs/report/Laporan_Akhir_DayatGames_Galang_Rispai.pdf` (47 halaman A4).
+- Keduanya memuat daftar isi, daftar gambar, daftar tabel, BAB I-VII, daftar pustaka, lampiran konfigurasi, diagram, dan bukti aplikasi.
+- Seluruh halaman DOCX dan PDF telah diraster dan diperiksa; tidak ditemukan clipping, overlap, halaman kosong, atau placeholder field.
+
 ## Commit lokal
 
 Branch kerja: `feature/dayatgames-uas`. Lihat riwayat dengan:

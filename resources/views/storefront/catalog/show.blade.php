@@ -42,16 +42,11 @@
             </div>
         </section>
 
+        <x-game-preview-gallery :game="$game" />
+
         <div class="mt-10 grid gap-8 lg:grid-cols-[1fr_320px]">
             <div class="space-y-10">
                 <section><h2 class="text-2xl font-bold text-white">Tentang game</h2><div class="mt-4 whitespace-pre-line leading-8 text-slate-300">{{ $game->description }}</div></section>
-
-                @if($game->images->isNotEmpty())
-                    <section>
-                        <h2 class="text-2xl font-bold text-white">Gallery</h2>
-                        <div class="mt-4 grid gap-4 sm:grid-cols-2">@foreach($game->images as $image)<img src="{{ asset($image->image_path) }}" alt="Screenshot {{ $game->title }}" class="rounded-xl" loading="lazy">@endforeach</div>
-                    </section>
-                @endif
 
                 <section>
                     <h2 class="text-2xl font-bold text-white">Review pengguna</h2>

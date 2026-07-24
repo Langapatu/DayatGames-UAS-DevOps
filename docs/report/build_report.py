@@ -6,7 +6,13 @@ from zipfile import ZipFile
 from docx import Document
 from docx.enum.section import WD_SECTION
 from docx.enum.table import WD_ALIGN_VERTICAL, WD_TABLE_ALIGNMENT
-from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_BREAK, WD_LINE_SPACING
+from docx.enum.text import (
+    WD_ALIGN_PARAGRAPH,
+    WD_BREAK,
+    WD_LINE_SPACING,
+    WD_TAB_ALIGNMENT,
+    WD_TAB_LEADER,
+)
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Cm, Inches, Pt, RGBColor
@@ -25,6 +31,109 @@ BLUE = "1E3A5F"
 LIGHT_BLUE = "DCE6F1"
 LIGHT_GRAY = "F2F2F2"
 INK = RGBColor(0, 0, 0)
+
+WORD_TOC_ENTRIES = (
+    ("LEMBAR IDENTITAS", 2, 1),
+    ("ABSTRAK", 3, 1),
+    ("DAFTAR ISI", 4, 1),
+    ("DAFTAR GAMBAR", 6, 1),
+    ("DAFTAR TABEL", 8, 1),
+    ("BAB I - PENDAHULUAN", 9, 1),
+    ("1.1 Latar Belakang", 9, 2),
+    ("1.2 Rumusan Masalah", 9, 2),
+    ("1.3 Tujuan", 9, 2),
+    ("1.4 Batasan Masalah", 10, 2),
+    ("BAB II - LANDASAN TEORI", 11, 1),
+    ("2.1 Agile, Scrum, Backlog, dan SRS", 11, 2),
+    ("2.2 Containerization dan Docker Compose", 11, 2),
+    ("2.3 Basis Data Relasional", 11, 2),
+    ("2.4 Laravel, MySQL, Nginx/PHP-FPM, dan phpMyAdmin", 11, 2),
+    ("BAB III - ANALISIS DAN PERANCANGAN", 13, 1),
+    ("3.1 Analisis Kebutuhan", 13, 2),
+    ("3.2 Perancangan Basis Data", 13, 2),
+    ("3.3 Arsitektur Sistem", 15, 2),
+    ("BAB IV - IMPLEMENTASI", 16, 1),
+    ("4.1 Implementasi Lingkungan Docker", 16, 2),
+    ("4.1.1 Struktur Folder", 16, 3),
+    ("4.1.2 Dockerfile", 16, 3),
+    ("4.1.3 compose.yaml", 16, 3),
+    ("4.1.4 Koneksi Aplikasi ke Database", 16, 3),
+    ("4.2 Implementasi Basis Data", 18, 2),
+    ("4.3 Implementasi CRUD", 21, 2),
+    ("4.4 Marketplace dan Transaksi", 25, 2),
+    ("4.5 Antarmuka, Responsivitas, dan Motion", 28, 2),
+    ("4.6 Version Control", 31, 2),
+    ("BAB V - PENGUJIAN", 32, 1),
+    ("5.1 Pengujian Fungsional CRUD dan Transaksi", 32, 2),
+    ("5.2 Pengujian Koneksi Antar-Service", 32, 2),
+    ("5.3 Pengujian Ketahanan dan Persistensi", 34, 2),
+    ("BAB VI - KENDALA DAN PENYELESAIAN", 36, 1),
+    ("BAB VII - PENUTUP", 37, 1),
+    ("7.1 Kesimpulan", 37, 2),
+    ("7.2 Saran Pengembangan Selanjutnya", 37, 2),
+    ("DAFTAR PUSTAKA", 38, 1),
+    ("LAMPIRAN", 39, 1),
+    ("Lampiran A. Konfigurasi Infrastruktur", 39, 2),
+    ("A.1 Dockerfile lengkap", 39, 2),
+    ("A.2 compose.yaml lengkap", 40, 2),
+    ("A.3 Konfigurasi Nginx lengkap", 42, 2),
+    ("Lampiran B. Diagram Ukuran Penuh", 43, 2),
+    ("Lampiran C. Bukti Aplikasi dan Data", 44, 2),
+    ("Lampiran C.1 Bukti Redesign dan Responsivitas", 49, 3),
+    ("Lampiran D. Akun Demo dan Petunjuk Menjalankan", 53, 2),
+    ("Lampiran E. Daftar Bukti dan Pekerjaan Manual", 53, 2),
+)
+
+WORD_FIGURE_ENTRIES = (
+    ("Gambar 1. Entity Relationship Diagram DayatGames", 14),
+    ("Gambar 2. Arsitektur container dan alur request DayatGames", 15),
+    ("Gambar 3. Halaman utama DayatGames pada localhost:8080", 17),
+    ("Gambar 4. Tabel DayatGames pada phpMyAdmin", 19),
+    ("Gambar 5. Validasi foreign key pada phpMyAdmin", 20),
+    ("Gambar 6. Daftar game pada shell admin hasil redesign", 22),
+    ("Gambar 7. Form tambah game yang telah dikelompokkan", 22),
+    ("Gambar 8. Form edit game pada antarmuka admin baru", 23),
+    ("Gambar 9. Implementasi CRUD genre", 23),
+    ("Gambar 10. Implementasi CRUD publisher", 24),
+    ("Gambar 11. Checkout dengan metode pembayaran simulasi", 26),
+    ("Gambar 12. Pembayaran terverifikasi oleh admin", 26),
+    ("Gambar 13. Game masuk library customer", 27),
+    ("Gambar 14. Moderasi review oleh admin", 27),
+    ("Gambar 15. Konsep visual redesign DayatGames", 29),
+    ("Gambar 16. Katalog customer responsif", 29),
+    ("Gambar 17. Detail game dengan metadata dan aksi pembelian", 30),
+    ("Gambar 18. Data order hasil browser pada MySQL nyata", 33),
+    ("Gambar 19. Data QA Persistence tetap tersedia setelah restart", 34),
+    ("Gambar 20. ERD DayatGames untuk lampiran", 43),
+    ("Gambar 21. Arsitektur DayatGames untuk lampiran", 43),
+    ("Gambar 22. Dashboard admin", 44),
+    ("Gambar 23. Daftar game admin", 44),
+    ("Gambar 24. Hasil search dan filter", 45),
+    ("Gambar 25. Wishlist customer", 45),
+    ("Gambar 26. Cart customer", 46),
+    ("Gambar 27. Detail order customer", 46),
+    ("Gambar 28. Detail pembayaran", 47),
+    ("Gambar 29. Form review pemilik game", 47),
+    ("Gambar 30. Data game pada phpMyAdmin", 48),
+    ("Gambar 31. Data order hasil alur end-to-end", 48),
+    ("Gambar 32. Halaman registrasi customer hasil redesign", 49),
+    ("Gambar 33. Pengaturan profil customer modern", 49),
+    ("Gambar 34. Katalog 4:5 pada viewport mobile", 50),
+    ("Gambar 35. Dashboard admin pada viewport mobile", 51),
+    ("Gambar 36. Login pada viewport mobile", 52),
+)
+
+WORD_TABLE_ENTRIES = (
+    ("Tabel 1. Identitas akademik penyusun", 2),
+    ("Tabel 2. Ringkasan kebutuhan sistem", 13),
+    ("Tabel 3. Deskripsi 15 tabel bisnis inti", 14),
+    ("Tabel 4. Pemetaan port host dan container", 15),
+    ("Tabel 5. Riwayat commit bertahap sebelum laporan", 31),
+    ("Tabel 6. Ringkasan pengujian fungsional", 32),
+    ("Tabel 7. Hasil verifikasi teknis akhir", 34),
+    ("Tabel 8. Kendala nyata dan penyelesaian", 36),
+    ("Tabel 9. Akun demo lokal", 53),
+)
 
 
 def set_cell_shading(cell, fill: str) -> None:
@@ -215,7 +324,7 @@ def configure_document(doc: Document) -> None:
 
     settings = doc.settings._element
     update = OxmlElement("w:updateFields")
-    update.set(qn("w:val"), "true")
+    update.set(qn("w:val"), "false")
     settings.append(update)
 
 
@@ -225,6 +334,22 @@ def para(doc, text="", *, bold=False, italic=False, align=None, indent=True, siz
     if align is not None:
         p.alignment = align
     set_font(p.add_run(text), size=size, bold=bold, italic=italic)
+    return p
+
+
+def index_line(doc, label: str, page: int, level: int = 1):
+    p = doc.add_paragraph()
+    p.paragraph_format.first_line_indent = Cm(0)
+    p.paragraph_format.left_indent = Cm(0.7 * (level - 1))
+    p.paragraph_format.space_after = Pt(2)
+    p.paragraph_format.line_spacing = 1.0
+    p.paragraph_format.tab_stops.add_tab_stop(
+        Cm(15.5),
+        WD_TAB_ALIGNMENT.RIGHT,
+        WD_TAB_LEADER.DOTS,
+    )
+    set_font(p.add_run(label), size=10)
+    set_font(p.add_run(f"\t{page}"), size=10)
     return p
 
 
@@ -368,7 +493,7 @@ def front_matter(doc):
         doc,
         "Verifikasi akhir menggunakan MySQL nyata dan browser menghasilkan satu order, satu pembayaran "
         "terverifikasi, satu kepemilikan game, dan satu review terpublikasi. Suite Laravel meluluskan 26 "
-        "test dengan 145 assertion. Build Vite mengolah 44 modul dan audit dependency melaporkan nol "
+        "test dengan 148 assertion. Build Vite mengolah 44 modul dan audit dependency melaporkan nol "
         "kerentanan pada tingkat high. Data uji persistensi tetap tersedia sesudah restart seluruh stack. "
         "Hasil ini menunjukkan bahwa implementasi memenuhi kebutuhan fungsional utama, pemisahan role, "
         "integritas transaksi, dan ketahanan data yang ditetapkan dalam backlog.",
@@ -380,15 +505,14 @@ def front_matter(doc):
         indent=False,
     )
 
-    for title, field in (
-        ("DAFTAR ISI", 'TOC \\o "1-3" \\h \\z \\u'),
-        ("DAFTAR GAMBAR", 'TOC \\h \\z \\t "Figure Caption,1"'),
-        ("DAFTAR TABEL", 'TOC \\h \\z \\t "Table Caption,1"'),
+    for title, entries in (
+        ("DAFTAR ISI", WORD_TOC_ENTRIES),
+        ("DAFTAR GAMBAR", tuple((label, page, 1) for label, page in WORD_FIGURE_ENTRIES)),
+        ("DAFTAR TABEL", tuple((label, page, 1) for label, page in WORD_TABLE_ENTRIES)),
     ):
         heading(doc, title, 1, new_page=True)
-        p = doc.add_paragraph()
-        p.paragraph_format.first_line_indent = Cm(0)
-        add_field(p, field, "Daftar akan diperbarui otomatis saat dokumen dibuka.")
+        for label, page, level in entries:
+            index_line(doc, label, page, level)
 
 
 def chapter_one(doc):
@@ -432,7 +556,7 @@ def chapter_one(doc):
         "Basis data menggunakan 15 tabel bisnis, melampaui batas minimum delapan tabel.",
         "Lingkungan runtime menggunakan Docker Compose pada komputer lokal.",
         "Pembayaran adalah simulasi akademik dan bukan integrasi payment gateway atau bank sungguhan.",
-        "Harga game merupakan data demonstrasi; 15 harga IDR diperiksa dari Steam wilayah Indonesia pada 24 Juli 2026 dan dua harga ditandai demo.",
+        "Harga game merupakan data demonstrasi; 16 harga IDR diperiksa dari Steam wilayah Indonesia pada 24-25 Juli 2026 dan dua harga ditandai demo.",
         "Repository GitHub belum dibuat karena GitHub CLI tidak tersedia; repository lokal dan riwayat commit telah lengkap.",
     ):
         bullet(doc, text)
@@ -666,7 +790,7 @@ def chapter_five(doc):
     heading(doc, "5.1 Pengujian Fungsional CRUD dan Transaksi", 2)
     para(
         doc,
-        "Pengujian otomatis dijalankan di container app. Hasil akhir adalah 26 test lulus dengan 145 "
+        "Pengujian otomatis dijalankan di container app. Hasil akhir adalah 26 test lulus dengan 148 "
         "assertion. Cakupan meliputi autentikasi, role, skema, CRUD master, validasi diskon, katalog, "
         "wishlist, cart, checkout, snapshot harga, otorisasi order, verifikasi dan penolakan pembayaran, "
         "idempotensi library, serta review.",
@@ -706,7 +830,7 @@ def chapter_five(doc):
         ("docker compose config --quiet", "Berhasil"),
         ("docker compose build", "Berhasil setelah public/storage dikecualikan"),
         ("docker compose ps", "4 service Up; db healthy"),
-        ("php artisan test", "26 test; 145 assertion; lulus"),
+        ("php artisan test", "26 test; 148 assertion; lulus"),
         ("npm run build", "44 modul; berhasil"),
         ("npm audit --audit-level=high", "0 vulnerability"),
         ("php artisan route:list", "60 route"),
@@ -766,7 +890,7 @@ def chapter_six_seven(doc):
     )
     para(
         doc,
-        "Keberhasilan teknis didukung oleh hasil 26 test dan 145 assertion, build 44 modul, nol vulnerability "
+        "Keberhasilan teknis didukung oleh hasil 26 test dan 148 assertion, build 44 modul, nol vulnerability "
         "tingkat high, 60 route, browser flow MySQL nyata, dan uji restart. Pembayaran, harga, dan repository "
         "dilaporkan sesuai batas faktual: payment adalah simulasi akademik, dua harga merupakan demo, serta "
         "URL GitHub belum tersedia.",
@@ -831,9 +955,10 @@ def appendices(doc):
     heading(doc, "Lampiran C.1 Bukti Redesign dan Responsivitas", 3, new_page=True)
     for filename, title, width in (
         ("33-register-customer.png", "Gambar 32. Halaman registrasi customer hasil redesign", 14.5),
-        ("34-responsive-catalog-mobile.png", "Gambar 33. Katalog pada viewport mobile", 6.8),
-        ("35-responsive-admin-mobile.png", "Gambar 34. Dashboard admin pada viewport mobile", 6.8),
-        ("36-responsive-login-mobile.png", "Gambar 35. Login pada viewport mobile", 6.8),
+        ("37-profile-customer.png", "Gambar 33. Pengaturan profil customer modern", 14.5),
+        ("34-responsive-catalog-mobile.png", "Gambar 34. Katalog 4:5 pada viewport mobile", 6.8),
+        ("35-responsive-admin-mobile.png", "Gambar 35. Dashboard admin pada viewport mobile", 6.8),
+        ("36-responsive-login-mobile.png", "Gambar 36. Login pada viewport mobile", 6.8),
     ):
         add_picture(doc, ROOT / "docs" / "screenshots" / filename, title, width)
 
@@ -865,7 +990,7 @@ def appendices(doc):
     heading(doc, "Lampiran E. Daftar Bukti dan Pekerjaan Manual", 2)
     para(
         doc,
-        "Folder docs/screenshots berisi 35 screenshot nyata aplikasi dan phpMyAdmin. Lima bukti berikut "
+        "Folder docs/screenshots berisi 36 screenshot nyata aplikasi dan phpMyAdmin. Lima bukti berikut "
         "belum tersedia karena memerlukan editor/terminal desktop: 01 struktur folder, 02 Dockerfile, "
         "03 compose.yaml, 04 docker compose ps, dan 31 git log. Langkah pengambilan yang spesifik tersedia "
         "pada docs/SCREENSHOT_CHECKLIST.md. Ketidakhadiran bukti ini tidak diganti dengan gambar sintetis.",
@@ -891,6 +1016,27 @@ def validate_docx(path: Path):
         for token in ("BAB I", "BAB VII", "DAFTAR PUSTAKA", "LAMPIRAN"):
             if token not in document_xml:
                 raise RuntimeError(f"Bagian wajib tidak ditemukan: {token}")
+
+    rendered = Document(path)
+    text = "\n".join(paragraph.text for paragraph in rendered.paragraphs)
+    figure_captions = [
+        paragraph.text
+        for paragraph in rendered.paragraphs
+        if paragraph.style and paragraph.style.name == "Figure Caption"
+    ]
+    table_captions = [
+        paragraph.text
+        for paragraph in rendered.paragraphs
+        if paragraph.style and paragraph.style.name == "Table Caption"
+    ]
+    if figure_captions != [label for label, _ in WORD_FIGURE_ENTRIES]:
+        raise RuntimeError("Daftar gambar statis tidak sama dengan caption aktual.")
+    if table_captions != [label for label, _ in WORD_TABLE_ENTRIES]:
+        raise RuntimeError("Daftar tabel statis tidak sama dengan caption aktual.")
+    if len(rendered.inline_shapes) != len(WORD_FIGURE_ENTRIES):
+        raise RuntimeError("Jumlah gambar inline tidak sesuai daftar gambar.")
+    if "Daftar akan diperbarui otomatis saat dokumen dibuka." in text or "\t?" in text:
+        raise RuntimeError("Placeholder indeks masih ditemukan.")
 
 
 def main():

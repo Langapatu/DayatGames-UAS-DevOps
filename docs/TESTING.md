@@ -14,7 +14,7 @@ npm audit --audit-level=high
 
 Hasil terakhir sebelum dokumentasi laporan:
 
-- PHPUnit: 26 test lulus, 145 assertion.
+- PHPUnit: 26 test lulus, 148 assertion.
 - Vite: 44 module ditransformasi, build berhasil.
 - npm audit: 0 vulnerability.
 - Blade: `php artisan view:cache` berhasil.
@@ -45,5 +45,5 @@ Hasil terakhir sebelum dokumentasi laporan:
 - `RoleAuthorizationTest`: akses dashboard berdasarkan role.
 - `DatabaseSchemaTest`: 15 tabel inti, kolom, model, dan relasi.
 - `AdminCatalogCrudTest`: CRUD master/game serta validasi diskon.
-- `CustomerMarketplaceTest`: published catalog, filter, wishlist, cart, owned game.
+- `CustomerMarketplaceTest`: published catalog, filter, wishlist, badge cart, cart, owned game.
 - `TransactionWorkflowTest`: checkout, snapshot harga, authorization, payment, library, review.

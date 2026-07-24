@@ -21,16 +21,16 @@ IMPLEMENTASI DEVOPS DAN PENGEMBANGAN AGILE PADA APLIKASI PENJUALAN GAME DIGITAL 
 - Project final terpisah pada `C:\.Kuliah\TugasMatkul\DevOPS\UAS\DayatGames`, branch `feature/dayatgames-uas`.
 - Docker Compose memiliki app, webserver, db, phpmyadmin; aplikasi HTTP 200 pada 8080, phpMyAdmin HTTP 200 pada 8081, MySQL host 3306, dan db healthy.
 - MySQL memakai named volume serta `DB_HOST=db`; migration menghasilkan 15 tabel bisnis dan 20 foreign key.
-- Seeder idempotent menghasilkan admin/customer dan 17 game dari aset pengguna; 15 harga Steam IDR terverifikasi pada 24 Juli 2026 dan dua harga berstatus demo.
+- Seeder idempotent menghasilkan admin/customer dan 18 game dari aset pengguna; 16 harga Steam IDR terverifikasi pada 24-25 Juli 2026 dan dua harga berstatus demo.
 - Auth/role, CRUD, katalog, wishlist, cart, checkout, payment, admin verify/reject, library, review, dan moderasi selesai.
 - Browser MySQL nyata menghasilkan order ID 1, payment verified, library Atomic Heart, dan review published.
-- Regresi terakhir: 26 test, 145 assertion; npm build berhasil; npm audit 0 vulnerability.
+- Regresi terakhir: 26 test, 148 assertion; npm build berhasil; npm audit 0 vulnerability.
 - Uji restart: genre ID 13 `QA Persistence` tetap ditemukan setelah MySQL kembali healthy.
-- 31 screenshot browser/phpMyAdmin nyata tersedia; lima screenshot editor/terminal masih ditandai Manual dan tidak disintesis.
+- 36 file screenshot browser/phpMyAdmin nyata tersedia; lima screenshot editor/terminal masih ditandai Manual dan tidak disintesis.
 - Git lokal berisi commit bertahap; URL GitHub belum tersedia sampai push dilakukan.
-- Laporan final tersedia sebagai DOCX 52 halaman dan PDF 47 halaman A4.
-- DOCX memuat 88 entri navigasi tanpa placeholder: daftar isi, 31 gambar, dan 9 tabel.
-- Render Word dan render PDF diperiksa pada setiap halaman; tidak ditemukan clipping, overlap, halaman kosong, atau footer ganda.
+- Laporan final tersedia sebagai DOCX dengan target layout 53 halaman dan PDF 48 halaman A4.
+- DOCX memuat daftar isi, 36 gambar, dan 9 tabel tanpa placeholder; pemetaan PDF memvalidasi 94 entri navigasi.
+- DOCX lolos validasi struktur, indeks statis, 36 gambar, dan 9 tabel. Seluruh halaman PDF diperiksa; tidak ditemukan clipping, overlap, halaman kosong, atau footer ganda. Renderer LibreOffice tidak tersedia dan otomasi ekspor Word build terakhir tidak selesai, sehingga klaim visual final dibatasi pada PDF.
 
 ## Kendala nyata
 

@@ -156,5 +156,9 @@ Catatan ini merangkum perintah penting dan hasil aktual. Password atau rahasia t
 | Screenshot refresh | 26 screenshot UI diambil ulang; empat bukti tambahan mencakup registrasi serta auth, katalog, dan admin mobile. |
 | `npm run build` | 44 modul ditransformasi; build Vite berhasil. |
 | `php artisan test` | 26 test dan 145 assertion lulus. |
-| Regenerasi laporan | DOCX dan PDF Word menjadi 53 halaman dengan 35 gambar dan 9 tabel. |
-| Visual QA final | Seluruh 53 halaman PDF diraster menggunakan Poppler dan diperiksa tanpa clipping, overlap, atau gambar rusak. |
+| Iterasi UI final | Cover 4:5, tinggi kartu seragam, profil modern, badge cart dinamis, pagination gelap, dan layout admin responsif diverifikasi pada desktop serta mobile. |
+| `php artisan test` | Regresi final: 26 test dan 148 assertion lulus. |
+| Refresh laporan final | 36 screenshot nyata, 36 gambar laporan, dan 9 tabel; DOCX divalidasi struktural dan PDF 48 halaman A4 diperiksa tanpa clipping atau overlap. |
+| Regenerasi laporan | DOCX menjadi 53 halaman; PDF A4 menjadi 48 halaman dengan 36 gambar dan 9 tabel. |
+| Visual QA final | Seluruh 48 halaman PDF diraster menggunakan Poppler dan diperiksa tanpa clipping, overlap, atau gambar rusak. |
+| Catatan render DOCX | LibreOffice tidak tersedia dan otomasi ekspor Word build terakhir tidak selesai; indeks DOCX dimaterialisasi statis, placeholder ditiadakan, dan validasi struktur dijalankan. |

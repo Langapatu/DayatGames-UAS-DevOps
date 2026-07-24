@@ -104,8 +104,8 @@ Dokumentasi lebih lengkap tersedia di folder `docs`.
 ## Hasil verifikasi terakhir
 
 - 15 tabel bisnis inti dan 20 foreign key.
-- 17 game seeded dari aset pengguna.
-- 26 test lulus dengan 145 assertion.
+- 18 game seeded dari aset pengguna.
+- 26 test lulus dengan 148 assertion.
 - Vite build lulus; npm audit 0 vulnerability.
 - Service `app`, `webserver`, `db`, dan `phpmyadmin` Up; MySQL healthy.
 - Record `QA Persistence` ID 13 tetap ada setelah seluruh Compose direstart.
@@ -114,10 +114,10 @@ Detail aktual tersedia di [docs/TESTING.md](docs/TESTING.md), [docs/COMMAND_LOG.
 
 ## Laporan akhir
 
-- DOCX: `docs/report/Laporan_Akhir_DayatGames_Galang_Rispai.docx` (52 halaman pada render Microsoft Word).
-- PDF: `docs/report/Laporan_Akhir_DayatGames_Galang_Rispai.pdf` (47 halaman A4).
+- DOCX: `docs/report/Laporan_Akhir_DayatGames_Galang_Rispai.docx` (53 halaman pada render Microsoft Word).
+- PDF: `docs/report/Laporan_Akhir_DayatGames_Galang_Rispai.pdf` (48 halaman A4).
 - Keduanya memuat daftar isi, daftar gambar, daftar tabel, BAB I-VII, daftar pustaka, lampiran konfigurasi, diagram, dan bukti aplikasi.
-- Seluruh halaman DOCX dan PDF telah diraster dan diperiksa; tidak ditemukan clipping, overlap, halaman kosong, atau placeholder field.
+- DOCX lolos validasi struktur dan tidak memuat placeholder indeks; seluruh 48 halaman PDF diraster dan diperiksa tanpa clipping, overlap, atau halaman kosong.
 
 ## Commit lokal
 

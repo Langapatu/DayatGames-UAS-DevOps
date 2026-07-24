@@ -25,6 +25,6 @@
 | PB-21 | Sebagai penguji, saya ingin stack yang dapat direproduksi. | Must | config/build/up/ps/migrate/seed berhasil. | NFR-01–04 | Done | Compose, Dockerfile, Nginx, `.env.example`, command log | Docker command log |
 | PB-22 | Sebagai pengguna keyboard, saya ingin UI aksesibel. | Should | Focus visible, label/form benar, carousel keyboard, reduced motion. | NFR-07, NFR-12 | Done | Skip link, focus state, responsive menu, Swiper A11y, reduced-motion CSS/JS | Browser QA |
 | PB-23 | Sebagai maintainer, saya ingin data bertahan setelah restart. | Must | Record uji ditemukan setelah `docker compose restart`. | NFR-09 | Done | Named volume; genre ID 13 `QA Persistence` | Persistence check |
-| PB-24 | Sebagai dosen, saya ingin bukti dan laporan yang sesuai implementasi. | Must | Screenshot nyata, dokumentasi, DOCX/PDF tervalidasi. | NFR-10 | Done | 31 screenshot nyata; DOCX 52 halaman; PDF 47 halaman; daftar isi/gambar/tabel dan render QA | Evidence checklist dan render seluruh halaman |
+| PB-24 | Sebagai dosen, saya ingin bukti dan laporan yang sesuai implementasi. | Must | Screenshot nyata, dokumentasi, DOCX/PDF tervalidasi. | NFR-10 | Done | 36 screenshot nyata; DOCX target-layout 53 halaman; PDF 48 halaman; indeks statis dan render QA PDF | Evidence checklist, validasi DOCX, dan render PDF |
 
 Prioritas menggunakan Must/Should/Could. Seluruh item berstatus Done berdasarkan bukti implementasi dan pengujian aktual.

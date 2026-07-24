@@ -1,6 +1,6 @@
 # Screenshot Checklist
 
-Seluruh file di bawah merupakan screenshot nyata dari browser aplikasi/phpMyAdmin pada 24 Juli 2026, kecuali item bertanda Manual. Concept board pada `docs/design` bukan screenshot aplikasi.
+Seluruh file di bawah merupakan screenshot nyata dari browser aplikasi/phpMyAdmin pada 24-25 Juli 2026, kecuali item bertanda Manual. Concept board pada `docs/design` bukan screenshot aplikasi.
 
 | No. | Target | File/status |
 |---:|---|---|
@@ -40,7 +40,8 @@ Seluruh file di bawah merupakan screenshot nyata dari browser aplikasi/phpMyAdmi
 | 34 | Katalog responsif mobile | `34-responsive-catalog-mobile.png` |
 | 35 | Dashboard admin responsif mobile | `35-responsive-admin-mobile.png` |
 | 36 | Login responsif mobile | `36-responsive-login-mobile.png` |
+| 37 | Profil customer modern | `37-profile-customer.png` |
 
-Screenshot UI nomor 05–27 telah diperbarui pada iterasi redesign. Bukti baru menunjukkan navbar customer yang lebih ringkas, shell admin dengan sidebar, form autentikasi modern, dan frame gambar `object-fit: contain` agar artwork tidak terpotong.
+Screenshot UI terkait telah diperbarui pada iterasi final. Bukti baru menunjukkan navbar customer dengan badge cart dinamis, shell admin yang rapi, form autentikasi dan profil modern, serta frame artwork konsisten 4:5 tanpa terpotong.
 
 Item Manual tidak dibuat sintetis. Jika wajib tampak sebagai screenshot terminal/editor, buka folder project dan terminal PowerShell pada lokasi project, lalu ambil tiga tampilan file serta dua tampilan terminal yang disebutkan.

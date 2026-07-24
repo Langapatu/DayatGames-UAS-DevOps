@@ -15,12 +15,53 @@ const adminSidebar = document.querySelector('.admin-sidebar');
 const pageContent = document.querySelector('[data-page-content]');
 
 if (!reducedMotion && pageContent && !document.startViewTransition) {
+    let pageTransitioning = false;
+
     gsap.from(pageContent, {
         y: 14,
         opacity: 0,
         duration: 0.36,
         ease: 'power2.out',
         clearProps: 'transform,opacity',
+    });
+
+    document.addEventListener('click', (event) => {
+        const target = event.target instanceof Element ? event.target : null;
+        const link = target?.closest('a[href]');
+        if (
+            pageTransitioning
+            || !link
+            || event.defaultPrevented
+            || event.button !== 0
+            || event.metaKey
+            || event.ctrlKey
+            || event.shiftKey
+            || event.altKey
+            || link.target === '_blank'
+            || link.hasAttribute('download')
+        ) {
+            return;
+        }
+
+        const nextUrl = new URL(link.href, window.location.href);
+        const isSameDocumentHash = nextUrl.pathname === window.location.pathname
+            && nextUrl.search === window.location.search
+            && nextUrl.hash;
+
+        if (nextUrl.origin !== window.location.origin || isSameDocumentHash) {
+            return;
+        }
+
+        event.preventDefault();
+        pageTransitioning = true;
+
+        gsap.to(pageContent, {
+            y: -8,
+            opacity: 0,
+            duration: 0.18,
+            ease: 'power1.in',
+            onComplete: () => window.location.assign(nextUrl.href),
+        });
     });
 }
 
@@ -108,6 +149,59 @@ if (document.querySelector('.featured-swiper')) {
             1024: { slidesPerView: 4 },
         },
     });
+}
+
+const catalogResults = document.querySelector('[data-catalog-results]');
+const catalogIntentKey = 'dayatgames:catalog-navigation';
+
+catalogResults?.querySelectorAll('.dg-pagination a[data-pagination-direction]').forEach((link) => {
+    link.addEventListener('click', (event) => {
+        if (
+            event.defaultPrevented
+            || event.button !== 0
+            || event.metaKey
+            || event.ctrlKey
+            || event.shiftKey
+            || event.altKey
+        ) {
+            return;
+        }
+
+        try {
+            sessionStorage.setItem(catalogIntentKey, JSON.stringify({
+                direction: link.dataset.paginationDirection,
+                timestamp: Date.now(),
+            }));
+        } catch {
+            // Storage is optional; normal pagination navigation still proceeds.
+        }
+    });
+});
+
+if (catalogResults) {
+    try {
+        const intent = JSON.parse(sessionStorage.getItem(catalogIntentKey) || 'null');
+        const isFresh = intent
+            && ['previous', 'next'].includes(intent.direction)
+            && Date.now() - intent.timestamp < 10000;
+
+        sessionStorage.removeItem(catalogIntentKey);
+
+        if (isFresh) {
+            history.scrollRestoration = 'manual';
+            catalogResults.dataset.paginationMotion = intent.direction;
+
+            requestAnimationFrame(() => {
+                const headerOffset = header?.offsetHeight || 0;
+                const targetTop = catalogResults.getBoundingClientRect().top + window.scrollY - headerOffset - 20;
+                window.scrollTo({ top: Math.max(0, targetTop), behavior: 'auto' });
+                catalogResults.focus({ preventScroll: true });
+                history.scrollRestoration = 'auto';
+            });
+        }
+    } catch {
+        sessionStorage.removeItem(catalogIntentKey);
+    }
 }
 
 if (!reducedMotion) {

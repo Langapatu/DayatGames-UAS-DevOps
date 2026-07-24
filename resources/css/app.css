@@ -292,6 +292,10 @@ body {
     ::view-transition-new(page-content) {
         animation: none !important;
     }
+
+    [data-pagination-motion] [data-catalog-grid] {
+        animation: none !important;
+    }
 }
 
 /* DayatGames interface refresh */
@@ -843,6 +847,32 @@ button, a, input, select, textarea {
 .dg-page-arrow.is-disabled { opacity: .38; }
 .dg-page-arrow svg { width: 1rem; height: 1rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .dg-page-ellipsis { border-color: transparent; background: transparent; }
+
+[data-catalog-results] {
+    overflow-x: clip;
+    overflow-clip-margin: 2rem;
+    outline: none;
+}
+
+[data-catalog-grid] {
+    transform-origin: center top;
+}
+
+[data-pagination-motion='next'] [data-catalog-grid] {
+    animation: catalog-grid-next 420ms cubic-bezier(.22, 1, .36, 1) both;
+}
+
+[data-pagination-motion='previous'] [data-catalog-grid] {
+    animation: catalog-grid-previous 420ms cubic-bezier(.22, 1, .36, 1) both;
+}
+
+@keyframes catalog-grid-next {
+    from { opacity: 0; transform: translateX(24px); }
+}
+
+@keyframes catalog-grid-previous {
+    from { opacity: 0; transform: translateX(-24px); }
+}
 
 
 /* Admin shell */

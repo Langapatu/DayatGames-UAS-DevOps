@@ -210,40 +210,54 @@ if (!reducedMotion && finePointer) {
     const auroraTwo = document.querySelector('[data-aurora-layer="two"]');
 
     if (auroraOne && auroraTwo) {
-        const moveAuroraOneX = gsap.quickTo(auroraOne, '--aurora-x', { duration: 1.2, ease: 'power3.out' });
-        const moveAuroraOneY = gsap.quickTo(auroraOne, '--aurora-y', { duration: 1.35, ease: 'power3.out' });
-        const moveAuroraTwoX = gsap.quickTo(auroraTwo, '--aurora-x', { duration: 1.45, ease: 'power3.out' });
-        const moveAuroraTwoY = gsap.quickTo(auroraTwo, '--aurora-y', { duration: 1.6, ease: 'power3.out' });
+        const auroraMotion = { oneX: 0, oneY: 0, twoX: 0, twoY: 0 };
+        const renderAurora = () => {
+            auroraOne.style.setProperty('--aurora-x', `${auroraMotion.oneX}%`);
+            auroraOne.style.setProperty('--aurora-y', `${auroraMotion.oneY}%`);
+            auroraTwo.style.setProperty('--aurora-x', `${auroraMotion.twoX}%`);
+            auroraTwo.style.setProperty('--aurora-y', `${auroraMotion.twoY}%`);
+        };
+        const moveAuroraOneX = gsap.quickTo(auroraMotion, 'oneX', { duration: 1.2, ease: 'power3.out', onUpdate: renderAurora });
+        const moveAuroraOneY = gsap.quickTo(auroraMotion, 'oneY', { duration: 1.35, ease: 'power3.out', onUpdate: renderAurora });
+        const moveAuroraTwoX = gsap.quickTo(auroraMotion, 'twoX', { duration: 1.45, ease: 'power3.out', onUpdate: renderAurora });
+        const moveAuroraTwoY = gsap.quickTo(auroraMotion, 'twoY', { duration: 1.6, ease: 'power3.out', onUpdate: renderAurora });
 
         window.addEventListener('pointermove', (event) => {
             const normalizedX = (event.clientX / window.innerWidth - 0.5) * 2;
             const normalizedY = (event.clientY / window.innerHeight - 0.5) * 2;
 
-            moveAuroraOneX(`${normalizedX * 3}%`);
-            moveAuroraOneY(`${normalizedY * 2.4}%`);
-            moveAuroraTwoX(`${normalizedX * -1.8}%`);
-            moveAuroraTwoY(`${normalizedY * -1.4}%`);
+            moveAuroraOneX(normalizedX * 3);
+            moveAuroraOneY(normalizedY * 2.4);
+            moveAuroraTwoX(normalizedX * -1.8);
+            moveAuroraTwoY(normalizedY * -1.4);
         }, { passive: true });
     }
 
     document.querySelectorAll('[data-game-card]').forEach((card) => {
-        const rotateXTo = gsap.quickTo(card, '--card-rx', { duration: 0.16, ease: 'power2.out' });
-        const rotateYTo = gsap.quickTo(card, '--card-ry', { duration: 0.16, ease: 'power2.out' });
+        const cardMotion = { rotateX: 0, rotateY: 0 };
+        const renderCardTilt = () => {
+            card.style.setProperty('--card-rx', `${cardMotion.rotateX}deg`);
+            card.style.setProperty('--card-ry', `${cardMotion.rotateY}deg`);
+        };
+        const rotateXTo = gsap.quickTo(cardMotion, 'rotateX', { duration: 0.16, ease: 'power2.out', onUpdate: renderCardTilt });
+        const rotateYTo = gsap.quickTo(cardMotion, 'rotateY', { duration: 0.16, ease: 'power2.out', onUpdate: renderCardTilt });
 
         card.addEventListener('pointermove', (event) => {
             const bounds = card.getBoundingClientRect();
             const normalizedX = (event.clientX - bounds.left) / bounds.width;
             const normalizedY = (event.clientY - bounds.top) / bounds.height;
 
-            rotateXTo(`${(0.5 - normalizedY) * 8}deg`);
-            rotateYTo(`${(normalizedX - 0.5) * 8}deg`);
+            card.dataset.interactiveActive = 'true';
+            rotateXTo((0.5 - normalizedY) * 8);
+            rotateYTo((normalizedX - 0.5) * 8);
             card.style.setProperty('--spot-x', `${normalizedX * 100}%`);
             card.style.setProperty('--spot-y', `${normalizedY * 100}%`);
         });
 
         card.addEventListener('pointerleave', () => {
-            rotateXTo('0deg');
-            rotateYTo('0deg');
+            delete card.dataset.interactiveActive;
+            rotateXTo(0);
+            rotateYTo(0);
             gsap.to(card, {
                 '--spot-x': '50%',
                 '--spot-y': '50%',

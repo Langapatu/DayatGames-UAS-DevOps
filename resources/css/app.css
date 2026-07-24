@@ -228,7 +228,8 @@ body {
     transition: transform .22s cubic-bezier(.22, 1, .36, 1), border-color .25s ease, box-shadow .25s ease;
 }
 
-[data-game-card]:hover {
+[data-game-card]:hover,
+[data-game-card][data-interactive-active='true'] {
     transform: perspective(900px) translateY(-5px) rotateX(var(--card-rx)) rotateY(var(--card-ry));
     border-color: rgb(34 211 238 / 45%);
     box-shadow: 0 24px 55px rgb(0 0 0 / 34%), 0 0 28px rgb(34 211 238 / 9%);
@@ -682,11 +683,13 @@ button, a, input, select, textarea {
         will-change: transform;
     }
 
-    [data-game-card]:hover [data-card-spotlight] {
+    [data-game-card]:hover [data-card-spotlight],
+    [data-game-card][data-interactive-active='true'] [data-card-spotlight] {
         opacity: 1;
     }
 
-    [data-game-card]:hover .game-media-frame img {
+    [data-game-card]:hover .game-media-frame img,
+    [data-game-card][data-interactive-active='true'] .game-media-frame img {
         transform: scale(1.035);
     }
 

@@ -13,7 +13,7 @@ class HomeController extends Controller
     {
         $baseQuery = Game::query()
             ->published()
-            ->with(['developer', 'genres'])
+            ->with(['developer', 'genres', 'images'])
             ->withCount('orderItems');
 
         return view('storefront.home', [

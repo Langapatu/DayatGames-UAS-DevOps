@@ -3,24 +3,55 @@
 @section('title', 'DayatGames — Temukan. Beli. Mainkan.')
 
 @section('content')
-    @php($hero = $featuredGames->first() ?? $latestGames->first())
+    @php($heroGames = $featuredGames->isNotEmpty() ? $featuredGames : $latestGames->take(5))
 
-    <section data-hero class="relative isolate overflow-hidden rounded-3xl border border-slate-800 bg-slate-950">
-        @if($hero)
-            <img data-hero-image src="{{ $hero->heroUrl() }}" alt="" class="absolute -inset-y-[8%] inset-x-0 -z-20 h-[116%] w-full object-cover opacity-35">
-            <div class="absolute inset-0 -z-10 bg-gradient-to-r from-slate-950 via-slate-950/85 to-slate-950/25"></div>
-        @endif
-        <div class="max-w-3xl px-6 py-20 sm:px-10 lg:py-28">
-            <p data-hero-item class="mb-3 font-semibold uppercase tracking-[0.25em] text-cyan-300">Temukan. Beli. Mainkan.</p>
-            <h1 data-hero-item class="text-4xl font-black tracking-tight text-white sm:text-6xl">{{ $hero?->title ?? 'Marketplace game digital pilihan' }}</h1>
-            <p data-hero-item class="mt-5 max-w-2xl text-lg leading-8 text-slate-300">{{ $hero?->short_description ?? 'Jelajahi katalog game PC pilihan dengan pengalaman belanja yang ringkas dan transparan.' }}</p>
-            <div data-hero-item class="mt-8 flex flex-wrap gap-3">
-                <a data-interactive-button href="{{ route('catalog.index') }}" class="rounded-xl bg-violet-600 px-5 py-3 font-semibold text-white hover:bg-violet-500">Jelajahi katalog</a>
-                @if($hero)
-                    <a href="{{ route('catalog.show', $hero) }}" class="rounded-xl border border-slate-600 bg-slate-950/60 px-5 py-3 font-semibold text-white hover:border-cyan-400">Lihat game</a>
-                @endif
+    <section data-hero data-home-hero class="home-hero relative isolate overflow-hidden rounded-3xl border border-slate-800 bg-slate-950">
+        <div class="home-hero-swiper swiper">
+            <div class="swiper-wrapper">
+                @forelse($heroGames as $game)
+                    @php($heroPreview = $game->images->first()?->image_path)
+                    <article data-hero-slide class="home-hero-slide swiper-slide">
+                        <img
+                            data-hero-image
+                            src="{{ $heroPreview ? asset($heroPreview) : $game->heroUrl() }}"
+                            alt=""
+                            class="home-hero-image"
+                            @if($loop->first) fetchpriority="high" @else loading="lazy" @endif
+                        >
+                        <div class="home-hero-shade"></div>
+                        <div class="home-hero-content">
+                            <p data-hero-item class="mb-3 font-semibold uppercase tracking-[0.25em] text-cyan-300">Temukan. Beli. Mainkan.</p>
+                            <h1 data-hero-item class="text-4xl font-black tracking-tight text-white sm:text-6xl">{{ $game->title }}</h1>
+                            <p data-hero-item class="mt-5 max-w-2xl text-lg leading-8 text-slate-300">{{ $game->short_description }}</p>
+                            <div data-hero-item class="mt-8 flex flex-wrap gap-3">
+                                <a data-interactive-button href="{{ route('catalog.index') }}" class="rounded-xl bg-violet-600 px-5 py-3 font-semibold text-white hover:bg-violet-500">Jelajahi katalog</a>
+                                <a href="{{ route('catalog.show', $game) }}" class="rounded-xl border border-slate-600 bg-slate-950/60 px-5 py-3 font-semibold text-white hover:border-cyan-400">Lihat game</a>
+                            </div>
+                        </div>
+                    </article>
+                @empty
+                    <article data-hero-slide class="home-hero-slide swiper-slide">
+                        <div class="home-hero-shade"></div>
+                        <div class="home-hero-content">
+                            <p data-hero-item class="mb-3 font-semibold uppercase tracking-[0.25em] text-cyan-300">Temukan. Beli. Mainkan.</p>
+                            <h1 data-hero-item class="text-4xl font-black tracking-tight text-white sm:text-6xl">Marketplace game digital pilihan</h1>
+                            <p data-hero-item class="mt-5 max-w-2xl text-lg leading-8 text-slate-300">Jelajahi katalog game PC pilihan dengan pengalaman belanja yang ringkas dan transparan.</p>
+                            <div data-hero-item class="mt-8">
+                                <a data-interactive-button href="{{ route('catalog.index') }}" class="rounded-xl bg-violet-600 px-5 py-3 font-semibold text-white hover:bg-violet-500">Jelajahi katalog</a>
+                            </div>
+                        </div>
+                    </article>
+                @endforelse
             </div>
         </div>
+
+        @if($heroGames->count() > 1)
+            <div class="home-hero-controls">
+                <button data-hero-prev type="button" class="home-hero-arrow" aria-label="Game hero sebelumnya">←</button>
+                <div data-hero-pagination class="home-hero-pagination" aria-label="Pilih game hero"></div>
+                <button data-hero-next type="button" class="home-hero-arrow" aria-label="Game hero berikutnya">→</button>
+            </div>
+        @endif
     </section>
 
     @if($featuredGames->isNotEmpty())

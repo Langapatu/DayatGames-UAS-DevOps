@@ -184,6 +184,27 @@ class CustomerMarketplaceTest extends TestCase
             ->assertSee('data-pagination-direction="previous"', false);
     }
 
+    public function test_home_hero_rotates_through_featured_games(): void
+    {
+        $first = $this->createGame('Featured Alpha', 'featured-alpha');
+        $second = $this->createGame('Featured Bravo', 'featured-bravo');
+        $first->update(['is_featured' => true, 'hero_image' => 'images/games/featured-alpha.webp']);
+        $second->update(['is_featured' => true, 'hero_image' => 'images/games/featured-bravo.webp']);
+
+        $response = $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('data-home-hero', false)
+            ->assertSee('data-hero-prev', false)
+            ->assertSee('data-hero-next', false)
+            ->assertSee('data-hero-pagination', false)
+            ->assertSee(route('catalog.show', $first), false)
+            ->assertSee(route('catalog.show', $second), false)
+            ->assertSee($first->title)
+            ->assertSee($second->title);
+
+        $this->assertSame(2, substr_count($response->getContent(), 'data-hero-slide'));
+    }
+
     private function createGame(
         string $title,
         string $slug,

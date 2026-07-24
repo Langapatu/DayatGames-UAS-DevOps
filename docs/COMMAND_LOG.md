@@ -22,3 +22,17 @@ Catatan ini merangkum perintah penting dan hasil aktual. Password atau rahasia t
 | Penyusunan FR/NFR | 20 functional requirements dan 12 non-functional requirements tersedia. |
 | Penyusunan backlog/traceability | 24 backlog dipetakan ke FR, target implementasi, tabel, test, dan screenshot. |
 | Perancangan database | 15 tabel bisnis, constraint, indeks, ERD Mermaid, serta arsitektur Mermaid dirancang. |
+
+## 24 Juli 2026 — Fase 2
+
+| Perintah | Hasil |
+|---|---|
+| Pemeriksaan port 3306, 8080, 8081 | Ketiga port bebas sebelum service final dijalankan. |
+| `docker compose config` | Exit 0; empat service, network, DB volume, vendor volume, healthcheck, dan port tervalidasi. |
+| `docker compose build --pull` | Percobaan pertama tertahan lock metadata Docker; percobaan ulang exit 0 dan menghasilkan image `dayatgames-app`. |
+| `docker compose up -d` | Empat container dibuat dan dijalankan; MySQL mencapai status healthy. |
+| `composer install` pada vendor volume | Dependency development termasuk PHPUnit/Pail berhasil dilengkapi setelah temuan provider Pail. |
+| `php artisan key:generate --force` | Berhasil; key hanya tersimpan pada `.env` lokal yang diabaikan Git. |
+| `php artisan migrate --force` | Tiga migration framework baseline berhasil dijalankan pada database baru `dayatgames`. |
+| HTTP smoke test | `http://localhost:8080` mengembalikan 200 dengan title DayatGames; `http://localhost:8081` mengembalikan 200 dengan title phpMyAdmin. |
+| `docker compose ps` | app, webserver, db, dan phpmyadmin Up; db healthy. |

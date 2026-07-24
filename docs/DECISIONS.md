@@ -41,3 +41,17 @@
 - Status: diterima
 - Keputusan: cart item, wishlist, library, dan review memakai unique composite; checkout/verifikasi payment dibungkus transaksi database.
 - Alasan: mencegah duplikasi pada request berulang atau proses verifikasi ulang.
+
+## ADR-007 — Dependency development tersedia di image UAS
+
+- Tanggal: 24 Juli 2026
+- Status: diterima
+- Keputusan: Dockerfile menjalankan `composer install` termasuk dependency development.
+- Alasan: container yang sama digunakan untuk pengembangan dan pembuktian `php artisan test`; skeleton Laravel 13 juga mendaftarkan Pail pada lingkungan lokal.
+
+## ADR-008 — Vendor memakai named volume terpisah
+
+- Tanggal: 24 Juli 2026
+- Status: diterima
+- Keputusan: `/var/www/vendor` dipasang sebagai named volume agar bind mount source Windows tidak menutupi dependency hasil build.
+- Alasan: source tetap dapat diedit dari host sementara dependency Linux tetap konsisten di container.

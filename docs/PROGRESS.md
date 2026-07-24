@@ -10,8 +10,8 @@ Pembaruan terakhir: 24 Juli 2026 (Asia/Jakarta)
 | 1. Spesifikasi | Selesai | Project spec, 20 FR, 12 NFR, 24 backlog, traceability, skema 15 tabel, ERD, dan arsitektur awal tersedia. |
 | 2. Docker dan Laravel baseline | Selesai | Compose valid; image build berhasil; app/webserver/db/phpMyAdmin Up; DB healthy; Laravel dan phpMyAdmin merespons HTTP 200. |
 | 3. Database | Selesai | 15 tabel bisnis, 20 FK, model/relasi, seeder idempotent, 17 game, mapping aset, 15 harga Steam terverifikasi, ERD/arsitektur PNG, dan test skema tersedia. |
-| 4. Auth dan role | Sedang dikerjakan | Auth session, registrasi, login/logout, middleware role, dan test authorization akan dibuat. |
-| 5. CRUD admin | Belum dimulai |  |
+| 4. Auth dan role | Selesai | Registrasi customer, login/logout, rate limit, profile, upload avatar, role middleware, dashboard admin, dan 7 test auth/role tersedia. |
+| 5. CRUD admin | Sedang dikerjakan | CRUD genres, publishers, developers, dan games berikut Form Request dan test akan dibuat. |
 | 6. Marketplace customer | Belum dimulai |  |
 | 7. Checkout dan payment | Belum dimulai |  |
 | 8. UI dan motion | Belum dimulai |  |

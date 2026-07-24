@@ -50,3 +50,14 @@ Catatan ini merangkum perintah penting dan hasil aktual. Password atau rahasia t
 | Mermaid CLI + Chrome lokal | `ERD.png` dan `ARCHITECTURE.png` berhasil dirender dari source `.mmd`. |
 | `php artisan test --testsuite=Feature` | 3 feature test lulus dengan 24 assertion, termasuk 15 tabel dan relasi katalog. |
 | `php artisan test` | Verifikasi penuh fase database: 4 test lulus dengan 25 assertion. |
+
+## 24 Juli 2026 — Fase 4
+
+| Perintah/aktivitas | Hasil |
+|---|---|
+| Implementasi auth session native Laravel | Registrasi, login dengan throttle, logout, dan session regeneration tersedia. |
+| Middleware `role` | Guest dialihkan ke login; customer menerima 403; admin dapat membuka dashboard. |
+| Profile dan avatar | Update nama/email/telepon serta upload image maksimal 2 MB tersedia; storage symlink berhasil dibuat. |
+| `php artisan test --filter='AuthenticationTest\|RoleAuthorizationTest'` | 7 test lulus dengan 22 assertion. |
+| `npm run build` | Percobaan awal gagal karena font plugin mencoba fetch eksternal; remote font dihapus, build ulang berhasil dalam 118 ms. |
+| HTTP smoke test | `/login` dan `/register` mengembalikan 200; `/admin` guest mengembalikan 302 ke login. |

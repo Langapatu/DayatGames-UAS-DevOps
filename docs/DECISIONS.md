@@ -55,3 +55,17 @@
 - Status: diterima
 - Keputusan: `/var/www/vendor` dipasang sebagai named volume agar bind mount source Windows tidak menutupi dependency hasil build.
 - Alasan: source tetap dapat diedit dari host sementara dependency Linux tetap konsisten di container.
+
+## ADR-009 — Autentikasi session native Laravel
+
+- Tanggal: 24 Juli 2026
+- Status: diterima
+- Keputusan: auth dibuat dengan controller/request Laravel tanpa memasang Breeze.
+- Alasan: baseline Laravel 13 belum menyertakan Breeze dan auth yang dibutuhkan dapat dibuat dengan komponen framework tanpa mengubah major version.
+
+## ADR-010 — Tidak melakukan fetch font saat build
+
+- Tanggal: 24 Juli 2026
+- Status: diterima
+- Keputusan: plugin remote Bunny font dihapus dari Vite; UI memakai font stack lokal/sistem.
+- Alasan: build harus deterministik dan tidak gagal saat akses jaringan frontend dibatasi.

@@ -5,7 +5,7 @@
 @section('content')
     <article>
         @if($game->cover_image)
-            <img src="{{ asset($game->cover_image) }}" alt="Cover {{ $game->title }}" width="280" loading="lazy">
+            <img src="{{ $game->coverUrl() }}" alt="Cover {{ $game->title }}" width="280" loading="lazy">
         @endif
         <h1>{{ $game->title }}</h1>
         <p>{{ $game->short_description }}</p>
@@ -22,4 +22,3 @@
         <a href="{{ route('admin.games.index') }}">Kembali</a>
     </article>
 @endsection
-

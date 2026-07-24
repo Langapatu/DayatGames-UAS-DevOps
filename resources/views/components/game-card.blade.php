@@ -5,15 +5,15 @@
     $hasDiscount = $game->discount_price !== null && $game->discount_percent > 0;
 @endphp
 
-<article data-game-card class="group h-full overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
+<article data-game-card class="group">
     <a href="{{ route('catalog.show', $game) }}" class="game-media-frame">
-        <img src="{{ asset($game->cover_image ?: 'images/brand/dayatgames-logo.png') }}"
+        <img src="{{ $game->coverUrl() }}"
              alt="Cover {{ $game->title }}"
              loading="lazy">
     </a>
-    <div class="space-y-3 p-4">
+    <div class="game-card-body">
         <div class="flex items-start justify-between gap-3">
-            <div>
+            <div class="min-w-0">
                 <h3 class="font-semibold text-slate-50">
                     <a href="{{ route('catalog.show', $game) }}">{{ $game->title }}</a>
                 </h3>
@@ -30,7 +30,7 @@
             @endforeach
         </div>
 
-        <div class="flex items-end justify-between gap-3">
+        <div class="game-card-footer">
             <div>
                 @if($hasDiscount)
                     <span class="block text-xs text-slate-500 line-through">Rp{{ number_format((float) $game->original_price, 0, ',', '.') }}</span>
@@ -42,7 +42,7 @@
                 @if(! auth()->user()->isAdmin())
                     <form method="POST" action="{{ route('cart.store', $game) }}">
                         @csrf
-                        <button type="submit" class="rounded-lg bg-violet-600 px-3 py-2 text-sm font-semibold text-white hover:bg-violet-500">+ Cart</button>
+                        <button type="submit" class="game-card-cart-button">+ Cart</button>
                     </form>
                 @endif
             @endauth

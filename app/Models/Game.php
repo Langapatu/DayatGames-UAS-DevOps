@@ -104,8 +104,26 @@ class Game extends Model
         return $this->discount_price ?? $this->original_price;
     }
 
+    public function coverUrl(): string
+    {
+        return $this->versionedAssetUrl($this->cover_image ?: 'images/brand/dayatgames-logo.png');
+    }
+
+    public function heroUrl(): string
+    {
+        return $this->versionedAssetUrl($this->hero_image ?: $this->cover_image ?: 'images/brand/dayatgames-logo.png');
+    }
+
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    private function versionedAssetUrl(string $path): string
+    {
+        $absolutePath = public_path($path);
+        $version = is_file($absolutePath) ? '?v='.filemtime($absolutePath) : '';
+
+        return asset($path).$version;
     }
 }

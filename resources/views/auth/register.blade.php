@@ -51,7 +51,7 @@
                         @error('email') <p class="field-error" role="alert">{{ $message }}</p> @enderror
                     </div>
 
-                    <div class="auth-form-grid">
+                    <div class="auth-form-grid auth-password-grid">
                         <div class="field-group">
                             <label for="password">Password</label>
                             <div class="input-with-icon">

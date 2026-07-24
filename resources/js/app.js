@@ -51,6 +51,14 @@ document.querySelectorAll('[data-password-toggle]').forEach((button) => {
     });
 });
 
+document.querySelectorAll('[data-profile-upload]').forEach((input) => {
+    input.addEventListener('change', () => {
+        const label = input.closest('label')?.querySelector('[data-profile-upload-label]');
+        if (!label) return;
+        label.textContent = input.files?.[0]?.name || 'Pilih file';
+    });
+});
+
 const updateHeader = () => {
     header?.classList.toggle('is-scrolled', window.scrollY > 18);
 };

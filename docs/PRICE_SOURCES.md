@@ -1,6 +1,6 @@
 # Sumber Harga Game
 
-Pemeriksaan dilakukan pada 24 Juli 2026 melalui endpoint resmi Steam Storefront dengan parameter negara `cc=id` dan bahasa `l=indonesian`. Nilai integer API dibagi 100 sesuai unit minor IDR. Harga dapat berubah setelah waktu pemeriksaan.
+Pemeriksaan awal dilakukan pada 24 Juli 2026 dan data ELDEN RING ditambahkan pada 25 Juli 2026 melalui endpoint resmi Steam Storefront dengan parameter negara `cc=id` dan bahasa `l=indonesian`. Nilai integer API dibagi 100 sesuai unit minor IDR. Harga dapat berubah setelah waktu pemeriksaan.
 
 | Game | Steam App ID | Harga normal | Harga saat diperiksa | Diskon | Status | Sumber/catatan |
 |---|---:|---:|---:|---:|---|---|
@@ -17,6 +17,7 @@ Pemeriksaan dilakukan pada 24 Juli 2026 melalui endpoint resmi Steam Storefront 
 | Road 96 | 1466640 | Rp214.000 | Rp214.000 | 0% | Terverifikasi | https://store.steampowered.com/app/1466640 |
 | Sons of the Forest | 1326470 | Rp245.999 | Rp245.999 | 0% | Terverifikasi | https://store.steampowered.com/app/1326470 |
 | Detroit: Become Human | 1222140 | Rp399.000 | Rp399.000 | 0% | Terverifikasi | https://store.steampowered.com/app/1222140 |
+| ELDEN RING | 1245620 | Rp599.000 | Rp599.000 | 0% | Terverifikasi | https://store.steampowered.com/app/1245620 |
 | Ghost of Yōtei | — | Rp879.000 | Rp879.000 | 0% | Demo | Tidak ditemukan halaman Steam PC yang dapat diverifikasi pada pemeriksaan; tidak diklaim sebagai harga resmi. |
 | LEGO Batman: Legacy of the Dark Knight | 2215200 | Rp649.000 | Rp649.000 | 0% | Demo | Metadata Steam terverifikasi, tetapi API wilayah Indonesia tidak mengembalikan `price_overview`; nilai di aplikasi tetap demo. |
 | Hogwarts Legacy | 990080 | Rp799.000 | Rp799.000 | 0% | Terverifikasi | https://store.steampowered.com/app/990080 |
@@ -24,7 +25,7 @@ Pemeriksaan dilakukan pada 24 Juli 2026 melalui endpoint resmi Steam Storefront 
 
 ## Implementasi
 
-- Sebanyak 15 record memakai `price_is_demo=false`, `price_checked_at`, `price_source_url`, dan Steam App ID.
+- Sebanyak 16 record memakai `price_is_demo=false`, `price_checked_at`, `price_source_url`, dan Steam App ID.
 - Ghost of Yōtei serta LEGO Batman memakai `price_is_demo=true`.
 - Tidak ada konversi USD ke IDR buatan.
 - Harga diskon disimpan terpisah dari harga normal agar tampilan dan riwayat checkout dapat membedakannya.
@@ -32,4 +33,3 @@ Pemeriksaan dilakukan pada 24 Juli 2026 melalui endpoint resmi Steam Storefront 
 ## Disclaimer
 
 DayatGames merupakan aplikasi akademik untuk keperluan pembelajaran. Nama game, merek, dan aset terkait merupakan milik pemegang hak masing-masing. Harga yang ditampilkan merupakan data demonstrasi dan dapat berbeda dari harga toko resmi.
-

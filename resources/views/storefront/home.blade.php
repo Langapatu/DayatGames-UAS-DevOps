@@ -7,7 +7,7 @@
 
     <section data-hero class="relative isolate overflow-hidden rounded-3xl border border-slate-800 bg-slate-950">
         @if($hero)
-            <img data-hero-image src="{{ asset($hero->hero_image) }}" alt="" class="absolute -inset-y-[8%] inset-x-0 -z-20 h-[116%] w-full object-cover opacity-35">
+            <img data-hero-image src="{{ $hero->heroUrl() }}" alt="" class="absolute -inset-y-[8%] inset-x-0 -z-20 h-[116%] w-full object-cover opacity-35">
             <div class="absolute inset-0 -z-10 bg-gradient-to-r from-slate-950 via-slate-950/85 to-slate-950/25"></div>
         @endif
         <div class="max-w-3xl px-6 py-20 sm:px-10 lg:py-28">

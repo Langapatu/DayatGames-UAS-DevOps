@@ -111,10 +111,16 @@ class CustomerMarketplaceTest extends TestCase
         $this->actingAs($customer)
             ->get(route('cart.index'))
             ->assertOk()
-            ->assertSee($game->title);
+            ->assertSee($game->title)
+            ->assertSee('Cart, 1 game', false);
 
         $this->actingAs($customer)->delete(route('cart.destroy', $game))->assertRedirect();
         $this->assertDatabaseCount('cart_items', 0);
+
+        $this->actingAs($customer)
+            ->get(route('catalog.index'))
+            ->assertOk()
+            ->assertSee('Cart, 0 game', false);
     }
 
     public function test_customer_cannot_add_owned_game_to_cart(): void

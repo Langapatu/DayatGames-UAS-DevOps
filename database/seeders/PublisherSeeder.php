@@ -13,6 +13,7 @@ class PublisherSeeder extends Seeder
         $publishers = [
             '2K',
             '505 Games',
+            'Bandai Namco Entertainment',
             'Deep Silver',
             'Electronic Arts',
             'Focus Entertainment',

@@ -14,6 +14,7 @@ class DeveloperSeeder extends Seeder
             'Avalanche Software',
             'DigixArt',
             'Endnight Games',
+            'FromSoftware, Inc.',
             'Hangar 13',
             'Hazelight Studios',
             'Kojima Productions',
@@ -37,4 +38,3 @@ class DeveloperSeeder extends Seeder
         }
     }
 }
-

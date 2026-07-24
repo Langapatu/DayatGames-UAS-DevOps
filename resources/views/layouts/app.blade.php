@@ -11,6 +11,9 @@
 @php
     $isAdminArea = request()->routeIs('admin.*') && auth()->check() && auth()->user()->isAdmin();
     $isAuthPage = request()->routeIs('login', 'register');
+    $cartItemCount = auth()->check() && ! auth()->user()->isAdmin()
+        ? (auth()->user()->cart()->withCount('items')->first()?->items_count ?? 0)
+        : 0;
     $adminNavigation = [
         ['label' => 'Ringkasan', 'route' => 'admin.dashboard', 'match' => 'admin.dashboard', 'icon' => '⌂'],
         ['label' => 'Game', 'route' => 'admin.games.index', 'match' => 'admin.games.*', 'icon' => '▦'],
@@ -84,9 +87,18 @@
                             @else
                                 <a href="{{ route('wishlist.index') }}" class="{{ request()->routeIs('wishlist.*') ? 'is-active' : '' }}">Wishlist</a>
                                 <a href="{{ route('library.index') }}" class="{{ request()->routeIs('library.*') ? 'is-active' : '' }}">Library</a>
-                                <a href="{{ route('cart.index') }}" class="nav-cart {{ request()->routeIs('cart.*') ? 'is-active' : '' }}">Cart</a>
+                                <a href="{{ route('cart.index') }}" class="nav-cart {{ request()->routeIs('cart.*') ? 'is-active' : '' }}" aria-label="Cart, {{ $cartItemCount }} game">
+                                    <span>Cart</span>
+                                    <span class="nav-cart-count" aria-hidden="true">{{ $cartItemCount }}</span>
+                                </a>
                             @endif
-                            <a href="{{ route('profile.edit') }}" class="nav-profile" aria-label="Buka profil">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</a>
+                            <a href="{{ route('profile.edit') }}" class="nav-profile" aria-label="Buka profil">
+                                @if(auth()->user()->avatar)
+                                    <img src="{{ asset('storage/'.auth()->user()->avatar) }}" alt="">
+                                @else
+                                    {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                                @endif
+                            </a>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" class="nav-logout">Keluar</button>

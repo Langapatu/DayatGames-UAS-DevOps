@@ -29,7 +29,7 @@
                 <tr>
                     <td>
                         @if($game->cover_image)
-                            <img src="{{ asset($game->cover_image) }}" alt="" width="64" height="84" loading="lazy">
+                            <img src="{{ $game->coverUrl() }}" alt="" width="64" height="80" loading="lazy">
                         @endif
                         <strong>{{ $game->title }}</strong>
                         @if($game->is_featured) <span>Featured</span> @endif
@@ -61,4 +61,3 @@
 
     {{ $games->links() }}
 @endsection
-

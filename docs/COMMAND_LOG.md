@@ -98,3 +98,16 @@ Catatan ini merangkum perintah penting dan hasil aktual. Password atau rahasia t
 | `php artisan test --filter=TransactionWorkflowTest` | 6 test lulus dengan 37 assertion. |
 | `php artisan test` | Regresi penuh: 26 test lulus dengan 145 assertion. |
 | `npm run build` | Vite production build berhasil dalam 173 ms. |
+
+## 24 Juli 2026 — Fase 8
+
+| Perintah/aktivitas | Hasil |
+|---|---|
+| Concept board berbasis logo | `docs/design/dayatgames-ui-concept.png` dibuat sebagai arah desain, bukan bukti aplikasi. |
+| `npm install gsap lenis swiper` | Dependency motion terpasang; package sementara Mermaid yang tidak disimpan ikut dibersihkan npm. |
+| Browser QA desktop | Home tampil tanpa horizontal overflow; Swiper terinisialisasi; GSAP target ditemukan; console tidak memiliki error/warning. |
+| Browser QA mobile 390×844 | Menu `aria-expanded` berubah benar, navigasi tampil, hero/card responsif, dan tidak ada horizontal overflow. |
+| Carousel interaction | Tombol kemudian ArrowRight memindahkan active slide sampai label `3 / 5`. |
+| `npm audit --audit-level=high` | Tidak ditemukan vulnerability. |
+| `npm run build` | 44 module ditransformasi; build berhasil dalam 188 ms. |
+| `php artisan test` | Regresi penuh tetap lulus: 26 test, 145 assertion. |

@@ -76,3 +76,10 @@
 - Status: diterima
 - Keputusan: Virtual Account, transfer bank, dan e-wallet hanya berupa simulasi akademik, tetapi order, snapshot item, payment, bukti, verifikasi, library, dan pembersihan cart diproses melalui database transaction.
 - Alasan: aplikasi dapat memperagakan konsistensi transaksi dan otorisasi tanpa mengklaim integrasi bank atau payment gateway sungguhan.
+
+## ADR-012 — Cyan mengikuti logo, violet dipertahankan sebagai aksen
+
+- Tanggal: 24 Juli 2026
+- Status: diterima
+- Keputusan: background dan card tetap mengikuti palet awal, sementara cyan/steel-blue dari logo diperkuat pada brand, focus state, harga, dan link; violet tetap dipakai terbatas pada CTA.
+- Alasan: identitas terasa konsisten dengan logo pengguna tanpa menghilangkan kontras dan hierarki warna yang sudah ditetapkan.

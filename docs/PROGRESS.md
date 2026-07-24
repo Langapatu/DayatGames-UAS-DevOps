@@ -14,8 +14,8 @@ Pembaruan terakhir: 24 Juli 2026 (Asia/Jakarta)
 | 5. CRUD admin | Selesai | CRUD genre, publisher, developer, dan game dilengkapi search, pagination, slug route binding, validasi Form Request, relasi genre, upload image, serta 4 test dengan 29 assertion. |
 | 6. Marketplace customer | Selesai | Home, katalog published, search/filter/sort, detail, related games, wishlist, dan cart tersedia; 5 test marketplace lulus dengan 32 assertion. |
 | 7. Checkout dan payment | Selesai | Checkout server-side, snapshot order, tiga metode payment simulasi, proof upload, admin verify/reject idempotent, library, review, moderasi, users/orders admin, dan 6 test transaksi tersedia. |
-| 8. UI dan motion | Sedang dikerjakan | Brand, responsive navigation, motion, smooth scroll, carousel keyboard/touch, dan reduced motion sedang disempurnakan. |
-| 9. QA | Belum dimulai |  |
+| 8. UI dan motion | Selesai | Concept board, responsive menu, GSAP/ScrollTrigger, Lenis, Swiper keyboard/touch, card motion, focus/skip link, fallback JS, dan reduced motion tersedia serta diuji di desktop/mobile. |
+| 9. QA | Sedang dikerjakan | Full Docker, MySQL/phpMyAdmin, browser flows, restart/persistence, dan pemeriksaan akhir sedang dijalankan. |
 | 10. Evidence dan Git | Belum dimulai |  |
 | 11. Laporan | Belum dimulai |  |
 

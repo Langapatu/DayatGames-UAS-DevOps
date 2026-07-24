@@ -9,12 +9,17 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen bg-[#070A12] text-slate-100 antialiased">
-    <header class="sticky top-0 z-50 border-b border-slate-800/80 bg-slate-950/90 backdrop-blur">
-        <div class="mx-auto flex max-w-7xl items-center justify-between gap-5 px-4 py-3 sm:px-6 lg:px-8">
-            <a href="{{ route('home') }}" aria-label="DayatGames — kembali ke home" class="shrink-0">
-                <img src="{{ asset('images/brand/dayatgames-logo.png') }}" alt="DayatGames" width="56" height="56">
+    <a href="#main-content" class="skip-link">Lewati ke konten utama</a>
+    <header data-site-header class="sticky top-0 z-50 border-b border-slate-800/60 bg-slate-950/72 backdrop-blur-xl">
+        <div class="relative mx-auto flex max-w-7xl items-center justify-between gap-5 px-4 py-3 sm:px-6 lg:px-8">
+            <a href="{{ route('home') }}" aria-label="DayatGames — kembali ke home" class="flex shrink-0 items-center gap-2">
+                <img src="{{ asset('images/brand/dayatgames-logo.png') }}" alt="" width="48" height="48">
+                <span class="hidden text-lg font-black tracking-tight text-white sm:inline">Dayat<span class="text-cyan-400">Games</span></span>
             </a>
-            <nav aria-label="Navigasi utama" class="flex flex-wrap items-center justify-end gap-4 text-sm font-medium text-slate-300">
+            <button type="button" data-menu-toggle aria-controls="main-navigation" aria-expanded="false" class="rounded-lg border border-slate-700 px-3 py-2 text-sm font-semibold text-white">
+                Menu
+            </button>
+            <nav id="main-navigation" data-site-navigation data-open="false" aria-label="Navigasi utama" class="site-navigation items-center justify-end gap-4 text-sm font-medium text-slate-300 lg:flex-wrap">
                 <a href="{{ route('home') }}" class="hover:text-cyan-300">Home</a>
                 <a href="{{ route('catalog.index') }}" class="hover:text-cyan-300">Semua Game</a>
                 @auth
@@ -47,12 +52,16 @@
         </div>
     </header>
 
-    <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <main id="main-content" class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         @if(session('success'))
-            <div role="status" class="mb-5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-emerald-200">{{ session('success') }}</div>
+            <div data-flash role="status" class="mb-5 flex items-start justify-between gap-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-emerald-200">
+                <span>{{ session('success') }}</span><button type="button" data-flash-close aria-label="Tutup pesan">×</button>
+            </div>
         @endif
         @if(session('error'))
-            <div role="alert" class="mb-5 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-red-200">{{ session('error') }}</div>
+            <div data-flash role="alert" class="mb-5 flex items-start justify-between gap-4 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-red-200">
+                <span>{{ session('error') }}</span><button type="button" data-flash-close aria-label="Tutup pesan">×</button>
+            </div>
         @endif
         @if($errors->any())
             <div role="alert" class="mb-5 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-red-200">

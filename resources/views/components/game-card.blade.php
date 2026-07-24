@@ -5,7 +5,7 @@
     $hasDiscount = $game->discount_price !== null && $game->discount_percent > 0;
 @endphp
 
-<article class="group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
+<article data-game-card class="group h-full overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
     <a href="{{ route('catalog.show', $game) }}" class="block overflow-hidden">
         <img src="{{ asset($game->cover_image ?: 'images/brand/dayatgames-logo.png') }}"
              alt="Cover {{ $game->title }}"

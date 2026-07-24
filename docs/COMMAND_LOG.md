@@ -111,3 +111,24 @@ Catatan ini merangkum perintah penting dan hasil aktual. Password atau rahasia t
 | `npm audit --audit-level=high` | Tidak ditemukan vulnerability. |
 | `npm run build` | 44 module ditransformasi; build berhasil dalam 188 ms. |
 | `php artisan test` | Regresi penuh tetap lulus: 26 test, 145 assertion. |
+
+## 24 Juli 2026 — Fase 9
+
+| Perintah/aktivitas | Hasil |
+|---|---|
+| `docker compose config --quiet` | Valid. |
+| `docker compose build` | Percobaan awal gagal karena Windows reparse point `public/storage`; setelah ditambah ke `.dockerignore`, build berhasil. |
+| `docker compose up -d`, migrate, seed | Image terbaru diterapkan; tidak ada migration tertunda; seluruh seeder idempotent berhasil. |
+| `php artisan storage:link` | Melaporkan link sudah ada; link existing dipertahankan. |
+| Browser flow MySQL nyata | Customer cart/checkout VA membuat order ID 1; admin verify; Atomic Heart masuk library; review dibuat dan dipublikasikan. |
+| `docker compose restart` | Seluruh service restart. Query pertama terlalu cepat saat DB `health: starting`; setelah healthy, seluruh service Up dan record terbaca. |
+| Persistence check | Genre ID 13 dengan nama `QA Persistence` tetap tersedia. |
+| HTTP setelah restart | `/`, `/games`, `/login`, dan phpMyAdmin mengembalikan HTTP 200. |
+| Count MySQL | 2 users, 17 games, 13 genres sebelum browser transaksi; kemudian 1 order/library/review nyata ditambahkan. |
+| phpMyAdmin | Login melalui `dayatgames_user`; database `dayatgames`, tabel, FK games, serta record games/orders/genres terlihat. |
+| Browser console | Tidak ada error atau warning selama flow end-to-end. |
+| QA CRUD browser | Game QA dibuat, diperbarui, dikonfirmasi hapus, lalu terhapus; screenshot 10–14 tersimpan. |
+| Verifikasi final | 26 test/145 assertion, Vite 44 module, npm audit 0 vulnerability, dan 60 route aplikasi. |
+| Count transaksi MySQL | 17 games, 1 order, 1 payment verified, 1 library, 1 review published, 1 cart item, dan 1 wishlist. |
+| Secret/ignore check | `.env`, `vendor`, dan `node_modules` ignored; pola API token/private key tidak ditemukan pada tracked source. |
+| `gh auth status` | Tidak dapat dijalankan karena GitHub CLI tidak terpasang; tidak ada URL repository yang diklaim. |

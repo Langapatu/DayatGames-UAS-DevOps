@@ -8,4 +8,4 @@ storage/framework/sessions/*
 storage/framework/views/*
 docs/screenshots
 docs/report
-
+public/storage

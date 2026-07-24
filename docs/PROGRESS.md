@@ -15,9 +15,9 @@ Pembaruan terakhir: 24 Juli 2026 (Asia/Jakarta)
 | 6. Marketplace customer | Selesai | Home, katalog published, search/filter/sort, detail, related games, wishlist, dan cart tersedia; 5 test marketplace lulus dengan 32 assertion. |
 | 7. Checkout dan payment | Selesai | Checkout server-side, snapshot order, tiga metode payment simulasi, proof upload, admin verify/reject idempotent, library, review, moderasi, users/orders admin, dan 6 test transaksi tersedia. |
 | 8. UI dan motion | Selesai | Concept board, responsive menu, GSAP/ScrollTrigger, Lenis, Swiper keyboard/touch, card motion, focus/skip link, fallback JS, dan reduced motion tersedia serta diuji di desktop/mobile. |
-| 9. QA | Sedang dikerjakan | Full Docker, MySQL/phpMyAdmin, browser flows, restart/persistence, dan pemeriksaan akhir sedang dijalankan. |
-| 10. Evidence dan Git | Belum dimulai |  |
-| 11. Laporan | Belum dimulai |  |
+| 9. QA | Selesai | Compose/build/migrate/seed, 26 test/145 assertion, build/audit, HTTP, browser MySQL end-to-end, phpMyAdmin, restart, dan persistensi ID 13 terverifikasi. |
+| 10. Evidence dan Git | Selesai | 31 screenshot browser/phpMyAdmin nyata, 5 item manual transparan, test matrix, troubleshooting, traceability final, secret scan, dan commit bertahap tersedia; GitHub CLI tidak terpasang. |
+| 11. Laporan | Sedang dikerjakan | DOCX/PDF, daftar isi/gambar/tabel, lampiran, dan render validation sedang dibuat. |
 
 ## Kondisi awal terverifikasi
 

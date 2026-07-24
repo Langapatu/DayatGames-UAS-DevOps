@@ -15,25 +15,31 @@
 
 IMPLEMENTASI DEVOPS DAN PENGEMBANGAN AGILE PADA APLIKASI PENJUALAN GAME DIGITAL DAYATGAMES BERBASIS LARAVEL DAN DOCKER
 
-## Fakta implementasi yang boleh digunakan saat ini
+## Fakta implementasi terverifikasi
 
-- Project lama ditemukan melalui metadata Docker di `C:\Coding\laravel-docker`.
-- Docker Desktop aktif saat inspeksi fase 0.
-- Stack lama menggunakan Laravel 13.8, PHP 8.4 FPM, MySQL 8.0, Nginx, dan phpMyAdmin.
-- Project final dibuat terpisah dan menggunakan Git branch `feature/dayatgames-uas`.
-- Migration MySQL menghasilkan 15 tabel bisnis inti dan 20 foreign key.
-- Seeder menghasilkan 2 akun demo, 17 game dari aset pengguna, 12 genre, 16 developer, dan 15 publisher.
-- Steam Storefront API wilayah Indonesia mengembalikan harga untuk 15 game pada 24 Juli 2026; dua harga tetap demo.
-- Verifikasi penuh fase database lulus: 4 test, 25 assertion.
+- Project Docker lama ditemukan melalui metadata di `C:\Coding\laravel-docker` dan tidak diubah.
+- Project final terpisah pada `C:\.Kuliah\TugasMatkul\DevOPS\UAS\DayatGames`, branch `feature/dayatgames-uas`.
+- Docker Compose memiliki app, webserver, db, phpmyadmin; aplikasi HTTP 200 pada 8080, phpMyAdmin HTTP 200 pada 8081, MySQL host 3306, dan db healthy.
+- MySQL memakai named volume serta `DB_HOST=db`; migration menghasilkan 15 tabel bisnis dan 20 foreign key.
+- Seeder idempotent menghasilkan admin/customer dan 17 game dari aset pengguna; 15 harga Steam IDR terverifikasi pada 24 Juli 2026 dan dua harga berstatus demo.
+- Auth/role, CRUD, katalog, wishlist, cart, checkout, payment, admin verify/reject, library, review, dan moderasi selesai.
+- Browser MySQL nyata menghasilkan order ID 1, payment verified, library Atomic Heart, dan review published.
+- Regresi terakhir: 26 test, 145 assertion; npm build berhasil; npm audit 0 vulnerability.
+- Uji restart: genre ID 13 `QA Persistence` tetap ditemukan setelah MySQL kembali healthy.
+- 31 screenshot browser/phpMyAdmin nyata tersedia; lima screenshot editor/terminal masih ditandai Manual dan tidak disintesis.
+- Git lokal berisi commit bertahap; URL GitHub belum tersedia sampai push dilakukan.
 
-## Fakta yang belum boleh diklaim
+## Kendala nyata
 
-- Service final berhasil Up/healthy.
-- Migration/seeder fase database final berhasil; migration fitur tambahan masih dapat ditambahkan bila diperlukan.
-- Seluruh test lulus.
-- Build Vite berhasil.
-- Persistensi setelah restart berhasil.
-- Screenshot aplikasi dan phpMyAdmin tersedia.
-- Repository GitHub tersedia.
+- Dependency Pail membutuhkan composer dev dependency di image UAS.
+- Remote font membuat build tidak deterministik dan dihapus.
+- Cast harga `NUMERIC` tidak kompatibel dengan MySQL; diganti `DECIMAL(15,2)`.
+- Windows `public/storage` reparse point sempat membuat Docker build gagal; dikecualikan dari build context.
+- Query pertama setelah restart terjadi sebelum MySQL healthy; verifikasi diulang setelah healthcheck.
 
-Bagian di atas harus diperbarui hanya dari hasil perintah dan bukti aktual.
+## Larangan klaim
+
+- Jangan mencantumkan URL repository sampai push nyata berhasil.
+- Jangan menyebut lima screenshot manual sudah tersedia.
+- Concept board UI bukan screenshot aplikasi.
+- Payment bukan integrasi bank sungguhan.

@@ -18,7 +18,7 @@ DayatGames adalah marketplace game digital berbasis Laravel untuk project UAS De
 - Port host 8080, 8081, dan 3306 tersedia
 - Git
 
-Node.js host bersifat opsional karena build frontend dapat dijalankan melalui container sementara bila diperlukan.
+Node.js 22+ pada host diperlukan untuk mengembangkan/build frontend dan motion dependency.
 
 ## Instalasi
 
@@ -29,6 +29,9 @@ docker compose build
 docker compose up -d
 docker compose exec app php artisan key:generate
 docker compose exec app php artisan migrate --seed
+docker compose exec app php artisan storage:link
+npm install
+npm run build
 ```
 
 ## URL
@@ -67,7 +70,7 @@ docker compose stop
 
 ## Struktur ringkas
 
-- `app/` — controller, model, middleware, request, policy, dan service
+- `app/` — controller, model, middleware, dan Form Request
 - `database/` — migration, factory, dan seeder
 - `resources/` — Blade, CSS, dan JavaScript
 - `public/` — entry point dan aset publik
@@ -78,8 +81,8 @@ docker compose stop
 
 ```powershell
 docker compose exec app php artisan test
-npm install
 npm run build
+npm audit --audit-level=high
 ```
 
 ## Troubleshooting singkat
@@ -91,7 +94,34 @@ npm run build
 
 Dokumentasi lebih lengkap tersedia di folder `docs`.
 
+## Fitur
+
+- Guest: home, katalog published, search/filter/sort, detail dan review published.
+- Customer: profil/avatar, wishlist, cart digital, checkout, tiga payment simulasi, order, library, dan review pemilik.
+- Admin: dashboard statistik, CRUD game/genre/publisher/developer, customer, order, verify/reject payment, dan moderasi review.
+- UI: responsive navigation, GSAP/ScrollTrigger, Lenis, Swiper keyboard/touch, focus state, dan reduced motion.
+
+## Hasil verifikasi terakhir
+
+- 15 tabel bisnis inti dan 20 foreign key.
+- 17 game seeded dari aset pengguna.
+- 26 test lulus dengan 145 assertion.
+- Vite build lulus; npm audit 0 vulnerability.
+- Service `app`, `webserver`, `db`, dan `phpmyadmin` Up; MySQL healthy.
+- Record `QA Persistence` ID 13 tetap ada setelah seluruh Compose direstart.
+
+Detail aktual tersedia di [docs/TESTING.md](docs/TESTING.md), [docs/COMMAND_LOG.md](docs/COMMAND_LOG.md), dan [docs/SCREENSHOT_CHECKLIST.md](docs/SCREENSHOT_CHECKLIST.md).
+
+## Commit lokal
+
+Branch kerja: `feature/dayatgames-uas`. Lihat riwayat dengan:
+
+```powershell
+git log --oneline --decorate
+```
+
+Repository GitHub belum diklaim tersedia sampai autentikasi dan push benar-benar dilakukan.
+
 ## Disclaimer
 
 DayatGames merupakan aplikasi akademik untuk keperluan pembelajaran. Nama game, merek, dan aset terkait merupakan milik pemegang hak masing-masing. Harga yang ditampilkan merupakan data demonstrasi dan dapat berbeda dari harga toko resmi.
-

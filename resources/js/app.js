@@ -36,6 +36,14 @@ document.querySelectorAll('[data-flash]').forEach((flash) => {
     flash.querySelector('[data-flash-close]')?.addEventListener('click', () => flash.remove());
 });
 
+document.querySelectorAll('form[data-confirm]').forEach((form) => {
+    form.addEventListener('submit', (event) => {
+        if (!window.confirm(form.dataset.confirm || 'Lanjutkan tindakan ini?')) {
+            event.preventDefault();
+        }
+    });
+});
+
 if (document.querySelector('.featured-swiper')) {
     new Swiper('.featured-swiper', {
         modules: [A11y, Keyboard, Navigation],

@@ -22,9 +22,9 @@
 | PB-18 | Sebagai admin, saya ingin verify/reject payment. | Must | Transaction; idempotent; library/cart/order sinkron. | FR-18 | Done | `Admin\PaymentController`, payment admin views | TransactionWorkflowTest |
 | PB-19 | Sebagai admin, saya ingin moderasi review. | Should | Pending dapat menjadi published/rejected. | FR-19 | Done | `Admin\ReviewController`, moderation view | TransactionWorkflowTest |
 | PB-20 | Sebagai admin, saya ingin melihat dashboard. | Should | Statistik berasal dari query database nyata. | FR-20 | Done | `Admin\DashboardController`, `admin.dashboard` | RoleAuthorizationTest |
-| PB-21 | Sebagai penguji, saya ingin stack yang dapat direproduksi. | Must | config/build/up/ps/migrate/seed berhasil. | NFR-01–04 | Planned | Belum ada | Docker command log |
+| PB-21 | Sebagai penguji, saya ingin stack yang dapat direproduksi. | Must | config/build/up/ps/migrate/seed berhasil. | NFR-01–04 | Done | Compose, Dockerfile, Nginx, `.env.example`, command log | Docker command log |
 | PB-22 | Sebagai pengguna keyboard, saya ingin UI aksesibel. | Should | Focus visible, label/form benar, carousel keyboard, reduced motion. | NFR-07, NFR-12 | Done | Skip link, focus state, responsive menu, Swiper A11y, reduced-motion CSS/JS | Browser QA |
-| PB-23 | Sebagai maintainer, saya ingin data bertahan setelah restart. | Must | Record uji ditemukan setelah `docker compose restart`. | NFR-09 | Planned | Belum ada | Persistence check |
+| PB-23 | Sebagai maintainer, saya ingin data bertahan setelah restart. | Must | Record uji ditemukan setelah `docker compose restart`. | NFR-09 | Done | Named volume; genre ID 13 `QA Persistence` | Persistence check |
 | PB-24 | Sebagai dosen, saya ingin bukti dan laporan yang sesuai implementasi. | Must | Screenshot nyata, dokumentasi, DOCX/PDF tervalidasi. | NFR-10 | Planned | Belum ada | Evidence checklist |
 
 Prioritas menggunakan Must/Should/Could. Kolom status akan diubah menjadi In Progress atau Done hanya setelah bukti aktual tersedia.

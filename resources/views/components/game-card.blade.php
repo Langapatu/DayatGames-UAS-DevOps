@@ -6,6 +6,7 @@
 @endphp
 
 <article data-game-card class="group">
+    <span data-card-spotlight aria-hidden="true"></span>
     <a href="{{ route('catalog.show', $game) }}" class="game-media-frame">
         <img src="{{ $game->coverUrl() }}"
              alt="Cover {{ $game->title }}"

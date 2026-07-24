@@ -31,8 +31,8 @@
 
     @if(!$isAdminArea && !$isAuthPage)
         <div data-ambient-backdrop class="ambient-backdrop" aria-hidden="true">
-            <span class="ambient-aurora ambient-aurora-one"></span>
-            <span class="ambient-aurora ambient-aurora-two"></span>
+            <span data-aurora-layer="one" class="ambient-aurora ambient-aurora-one"></span>
+            <span data-aurora-layer="two" class="ambient-aurora ambient-aurora-two"></span>
             <span class="ambient-stars ambient-stars-near"></span>
             <span class="ambient-stars ambient-stars-far"></span>
         </div>
@@ -77,25 +77,26 @@
     @else
         <header data-site-header class="site-header">
             <div class="site-header-inner">
-                <a href="{{ route('home') }}" aria-label="DayatGames — kembali ke home" class="site-brand">
+                <a href="{{ route('home') }}" aria-label="DayatGames — kembali ke home" class="site-brand" data-interactive-brand>
                     <span class="brand-mark"><img src="{{ asset('images/brand/dayatgames-logo.png') }}" alt=""></span>
+                    <span data-brand-wordmark>Dayat<span>Games</span></span>
                 </a>
                 <button type="button" data-menu-toggle aria-controls="main-navigation" aria-expanded="false" class="mobile-menu-button">
                     <span aria-hidden="true">☰</span> Menu
                 </button>
                 <nav id="main-navigation" data-site-navigation data-open="false" aria-label="Navigasi utama" class="site-navigation">
                     <div class="site-nav-primary">
-                        <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'is-active' : '' }}">Beranda</a>
-                        <a href="{{ route('catalog.index') }}" class="{{ request()->routeIs('catalog.*') ? 'is-active' : '' }}">Jelajahi Game</a>
+                        <a data-nav-link href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'is-active' : '' }}">Beranda</a>
+                        <a data-nav-link href="{{ route('catalog.index') }}" class="{{ request()->routeIs('catalog.*') ? 'is-active' : '' }}">Jelajahi Game</a>
                     </div>
                     <div class="site-nav-account">
                         @auth
                             @if(auth()->user()->isAdmin())
                                 <a href="{{ route('admin.dashboard') }}" class="nav-admin-cta">Buka Admin</a>
                             @else
-                                <a href="{{ route('wishlist.index') }}" class="{{ request()->routeIs('wishlist.*') ? 'is-active' : '' }}">Wishlist</a>
-                                <a href="{{ route('library.index') }}" class="{{ request()->routeIs('library.*') ? 'is-active' : '' }}">Library</a>
-                                <a href="{{ route('cart.index') }}" class="nav-cart {{ request()->routeIs('cart.*') ? 'is-active' : '' }}" aria-label="Cart, {{ $cartItemCount }} game">
+                                <a data-nav-link href="{{ route('wishlist.index') }}" class="{{ request()->routeIs('wishlist.*') ? 'is-active' : '' }}">Wishlist</a>
+                                <a data-nav-link href="{{ route('library.index') }}" class="{{ request()->routeIs('library.*') ? 'is-active' : '' }}">Library</a>
+                                <a data-nav-link href="{{ route('cart.index') }}" class="nav-cart {{ request()->routeIs('cart.*') ? 'is-active' : '' }}" aria-label="Cart, {{ $cartItemCount }} game">
                                     <span>Cart</span>
                                     <span class="nav-cart-count" aria-hidden="true">{{ $cartItemCount }}</span>
                                 </a>
@@ -112,7 +113,7 @@
                                 <button type="submit" class="nav-logout">Keluar</button>
                             </form>
                         @else
-                            <a href="{{ route('login') }}" class="{{ request()->routeIs('login') ? 'is-active' : '' }}">Masuk</a>
+                            <a data-nav-link href="{{ route('login') }}" class="{{ request()->routeIs('login') ? 'is-active' : '' }}">Masuk</a>
                             <a href="{{ route('register') }}" class="nav-register">Buat akun</a>
                         @endauth
                     </div>

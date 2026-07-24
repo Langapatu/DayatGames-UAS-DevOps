@@ -148,14 +148,22 @@ class CustomerMarketplaceTest extends TestCase
         $this->assertDatabaseCount('cart_items', 0);
     }
 
-    public function test_storefront_renders_logo_only_brand_and_motion_layers(): void
+    public function test_storefront_renders_interactive_brand_and_motion_hooks(): void
     {
+        $game = $this->createGame('Interactive Game', 'interactive-game');
+
         $this->get(route('home'))
             ->assertOk()
             ->assertSee('data-ambient-backdrop', false)
+            ->assertSee('data-aurora-layer', false)
             ->assertSee('data-page-content', false)
-            ->assertSee('images/brand/dayatgames-logo.png', false)
-            ->assertDontSee('<span>Dayat<span>Games</span></span>', false);
+            ->assertSee('data-interactive-brand', false)
+            ->assertSee('data-brand-wordmark', false)
+            ->assertSee('<span data-brand-wordmark>Dayat<span>Games</span></span>', false)
+            ->assertSee('data-nav-link', false)
+            ->assertSee('data-game-card', false)
+            ->assertSee('data-card-spotlight', false)
+            ->assertSee($game->title);
     }
 
     public function test_catalog_renders_directional_pagination_motion_targets(): void

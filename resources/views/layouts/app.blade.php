@@ -24,9 +24,15 @@
                         <a href="{{ route('admin.genres.index') }}" class="hover:text-cyan-300">Genres</a>
                         <a href="{{ route('admin.publishers.index') }}" class="hover:text-cyan-300">Publishers</a>
                         <a href="{{ route('admin.developers.index') }}" class="hover:text-cyan-300">Developers</a>
+                        <a href="{{ route('admin.users.index') }}" class="hover:text-cyan-300">Customers</a>
+                        <a href="{{ route('admin.orders.index') }}" class="hover:text-cyan-300">Orders</a>
+                        <a href="{{ route('admin.payments.index') }}" class="hover:text-cyan-300">Payments</a>
+                        <a href="{{ route('admin.reviews.index') }}" class="hover:text-cyan-300">Reviews</a>
                     @else
                         <a href="{{ route('wishlist.index') }}" class="hover:text-cyan-300">Wishlist</a>
                         <a href="{{ route('cart.index') }}" class="hover:text-cyan-300">Cart</a>
+                        <a href="{{ route('orders.index') }}" class="hover:text-cyan-300">Orders</a>
+                        <a href="{{ route('library.index') }}" class="hover:text-cyan-300">Library</a>
                     @endif
                     <a href="{{ route('profile.edit') }}" class="hover:text-cyan-300">Profil</a>
                     <form method="POST" action="{{ route('logout') }}" class="inline">

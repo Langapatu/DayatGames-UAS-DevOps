@@ -4,10 +4,18 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DeveloperController;
 use App\Http\Controllers\Admin\GameController;
 use App\Http\Controllers\Admin\GenreController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\PaymentController as AdminPaymentController;
 use App\Http\Controllers\Admin\PublisherController;
+use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Customer\CartController;
+use App\Http\Controllers\Customer\CheckoutController;
+use App\Http\Controllers\Customer\LibraryController;
+use App\Http\Controllers\Customer\OrderController as CustomerOrderController;
+use App\Http\Controllers\Customer\ReviewController as CustomerReviewController;
 use App\Http\Controllers\Customer\WishlistController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Storefront\CatalogController;
@@ -40,6 +48,14 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/{game}', [CartController::class, 'store'])->name('cart.store');
     Route::delete('/cart/{game}', [CartController::class, 'destroy'])->name('cart.destroy');
+
+    Route::get('/checkout', [CheckoutController::class, 'create'])->name('checkout.create');
+    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+    Route::get('/orders', [CustomerOrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [CustomerOrderController::class, 'show'])->name('orders.show');
+    Route::get('/library', [LibraryController::class, 'index'])->name('library.index');
+    Route::get('/library/{game}/review', [CustomerReviewController::class, 'create'])->name('reviews.create');
+    Route::post('/library/{game}/review', [CustomerReviewController::class, 'store'])->name('reviews.store');
 });
 
 Route::prefix('admin')
@@ -51,4 +67,10 @@ Route::prefix('admin')
         Route::resource('publishers', PublisherController::class)->except('show');
         Route::resource('developers', DeveloperController::class)->except('show');
         Route::resource('games', GameController::class);
+        Route::resource('users', AdminUserController::class)->only(['index', 'show']);
+        Route::resource('orders', AdminOrderController::class)->only(['index', 'show', 'update']);
+        Route::resource('payments', AdminPaymentController::class)->only(['index', 'show']);
+        Route::post('payments/{payment}/verify', [AdminPaymentController::class, 'verify'])->name('payments.verify');
+        Route::post('payments/{payment}/reject', [AdminPaymentController::class, 'reject'])->name('payments.reject');
+        Route::resource('reviews', AdminReviewController::class)->only(['index', 'update']);
     });

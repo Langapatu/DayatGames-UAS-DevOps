@@ -9,18 +9,18 @@
 | PB-05 | Sebagai pengunjung, saya ingin melihat detail game. | Must | Metadata, harga, gallery, review, related tampil. | FR-05 | Done | `storefront.catalog.show` | CustomerMarketplaceTest |
 | PB-06 | Sebagai customer, saya ingin menyimpan wishlist. | Should | Tambah/hapus; tidak duplikat. | FR-06 | Done | `Customer\WishlistController`, wishlist view | CustomerMarketplaceTest |
 | PB-07 | Sebagai customer, saya ingin mengelola cart digital. | Must | Add/remove; hanya published; bukan milik sendiri; tidak duplikat. | FR-07 | Done | `Customer\CartController`, cart view | CustomerMarketplaceTest |
-| PB-08 | Sebagai customer, saya ingin checkout secara konsisten. | Must | Harga server-side; transaction; order/items/payment dibuat. | FR-08 | Planned | Belum ada | CheckoutTest |
-| PB-09 | Sebagai customer, saya ingin memilih pembayaran demo. | Must | VA/transfer/e-wallet tersimpan; bukti tervalidasi. | FR-09 | Planned | Belum ada | PaymentSubmissionTest |
-| PB-10 | Sebagai customer, saya ingin melihat order sendiri. | Must | Index/detail hanya milik user aktif. | FR-10 | Planned | Belum ada | OrderAuthorizationTest |
-| PB-11 | Sebagai customer, saya ingin game terverifikasi masuk library. | Must | Tepat satu library per user/game. | FR-11 | Planned | Belum ada | PaymentVerificationTest |
-| PB-12 | Sebagai pemilik game, saya ingin membuat review. | Should | Hanya pemilik; satu review; rating 1–5. | FR-12 | Planned | Belum ada | ReviewTest |
+| PB-08 | Sebagai customer, saya ingin checkout secara konsisten. | Must | Harga server-side; transaction; order/items/payment dibuat. | FR-08 | Done | `Customer\CheckoutController`, `CheckoutRequest` | TransactionWorkflowTest |
+| PB-09 | Sebagai customer, saya ingin memilih pembayaran demo. | Must | VA/transfer/e-wallet tersimpan; bukti tervalidasi. | FR-09 | Done | Checkout payment method, VA simulasi, proof upload | TransactionWorkflowTest |
+| PB-10 | Sebagai customer, saya ingin melihat order sendiri. | Must | Index/detail hanya milik user aktif. | FR-10 | Done | `Customer\OrderController`, order views | TransactionWorkflowTest |
+| PB-11 | Sebagai customer, saya ingin game terverifikasi masuk library. | Must | Tepat satu library per user/game. | FR-11 | Done | `Admin\PaymentController::verify`, library view | TransactionWorkflowTest |
+| PB-12 | Sebagai pemilik game, saya ingin membuat review. | Should | Hanya pemilik; satu review; rating 1–5. | FR-12 | Done | `Customer\ReviewController`, `ReviewRequest` | TransactionWorkflowTest |
 | PB-13 | Sebagai admin, saya ingin CRUD genre. | Must | Search, pagination, validasi, flash, proteksi role. | FR-13 | Done | `Admin\GenreController`, `GenreRequest`, views admin | AdminCatalogCrudTest |
 | PB-14 | Sebagai admin, saya ingin CRUD publisher. | Must | Search, pagination, validasi, flash, proteksi role. | FR-14 | Done | `Admin\PublisherController`, `PublisherRequest`, views admin | AdminCatalogCrudTest |
 | PB-15 | Sebagai admin, saya ingin CRUD developer. | Should | Search, pagination, validasi, flash, proteksi role. | FR-15 | Done | `Admin\DeveloperController`, `DeveloperRequest`, views admin | AdminCatalogCrudTest |
 | PB-16 | Sebagai admin, saya ingin CRUD game. | Must | Relasi, harga/diskon, upload, genre, status, featured tervalidasi. | FR-16 | Done | `Admin\GameController`, `GameRequest`, views admin | AdminCatalogCrudTest |
-| PB-17 | Sebagai admin, saya ingin memeriksa order. | Must | Search/filter/status dan detail snapshot tersedia. | FR-17 | Planned | Belum ada | AdminOrderTest |
-| PB-18 | Sebagai admin, saya ingin verify/reject payment. | Must | Transaction; idempotent; library/cart/order sinkron. | FR-18 | Planned | Belum ada | PaymentVerificationTest |
-| PB-19 | Sebagai admin, saya ingin moderasi review. | Should | Pending dapat menjadi published/rejected. | FR-19 | Planned | Belum ada | AdminReviewTest |
+| PB-17 | Sebagai admin, saya ingin memeriksa order. | Must | Search/filter/status dan detail snapshot tersedia. | FR-17 | Done | `Admin\OrderController`, order admin views | TransactionWorkflowTest |
+| PB-18 | Sebagai admin, saya ingin verify/reject payment. | Must | Transaction; idempotent; library/cart/order sinkron. | FR-18 | Done | `Admin\PaymentController`, payment admin views | TransactionWorkflowTest |
+| PB-19 | Sebagai admin, saya ingin moderasi review. | Should | Pending dapat menjadi published/rejected. | FR-19 | Done | `Admin\ReviewController`, moderation view | TransactionWorkflowTest |
 | PB-20 | Sebagai admin, saya ingin melihat dashboard. | Should | Statistik berasal dari query database nyata. | FR-20 | Done | `Admin\DashboardController`, `admin.dashboard` | RoleAuthorizationTest |
 | PB-21 | Sebagai penguji, saya ingin stack yang dapat direproduksi. | Must | config/build/up/ps/migrate/seed berhasil. | NFR-01–04 | Planned | Belum ada | Docker command log |
 | PB-22 | Sebagai pengguna keyboard, saya ingin UI aksesibel. | Should | Focus visible, label/form benar, carousel keyboard, reduced motion. | NFR-07, NFR-12 | Planned | Belum ada | Browser QA |

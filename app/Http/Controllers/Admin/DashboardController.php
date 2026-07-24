@@ -23,8 +23,13 @@ class DashboardController extends Controller
         ];
 
         $recentOrders = Order::with('user')->latest('ordered_at')->limit(5)->get();
+        $topGames = Game::query()
+            ->withCount('orderItems')
+            ->withSum('orderItems', 'subtotal')
+            ->orderByDesc('order_items_count')
+            ->limit(5)
+            ->get();
 
-        return view('admin.dashboard', compact('stats', 'recentOrders'));
+        return view('admin.dashboard', compact('stats', 'recentOrders', 'topGames'));
     }
 }
-

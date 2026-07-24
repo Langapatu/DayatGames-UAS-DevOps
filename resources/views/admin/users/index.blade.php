@@ -1,0 +1,6 @@
+@extends('layouts.app')
+@section('title', 'Customers — Admin DayatGames')
+@section('content')
+    <div class="flex flex-wrap items-end justify-between gap-4"><div><p class="text-sm uppercase tracking-widest text-violet-300">Admin</p><h1 class="text-3xl font-black text-white">Customers</h1></div><form method="GET"><input name="search" value="{{ request('search') }}" placeholder="Nama atau email" class="rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-white"><button class="ml-2 rounded-lg bg-violet-600 px-3 py-2">Cari</button></form></div>
+    <div class="mt-6 overflow-x-auto rounded-xl border border-slate-800"><table class="w-full text-left text-sm"><thead class="bg-slate-900 text-slate-400"><tr><th class="p-4">Nama</th><th class="p-4">Email</th><th class="p-4">Order</th><th class="p-4">Library</th><th class="p-4"></th></tr></thead><tbody class="divide-y divide-slate-800">@foreach($users as $user)<tr><td class="p-4 text-white">{{ $user->name }}</td><td class="p-4">{{ $user->email }}</td><td class="p-4">{{ $user->orders_count }}</td><td class="p-4">{{ $user->libraries_count }}</td><td class="p-4"><a class="text-cyan-300" href="{{ route('admin.users.show', $user) }}">Detail</a></td></tr>@endforeach</tbody></table></div><div class="mt-6">{{ $users->links() }}</div>
+@endsection

@@ -69,3 +69,10 @@
 - Status: diterima
 - Keputusan: plugin remote Bunny font dihapus dari Vite; UI memakai font stack lokal/sistem.
 - Alasan: build harus deterministik dan tidak gagal saat akses jaringan frontend dibatasi.
+
+## ADR-011 — Payment simulasi tetap memakai alur transaksi nyata
+
+- Tanggal: 24 Juli 2026
+- Status: diterima
+- Keputusan: Virtual Account, transfer bank, dan e-wallet hanya berupa simulasi akademik, tetapi order, snapshot item, payment, bukti, verifikasi, library, dan pembersihan cart diproses melalui database transaction.
+- Alasan: aplikasi dapat memperagakan konsistensi transaksi dan otorisasi tanpa mengklaim integrasi bank atau payment gateway sungguhan.

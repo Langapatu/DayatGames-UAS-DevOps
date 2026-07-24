@@ -28,3 +28,16 @@
 - Keputusan: memakai service `app`, `webserver`, `db`, dan `phpmyadmin`, dengan Nginx meneruskan PHP ke `app:9000`.
 - Alasan: mengikuti arsitektur tutorial dosen dan memisahkan tanggung jawab tiap container.
 
+## ADR-005 — Riwayat transaksi dipertahankan
+
+- Tanggal: 24 Juli 2026
+- Status: diterima
+- Keputusan: relasi master ke transaksi tidak memakai cascade yang dapat menghapus riwayat; `order_items.game_id` boleh menjadi null, sedangkan snapshot judul/harga tetap disimpan.
+- Alasan: perubahan atau penghapusan master game tidak boleh mengubah bukti transaksi sebelumnya.
+
+## ADR-006 — Idempotensi melalui unique constraint dan transaction
+
+- Tanggal: 24 Juli 2026
+- Status: diterima
+- Keputusan: cart item, wishlist, library, dan review memakai unique composite; checkout/verifikasi payment dibungkus transaksi database.
+- Alasan: mencegah duplikasi pada request berulang atau proses verifikasi ulang.

@@ -7,8 +7,8 @@ Pembaruan terakhir: 24 Juli 2026 (Asia/Jakarta)
 | Fase | Status | Ringkasan |
 |---|---|---|
 | 0. Pemeriksaan dan backup | Selesai | Docker Desktop aktif; container lama ditemukan; project lama berada di `C:\Coding\laravel-docker`; workspace final dibuat terpisah dan Git diinisialisasi. |
-| 1. Spesifikasi | Sedang dikerjakan | Dokumen kebutuhan, backlog, traceability, dan desain database disusun berdasarkan prompt UAS. |
-| 2. Docker dan Laravel baseline | Belum dimulai |  |
+| 1. Spesifikasi | Selesai | Project spec, 20 FR, 12 NFR, 24 backlog, traceability, skema 15 tabel, ERD, dan arsitektur awal tersedia. |
+| 2. Docker dan Laravel baseline | Sedang dikerjakan | Baseline hasil salinan aman akan disesuaikan menjadi stack DayatGames terisolasi. |
 | 3. Database | Belum dimulai |  |
 | 4. Auth dan role | Belum dimulai |  |
 | 5. CRUD admin | Belum dimulai |  |
@@ -33,4 +33,3 @@ Pembaruan terakhir: 24 Juli 2026 (Asia/Jakarta)
 ## Blocker aktif
 
 Tidak ada blocker kritis pada akhir fase 0.
-

@@ -1,0 +1,29 @@
+flowchart LR
+    B["Browser"]
+
+    subgraph H["Windows Host"]
+        P8080["localhost:8080"]
+        P8081["localhost:8081"]
+        P3306["localhost:3306"]
+        SRC["Bind mount source<br/>./ → /var/www"]
+    end
+
+    subgraph N["Docker network: dayatgames_network"]
+        WEB["webserver<br/>Nginx :80"]
+        APP["app<br/>PHP-FPM + Laravel :9000"]
+        DBA["db<br/>MySQL :3306<br/>hostname: db"]
+        PMA["phpmyadmin<br/>Apache :80"]
+    end
+
+    VOL[("Named volume<br/>dayatgames_db_data")]
+
+    B -->|"HTTP 8080:80"| P8080 --> WEB
+    WEB -->|"FastCGI app:9000"| APP
+    APP -->|"DB_HOST=db<br/>DB_PORT=3306"| DBA
+    B -->|"HTTP 8081:80"| P8081 --> PMA
+    PMA -->|"PMA_HOST=db"| DBA
+    P3306 -->|"3306:3306<br/>host tools only"| DBA
+    SRC -.-> WEB
+    SRC -.-> APP
+    DBA --- VOL
+

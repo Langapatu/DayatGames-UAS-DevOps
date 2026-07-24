@@ -14,3 +14,11 @@ Catatan ini merangkum perintah penting dan hasil aktual. Password atau rahasia t
 | Penyalinan source relevan ke folder final | Berhasil; `.env` dan `vendor` tidak disalin. |
 | `git init` dan `git switch -c feature/dayatgames-uas` | Repository lokal dan branch kerja berhasil dibuat. |
 
+## 24 Juli 2026 — Fase 1
+
+| Aktivitas | Hasil |
+|---|---|
+| Penyusunan project specification | Aktor, scope, aturan bisnis, arsitektur, dan acceptance criteria terdokumentasi. |
+| Penyusunan FR/NFR | 20 functional requirements dan 12 non-functional requirements tersedia. |
+| Penyusunan backlog/traceability | 24 backlog dipetakan ke FR, target implementasi, tabel, test, dan screenshot. |
+| Perancangan database | 15 tabel bisnis, constraint, indeks, ERD Mermaid, serta arsitektur Mermaid dirancang. |

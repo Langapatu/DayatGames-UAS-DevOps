@@ -1,0 +1,146 @@
+erDiagram
+    USERS {
+        bigint id PK
+        string name
+        string email UK
+        string password
+        enum role
+        string phone
+        string avatar
+    }
+    DEVELOPERS {
+        bigint id PK
+        string name
+        string slug UK
+        string website
+        text description
+    }
+    PUBLISHERS {
+        bigint id PK
+        string name
+        string slug UK
+        string website
+        text description
+    }
+    GENRES {
+        bigint id PK
+        string name
+        string slug UK
+        text description
+    }
+    GAMES {
+        bigint id PK
+        bigint developer_id FK
+        bigint publisher_id FK
+        bigint steam_app_id
+        string title
+        string slug UK
+        text short_description
+        longtext description
+        decimal original_price
+        decimal discount_price
+        tinyint discount_percent
+        timestamp price_checked_at
+        string price_source_url
+        boolean price_is_demo
+        date release_date
+        string platform
+        string operating_system
+        string cover_image
+        string hero_image
+        enum status
+        boolean is_featured
+    }
+    GAME_GENRE {
+        bigint game_id PK,FK
+        bigint genre_id PK,FK
+    }
+    GAME_IMAGES {
+        bigint id PK
+        bigint game_id FK
+        string image_path
+        string image_type
+        int sort_order
+    }
+    CARTS {
+        bigint id PK
+        bigint user_id FK,UK
+    }
+    CART_ITEMS {
+        bigint id PK
+        bigint cart_id FK
+        bigint game_id FK
+        decimal price
+    }
+    WISHLISTS {
+        bigint id PK
+        bigint user_id FK
+        bigint game_id FK
+    }
+    ORDERS {
+        bigint id PK
+        bigint user_id FK
+        string order_code UK
+        decimal total_amount
+        enum status
+        timestamp ordered_at
+    }
+    ORDER_ITEMS {
+        bigint id PK
+        bigint order_id FK
+        bigint game_id FK
+        string game_title
+        decimal unit_price
+        decimal discount_amount
+        decimal subtotal
+    }
+    PAYMENTS {
+        bigint id PK
+        bigint order_id FK,UK
+        string payment_method
+        string payment_reference
+        string virtual_account_number
+        string payment_proof
+        decimal amount
+        enum status
+        timestamp paid_at
+        timestamp verified_at
+        bigint verified_by FK
+    }
+    LIBRARIES {
+        bigint id PK
+        bigint user_id FK
+        bigint game_id FK
+        bigint order_id FK
+        timestamp purchased_at
+    }
+    REVIEWS {
+        bigint id PK
+        bigint user_id FK
+        bigint game_id FK
+        tinyint rating
+        text comment
+        enum status
+    }
+
+    USERS ||--o| CARTS : owns
+    USERS ||--o{ WISHLISTS : saves
+    USERS ||--o{ ORDERS : places
+    USERS ||--o{ LIBRARIES : owns
+    USERS ||--o{ REVIEWS : writes
+    USERS ||--o{ PAYMENTS : verifies
+    DEVELOPERS ||--o{ GAMES : develops
+    PUBLISHERS ||--o{ GAMES : publishes
+    GAMES ||--o{ GAME_GENRE : classified_as
+    GENRES ||--o{ GAME_GENRE : groups
+    GAMES ||--o{ GAME_IMAGES : has
+    CARTS ||--o{ CART_ITEMS : contains
+    GAMES ||--o{ CART_ITEMS : selected
+    GAMES ||--o{ WISHLISTS : wished
+    ORDERS ||--|{ ORDER_ITEMS : contains
+    GAMES |o--o{ ORDER_ITEMS : snapshots
+    ORDERS ||--|| PAYMENTS : paid_by
+    ORDERS ||--o{ LIBRARIES : grants
+    GAMES ||--o{ LIBRARIES : owned_copy
+    GAMES ||--o{ REVIEWS : receives
+

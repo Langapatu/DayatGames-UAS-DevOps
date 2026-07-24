@@ -43,7 +43,7 @@
                 @if(! auth()->user()->isAdmin())
                     <form method="POST" action="{{ route('cart.store', $game) }}">
                         @csrf
-                        <button type="submit" class="game-card-cart-button">+ Cart</button>
+                        <button data-interactive-button type="submit" class="game-card-cart-button">+ Cart</button>
                     </form>
                 @endif
             @endauth

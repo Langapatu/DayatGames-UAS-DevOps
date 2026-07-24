@@ -114,7 +114,7 @@
                             </form>
                         @else
                             <a data-nav-link href="{{ route('login') }}" class="{{ request()->routeIs('login') ? 'is-active' : '' }}">Masuk</a>
-                            <a href="{{ route('register') }}" class="nav-register">Buat akun</a>
+                            <a data-interactive-button href="{{ route('register') }}" class="nav-register">Buat akun</a>
                         @endauth
                     </div>
                 </nav>

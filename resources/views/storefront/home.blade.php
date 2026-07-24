@@ -15,7 +15,7 @@
             <h1 data-hero-item class="text-4xl font-black tracking-tight text-white sm:text-6xl">{{ $hero?->title ?? 'Marketplace game digital pilihan' }}</h1>
             <p data-hero-item class="mt-5 max-w-2xl text-lg leading-8 text-slate-300">{{ $hero?->short_description ?? 'Jelajahi katalog game PC pilihan dengan pengalaman belanja yang ringkas dan transparan.' }}</p>
             <div data-hero-item class="mt-8 flex flex-wrap gap-3">
-                <a href="{{ route('catalog.index') }}" class="rounded-xl bg-violet-600 px-5 py-3 font-semibold text-white hover:bg-violet-500">Jelajahi katalog</a>
+                <a data-interactive-button href="{{ route('catalog.index') }}" class="rounded-xl bg-violet-600 px-5 py-3 font-semibold text-white hover:bg-violet-500">Jelajahi katalog</a>
                 @if($hero)
                     <a href="{{ route('catalog.show', $hero) }}" class="rounded-xl border border-slate-600 bg-slate-950/60 px-5 py-3 font-semibold text-white hover:border-cyan-400">Lihat game</a>
                 @endif

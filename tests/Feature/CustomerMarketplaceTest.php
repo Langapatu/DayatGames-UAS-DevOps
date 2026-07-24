@@ -161,6 +161,7 @@ class CustomerMarketplaceTest extends TestCase
             ->assertSee('data-brand-wordmark', false)
             ->assertSee('<span data-brand-wordmark>Dayat<span>Games</span></span>', false)
             ->assertSee('data-nav-link', false)
+            ->assertSee('data-interactive-button', false)
             ->assertSee('data-game-card', false)
             ->assertSee('data-card-spotlight', false)
             ->assertSee($game->title);

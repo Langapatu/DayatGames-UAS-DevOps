@@ -6,10 +6,9 @@
 @endphp
 
 <article data-game-card class="group h-full overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
-    <a href="{{ route('catalog.show', $game) }}" class="block overflow-hidden">
+    <a href="{{ route('catalog.show', $game) }}" class="game-media-frame">
         <img src="{{ asset($game->cover_image ?: 'images/brand/dayatgames-logo.png') }}"
              alt="Cover {{ $game->title }}"
-             class="aspect-[16/10] w-full object-cover transition duration-300 group-hover:scale-[1.03]"
              loading="lazy">
     </a>
     <div class="space-y-3 p-4">

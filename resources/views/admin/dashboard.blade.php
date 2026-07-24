@@ -45,7 +45,7 @@
             <ol class="space-y-3">
                 @foreach($topGames as $game)
                     <li class="flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-900 p-3">
-                        <img src="{{ asset($game->cover_image ?: 'images/brand/dayatgames-logo.png') }}" alt="" class="h-12 w-16 rounded object-cover">
+                        <img src="{{ asset($game->cover_image ?: 'images/brand/dayatgames-logo.png') }}" alt="" class="game-image-contain h-12 w-16 rounded">
                         <div class="min-w-0 flex-1"><p class="truncate font-semibold text-white">{{ $game->title }}</p><p class="text-xs text-slate-400">{{ $game->order_items_count }} terjual</p></div>
                         <span class="text-xs text-cyan-300">Rp{{ number_format((float) ($game->order_items_sum_subtotal ?? 0), 0, ',', '.') }}</span>
                     </li>

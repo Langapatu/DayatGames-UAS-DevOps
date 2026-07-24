@@ -11,7 +11,7 @@
         <section class="space-y-3">
             @foreach($order->items as $item)
                 <article class="flex items-center gap-4 rounded-xl border border-slate-800 bg-slate-900 p-4">
-                    @if($item->game)<img src="{{ asset($item->game->cover_image) }}" alt="" class="h-20 w-28 rounded-lg object-cover">@endif
+                    @if($item->game)<img src="{{ asset($item->game->cover_image) }}" alt="" class="game-image-contain h-20 w-28 rounded-lg">@endif
                     <div class="flex-1"><h2 class="font-semibold text-white">{{ $item->game_title }}</h2><p class="text-sm text-slate-500">Snapshot transaksi</p></div>
                     <strong class="text-cyan-300">Rp{{ number_format((float) $item->subtotal, 0, ',', '.') }}</strong>
                 </article>

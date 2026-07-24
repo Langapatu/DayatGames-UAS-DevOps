@@ -10,7 +10,7 @@
         <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             @foreach($libraries as $library)
                 <article class="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
-                    <img src="{{ asset($library->game->cover_image) }}" alt="Cover {{ $library->game->title }}" class="aspect-[16/9] w-full object-cover">
+                    <img src="{{ asset($library->game->cover_image) }}" alt="Cover {{ $library->game->title }}" class="game-image-contain aspect-[16/9] w-full">
                     <div class="p-5"><h2 class="text-xl font-bold text-white">{{ $library->game->title }}</h2><p class="text-sm text-slate-400">{{ $library->game->developer->name }}</p><p class="mt-3 text-xs text-slate-500">Dibeli {{ $library->purchased_at->format('d/m/Y') }} · {{ $library->order->order_code }}</p><a href="{{ route('reviews.create', $library->game) }}" class="mt-5 inline-block rounded-lg border border-violet-500/60 px-3 py-2 text-sm font-semibold text-violet-200">Tulis / edit review</a></div>
                 </article>
             @endforeach

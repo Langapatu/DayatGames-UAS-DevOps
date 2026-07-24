@@ -36,5 +36,11 @@ Seluruh file di bawah merupakan screenshot nyata dari browser aplikasi/phpMyAdmi
 | 30 | Isi game/order | `30a-phpmyadmin-games.png`, `30b-phpmyadmin-orders.png`, `30-data-order.png` |
 | 31 | Git log | Manual: ambil terminal; daftar aktual ada di README/laporan |
 | 32 | Data setelah restart | `32-data-after-restart.png` |
+| 33 | Registrasi customer modern | `33-register-customer.png` |
+| 34 | Katalog responsif mobile | `34-responsive-catalog-mobile.png` |
+| 35 | Dashboard admin responsif mobile | `35-responsive-admin-mobile.png` |
+| 36 | Login responsif mobile | `36-responsive-login-mobile.png` |
+
+Screenshot UI nomor 05–27 telah diperbarui pada iterasi redesign. Bukti baru menunjukkan navbar customer yang lebih ringkas, shell admin dengan sidebar, form autentikasi modern, dan frame gambar `object-fit: contain` agar artwork tidak terpotong.
 
 Item Manual tidak dibuat sintetis. Jika wajib tampak sebagai screenshot terminal/editor, buka folder project dan terminal PowerShell pada lokasi project, lalu ambil tiga tampilan file serta dua tampilan terminal yang disebutkan.

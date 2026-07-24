@@ -600,9 +600,9 @@ def chapter_four(doc):
         "untuk game diuji dengan membuat QA Browser Game, mengubah nama dan harga, kemudian menghapusnya. "
         "Genre dan publisher juga memiliki form create/update serta proteksi penghapusan saat direferensikan.",
     )
-    add_picture(doc, ROOT / "docs" / "screenshots" / "11-game-created.png", "Gambar 6. Game berhasil dibuat melalui CRUD admin", 13.3)
-    add_picture(doc, ROOT / "docs" / "screenshots" / "13-game-updated.png", "Gambar 7. Hasil pembaruan game melalui CRUD admin", 13.3)
-    add_picture(doc, ROOT / "docs" / "screenshots" / "14-game-deleted.png", "Gambar 8. Hasil penghapusan game setelah konfirmasi", 12.6)
+    add_picture(doc, ROOT / "docs" / "screenshots" / "09-games-index.png", "Gambar 6. Daftar game pada shell admin hasil redesign", 13.3)
+    add_picture(doc, ROOT / "docs" / "screenshots" / "10-create-game.png", "Gambar 7. Form tambah game yang telah dikelompokkan", 13.3)
+    add_picture(doc, ROOT / "docs" / "screenshots" / "12-edit-game.png", "Gambar 8. Form edit game pada antarmuka admin baru", 12.6)
     add_picture(doc, ROOT / "docs" / "screenshots" / "15-crud-genre.png", "Gambar 9. Implementasi CRUD genre", 14.8)
     add_picture(doc, ROOT / "docs" / "screenshots" / "16-crud-publisher.png", "Gambar 10. Implementasi CRUD publisher", 14.0)
 
@@ -623,13 +623,15 @@ def chapter_four(doc):
     heading(doc, "4.5 Antarmuka, Responsivitas, dan Motion", 2, new_page=True)
     para(
         doc,
-        "Antarmuka memakai palet gelap premium, Blade components, navigasi customer, sidebar admin, badge, "
-        "empty state, serta focus state. GSAP dan ScrollTrigger menangani reveal/parallax, Lenis menangani "
+        "Antarmuka memakai palet gelap premium, Blade components, navbar customer yang ringkas, autentikasi "
+        "split-panel, sidebar admin, tabel dan form terkelompok, badge, empty state, serta focus state. "
+        "Artwork game memakai media frame konsisten dan object-fit contain agar rasio potret, persegi, maupun "
+        "landscape tetap utuh tanpa terpotong. GSAP dan ScrollTrigger menangani reveal/parallax, Lenis menangani "
         "smooth scroll, dan Swiper menangani carousel. prefers-reduced-motion menonaktifkan motion besar "
         "dan smooth scroll. Fitur inti tetap menggunakan form dan link server-side sehingga berfungsi jika "
         "JavaScript animasi gagal.",
     )
-    add_picture(doc, ROOT / "docs" / "design" / "dayatgames-ui-concept.png", "Gambar 15. Konsep visual DayatGames hasil image generation", 14.5)
+    add_picture(doc, ROOT / "docs" / "design" / "dayatgames-ui-concept-v2.png", "Gambar 15. Konsep visual redesign DayatGames", 14.5)
     add_picture(doc, ROOT / "docs" / "screenshots" / "17-katalog-customer.png", "Gambar 16. Katalog customer responsif", 12.4)
     add_picture(doc, ROOT / "docs" / "screenshots" / "18-detail-game.png", "Gambar 17. Detail game dengan metadata dan aksi pembelian", 12.8)
 
@@ -824,6 +826,15 @@ def appendices(doc):
     ):
         add_picture(doc, ROOT / "docs" / "screenshots" / filename, title, width)
 
+    heading(doc, "Lampiran C.1 Bukti Redesign dan Responsivitas", 3, new_page=True)
+    for filename, title, width in (
+        ("33-register-customer.png", "Gambar 32. Halaman registrasi customer hasil redesign", 14.5),
+        ("34-responsive-catalog-mobile.png", "Gambar 33. Katalog pada viewport mobile", 6.8),
+        ("35-responsive-admin-mobile.png", "Gambar 34. Dashboard admin pada viewport mobile", 6.8),
+        ("36-responsive-login-mobile.png", "Gambar 35. Login pada viewport mobile", 6.8),
+    ):
+        add_picture(doc, ROOT / "docs" / "screenshots" / filename, title, width)
+
     heading(doc, "Lampiran D. Akun Demo dan Petunjuk Menjalankan", 2, new_page=True)
     accounts = [
         ("Admin", "admin@dayatgames.test", "password", "Akses seluruh admin"),
@@ -852,7 +863,7 @@ def appendices(doc):
     heading(doc, "Lampiran E. Daftar Bukti dan Pekerjaan Manual", 2)
     para(
         doc,
-        "Folder docs/screenshots berisi 31 screenshot nyata aplikasi dan phpMyAdmin. Lima bukti berikut "
+        "Folder docs/screenshots berisi 35 screenshot nyata aplikasi dan phpMyAdmin. Lima bukti berikut "
         "belum tersedia karena memerlukan editor/terminal desktop: 01 struktur folder, 02 Dockerfile, "
         "03 compose.yaml, 04 docker compose ps, dan 31 git log. Langkah pengambilan yang spesifik tersedia "
         "pada docs/SCREENSHOT_CHECKLIST.md. Ketidakhadiran bukti ini tidak diganti dengan gambar sintetis.",

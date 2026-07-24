@@ -13,7 +13,7 @@
             <img src="{{ asset($game->hero_image ?: $game->cover_image) }}" alt="" class="absolute inset-0 -z-20 h-full w-full object-cover opacity-30">
             <div class="absolute inset-0 -z-10 bg-gradient-to-t from-slate-950 via-slate-950/80 to-slate-950/20"></div>
             <div class="grid items-end gap-8 px-6 py-12 md:grid-cols-[280px_1fr] md:px-10 md:py-16">
-                <img src="{{ asset($game->cover_image) }}" alt="Cover {{ $game->title }}" class="aspect-[16/10] w-full rounded-2xl object-cover shadow-2xl">
+                <img src="{{ asset($game->cover_image) }}" alt="Cover {{ $game->title }}" class="game-image-contain aspect-[16/10] w-full rounded-2xl shadow-2xl">
                 <div>
                     <div class="mb-3 flex flex-wrap gap-2">
                         @foreach($game->genres as $genre)<a href="{{ route('catalog.index', ['genre' => $genre->slug]) }}" class="rounded-full bg-slate-800/80 px-3 py-1 text-xs text-slate-200">{{ $genre->name }}</a>@endforeach

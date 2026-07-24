@@ -17,7 +17,7 @@
             <div class="space-y-4">
                 @foreach($cart->items as $item)
                     <article class="flex gap-4 rounded-2xl border border-slate-800 bg-slate-900 p-4">
-                        <img src="{{ asset($item->game->cover_image) }}" alt="Cover {{ $item->game->title }}" class="h-24 w-36 rounded-xl object-cover">
+                        <img src="{{ asset($item->game->cover_image) }}" alt="Cover {{ $item->game->title }}" class="game-image-contain h-24 w-36 rounded-xl">
                         <div class="min-w-0 flex-1">
                             <h2 class="font-bold text-white"><a href="{{ route('catalog.show', $item->game) }}">{{ $item->game->title }}</a></h2>
                             <p class="text-sm text-slate-400">{{ $item->game->developer->name }}</p>

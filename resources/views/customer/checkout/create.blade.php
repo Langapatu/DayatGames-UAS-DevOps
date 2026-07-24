@@ -11,7 +11,7 @@
             <div class="space-y-3">
                 @foreach($cart->items as $item)
                     <article class="flex items-center gap-4 rounded-xl border border-slate-800 bg-slate-900 p-4">
-                        <img src="{{ asset($item->game->cover_image) }}" alt="" class="h-20 w-28 rounded-lg object-cover">
+                        <img src="{{ asset($item->game->cover_image) }}" alt="" class="game-image-contain h-20 w-28 rounded-lg">
                         <div class="flex-1"><h3 class="font-semibold text-white">{{ $item->game->title }}</h3><p class="text-sm text-slate-400">{{ $item->game->developer->name }}</p></div>
                         <strong class="text-cyan-300">Rp{{ number_format((float) $item->game->currentPrice(), 0, ',', '.') }}</strong>
                     </article>

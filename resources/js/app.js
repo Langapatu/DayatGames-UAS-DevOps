@@ -10,6 +10,8 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
 const header = document.querySelector('[data-site-header]');
 const menuButton = document.querySelector('[data-menu-toggle]');
 const navigation = document.querySelector('[data-site-navigation]');
+const adminMenuButton = document.querySelector('[data-admin-menu-toggle]');
+const adminSidebar = document.querySelector('.admin-sidebar');
 
 menuButton?.addEventListener('click', () => {
     const isOpen = navigation?.dataset.open === 'true';
@@ -23,6 +25,29 @@ navigation?.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', () => {
         navigation.dataset.open = 'false';
         menuButton?.setAttribute('aria-expanded', 'false');
+    });
+});
+
+adminMenuButton?.addEventListener('click', () => {
+    const isOpen = adminSidebar?.classList.toggle('is-open');
+    adminMenuButton.setAttribute('aria-expanded', String(Boolean(isOpen)));
+});
+
+adminSidebar?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+        adminSidebar.classList.remove('is-open');
+        adminMenuButton?.setAttribute('aria-expanded', 'false');
+    });
+});
+
+document.querySelectorAll('[data-password-toggle]').forEach((button) => {
+    button.addEventListener('click', () => {
+        const input = button.parentElement?.querySelector('input');
+        if (!input) return;
+        const shouldShow = input.type === 'password';
+        input.type = shouldShow ? 'text' : 'password';
+        button.textContent = shouldShow ? 'Sembunyi' : 'Lihat';
+        button.setAttribute('aria-label', shouldShow ? 'Sembunyikan password' : 'Tampilkan password');
     });
 });
 

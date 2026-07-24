@@ -8,51 +8,100 @@
     <link rel="icon" href="{{ asset('favicon.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen bg-[#070A12] text-slate-100 antialiased">
+@php
+    $isAdminArea = request()->routeIs('admin.*') && auth()->check() && auth()->user()->isAdmin();
+    $isAuthPage = request()->routeIs('login', 'register');
+    $adminNavigation = [
+        ['label' => 'Ringkasan', 'route' => 'admin.dashboard', 'match' => 'admin.dashboard', 'icon' => '⌂'],
+        ['label' => 'Game', 'route' => 'admin.games.index', 'match' => 'admin.games.*', 'icon' => '▦'],
+        ['label' => 'Genre', 'route' => 'admin.genres.index', 'match' => 'admin.genres.*', 'icon' => '◇'],
+        ['label' => 'Publisher', 'route' => 'admin.publishers.index', 'match' => 'admin.publishers.*', 'icon' => 'P'],
+        ['label' => 'Developer', 'route' => 'admin.developers.index', 'match' => 'admin.developers.*', 'icon' => 'D'],
+        ['label' => 'Customer', 'route' => 'admin.users.index', 'match' => 'admin.users.*', 'icon' => '◎'],
+        ['label' => 'Order', 'route' => 'admin.orders.index', 'match' => 'admin.orders.*', 'icon' => '▤'],
+        ['label' => 'Payment', 'route' => 'admin.payments.index', 'match' => 'admin.payments.*', 'icon' => 'Rp'],
+        ['label' => 'Review', 'route' => 'admin.reviews.index', 'match' => 'admin.reviews.*', 'icon' => '★'],
+    ];
+@endphp
+<body class="min-h-screen bg-[#070A12] text-slate-100 antialiased {{ $isAdminArea ? 'admin-workspace' : '' }} {{ $isAuthPage ? 'auth-workspace' : '' }}">
     <a href="#main-content" class="skip-link">Lewati ke konten utama</a>
-    <header data-site-header class="sticky top-0 z-50 border-b border-slate-800/60 bg-slate-950/72 backdrop-blur-xl">
-        <div class="relative mx-auto flex max-w-7xl items-center justify-between gap-5 px-4 py-3 sm:px-6 lg:px-8">
-            <a href="{{ route('home') }}" aria-label="DayatGames — kembali ke home" class="flex shrink-0 items-center gap-2">
-                <img src="{{ asset('images/brand/dayatgames-logo.png') }}" alt="" width="48" height="48">
-                <span class="hidden text-lg font-black tracking-tight text-white sm:inline">Dayat<span class="text-cyan-400">Games</span></span>
-            </a>
-            <button type="button" data-menu-toggle aria-controls="main-navigation" aria-expanded="false" class="rounded-lg border border-slate-700 px-3 py-2 text-sm font-semibold text-white">
-                Menu
-            </button>
-            <nav id="main-navigation" data-site-navigation data-open="false" aria-label="Navigasi utama" class="site-navigation items-center justify-end gap-4 text-sm font-medium text-slate-300 lg:flex-wrap">
-                <a href="{{ route('home') }}" class="hover:text-cyan-300">Home</a>
-                <a href="{{ route('catalog.index') }}" class="hover:text-cyan-300">Semua Game</a>
-                @auth
-                    @if(auth()->user()->isAdmin())
-                        <a href="{{ route('admin.dashboard') }}" class="hover:text-cyan-300">Admin</a>
-                        <a href="{{ route('admin.games.index') }}" class="hover:text-cyan-300">Games</a>
-                        <a href="{{ route('admin.genres.index') }}" class="hover:text-cyan-300">Genres</a>
-                        <a href="{{ route('admin.publishers.index') }}" class="hover:text-cyan-300">Publishers</a>
-                        <a href="{{ route('admin.developers.index') }}" class="hover:text-cyan-300">Developers</a>
-                        <a href="{{ route('admin.users.index') }}" class="hover:text-cyan-300">Customers</a>
-                        <a href="{{ route('admin.orders.index') }}" class="hover:text-cyan-300">Orders</a>
-                        <a href="{{ route('admin.payments.index') }}" class="hover:text-cyan-300">Payments</a>
-                        <a href="{{ route('admin.reviews.index') }}" class="hover:text-cyan-300">Reviews</a>
-                    @else
-                        <a href="{{ route('wishlist.index') }}" class="hover:text-cyan-300">Wishlist</a>
-                        <a href="{{ route('cart.index') }}" class="hover:text-cyan-300">Cart</a>
-                        <a href="{{ route('orders.index') }}" class="hover:text-cyan-300">Orders</a>
-                        <a href="{{ route('library.index') }}" class="hover:text-cyan-300">Library</a>
-                    @endif
-                    <a href="{{ route('profile.edit') }}" class="hover:text-cyan-300">Profil</a>
-                    <form method="POST" action="{{ route('logout') }}" class="inline">
-                        @csrf
-                        <button type="submit" class="rounded-lg border border-slate-700 px-3 py-2 hover:border-red-400 hover:text-red-300">Logout</button>
-                    </form>
-                @else
-                    <a href="{{ route('login') }}" class="hover:text-cyan-300">Login</a>
-                    <a href="{{ route('register') }}" class="rounded-lg bg-violet-600 px-3 py-2 font-semibold text-white hover:bg-violet-500">Registrasi</a>
-                @endauth
-            </nav>
-        </div>
-    </header>
 
-    <main id="main-content" class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    @if($isAdminArea)
+        <aside id="admin-sidebar" class="admin-sidebar" aria-label="Navigasi admin">
+            <a href="{{ route('admin.dashboard') }}" class="admin-brand" aria-label="DayatGames Admin">
+                <span class="brand-mark"><img src="{{ asset('images/brand/dayatgames-logo.png') }}" alt=""></span>
+                <span><strong>DayatGames</strong><small>Admin console</small></span>
+            </a>
+            <nav class="admin-navigation">
+                <p class="admin-nav-label">Workspace</p>
+                @foreach($adminNavigation as $item)
+                    <a href="{{ route($item['route']) }}" class="{{ request()->routeIs($item['match']) ? 'is-active' : '' }}">
+                        <span class="admin-nav-icon" aria-hidden="true">{{ $item['icon'] }}</span>
+                        <span>{{ $item['label'] }}</span>
+                    </a>
+                @endforeach
+            </nav>
+            <div class="admin-account">
+                <span class="admin-avatar">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                <span class="min-w-0"><strong>{{ auth()->user()->name }}</strong><small>{{ auth()->user()->email }}</small></span>
+            </div>
+        </aside>
+        <div class="admin-page">
+            <header class="admin-topbar">
+                <button type="button" data-admin-menu-toggle aria-controls="admin-sidebar" aria-expanded="false" class="admin-mobile-menu">☰ <span>Menu</span></button>
+                <div class="admin-system-status">
+                    <span class="admin-live-dot" aria-hidden="true"></span>
+                    <span>Sistem operasional</span>
+                </div>
+                <div class="admin-top-actions">
+                    <a href="{{ route('home') }}">Lihat toko ↗</a>
+                    <a href="{{ route('profile.edit') }}">Profil</a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit">Keluar</button>
+                    </form>
+                </div>
+            </header>
+    @else
+        <header data-site-header class="site-header">
+            <div class="site-header-inner">
+                <a href="{{ route('home') }}" aria-label="DayatGames — kembali ke home" class="site-brand">
+                    <span class="brand-mark"><img src="{{ asset('images/brand/dayatgames-logo.png') }}" alt=""></span>
+                    <span>Dayat<span>Games</span></span>
+                </a>
+                <button type="button" data-menu-toggle aria-controls="main-navigation" aria-expanded="false" class="mobile-menu-button">
+                    <span aria-hidden="true">☰</span> Menu
+                </button>
+                <nav id="main-navigation" data-site-navigation data-open="false" aria-label="Navigasi utama" class="site-navigation">
+                    <div class="site-nav-primary">
+                        <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'is-active' : '' }}">Beranda</a>
+                        <a href="{{ route('catalog.index') }}" class="{{ request()->routeIs('catalog.*') ? 'is-active' : '' }}">Jelajahi Game</a>
+                    </div>
+                    <div class="site-nav-account">
+                        @auth
+                            @if(auth()->user()->isAdmin())
+                                <a href="{{ route('admin.dashboard') }}" class="nav-admin-cta">Buka Admin</a>
+                            @else
+                                <a href="{{ route('wishlist.index') }}" class="{{ request()->routeIs('wishlist.*') ? 'is-active' : '' }}">Wishlist</a>
+                                <a href="{{ route('library.index') }}" class="{{ request()->routeIs('library.*') ? 'is-active' : '' }}">Library</a>
+                                <a href="{{ route('cart.index') }}" class="nav-cart {{ request()->routeIs('cart.*') ? 'is-active' : '' }}">Cart</a>
+                            @endif
+                            <a href="{{ route('profile.edit') }}" class="nav-profile" aria-label="Buka profil">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="nav-logout">Keluar</button>
+                            </form>
+                        @else
+                            <a href="{{ route('login') }}" class="{{ request()->routeIs('login') ? 'is-active' : '' }}">Masuk</a>
+                            <a href="{{ route('register') }}" class="nav-register">Buat akun</a>
+                        @endauth
+                    </div>
+                </nav>
+            </div>
+        </header>
+    @endif
+
+    <main id="main-content" class="{{ $isAdminArea ? 'admin-main' : ($isAuthPage ? 'auth-main' : 'site-main') }}">
         @if(session('success'))
             <div data-flash role="status" class="mb-5 flex items-start justify-between gap-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-emerald-200">
                 <span>{{ session('success') }}</span><button type="button" data-flash-close aria-label="Tutup pesan">×</button>
@@ -73,11 +122,15 @@
         @yield('content')
     </main>
 
-    <footer class="mt-12 border-t border-slate-800 bg-slate-950">
-        <div class="mx-auto max-w-7xl px-4 py-10 text-sm text-slate-400 sm:px-6 lg:px-8">
-            <p class="font-semibold text-slate-200">DayatGames — Temukan. Beli. Mainkan.</p>
-            <p class="mt-3 max-w-4xl leading-6">DayatGames merupakan aplikasi akademik untuk keperluan pembelajaran. Nama game, merek, dan aset terkait merupakan milik pemegang hak masing-masing. Harga yang ditampilkan merupakan data demonstrasi dan dapat berbeda dari harga toko resmi.</p>
+    @if($isAdminArea)
         </div>
-    </footer>
+    @elseif(!$isAuthPage)
+        <footer class="site-footer">
+            <div class="mx-auto max-w-7xl px-4 py-10 text-sm text-slate-400 sm:px-6 lg:px-8">
+                <p class="font-semibold text-slate-200">DayatGames — Temukan. Beli. Mainkan.</p>
+                <p class="mt-3 max-w-4xl leading-6">DayatGames merupakan aplikasi akademik untuk keperluan pembelajaran. Nama game, merek, dan aset terkait merupakan milik pemegang hak masing-masing. Harga yang ditampilkan merupakan data demonstrasi dan dapat berbeda dari harga toko resmi.</p>
+            </div>
+        </footer>
+    @endif
 </body>
 </html>

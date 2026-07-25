@@ -599,8 +599,49 @@ button, a, input, select, textarea {
 .site-footer {
     margin-top: 3rem;
     border-top: 1px solid rgb(38 52 73 / 65%);
-    background: #050811;
+    background:
+        radial-gradient(circle at 12% 0%, rgb(14 165 233 / 9%), transparent 24rem),
+        linear-gradient(180deg, rgb(5 8 17 / 94%), #050811);
 }
+
+.site-footer-grid {
+    display: grid;
+    width: min(100% - 2rem, 80rem);
+    margin-inline: auto;
+    padding-block: clamp(2.5rem, 5vw, 4rem);
+    gap: clamp(1.8rem, 4vw, 4rem);
+    grid-template-columns: minmax(16rem, 1.6fr) repeat(3, minmax(8rem, .7fr));
+}
+
+.site-footer-brand { max-width: 26rem; }
+.site-footer-logo { display: inline-flex; align-items: center; gap: .7rem; color: white; font-size: 1.05rem; font-weight: 900; }
+.site-footer-logo .brand-mark { width: 2.65rem; height: 2.65rem; }
+.site-footer-logo strong span { color: #38bdf8; }
+.site-footer-brand > p { margin-top: .9rem; color: #8492a7; font-size: .78rem; line-height: 1.7; }
+.site-footer-brand > p:first-of-type { color: #d7e3f1; font-size: .88rem; font-weight: 750; }
+.site-footer h2 { margin-bottom: 1rem; color: #eaf2fc; font-size: .78rem; font-weight: 850; letter-spacing: .1em; text-transform: uppercase; }
+.site-footer nav { display: flex; flex-direction: column; align-items: flex-start; gap: .68rem; }
+.site-footer nav a { color: #8492a7; font-size: .78rem; transition: color .2s ease, transform .2s ease; }
+.site-footer nav a:hover { color: #67e8f9; transform: translateX(.18rem); }
+.site-footer-payments { display: grid; gap: .72rem; color: #99a8bc; font-size: .76rem; }
+.site-footer-payments li { display: flex; align-items: center; gap: .6rem; }
+.site-footer-payments span { display: inline-grid; width: 2.2rem; height: 1.7rem; place-items: center; border: 1px solid rgb(56 189 248 / 24%); border-radius: .45rem; background: rgb(14 165 233 / 8%); color: #7dd3fc; font-size: .58rem; font-weight: 900; }
+.site-footer-bottom { display: flex; width: min(100% - 2rem, 80rem); margin-inline: auto; padding-block: 1.15rem 1.5rem; align-items: center; justify-content: space-between; gap: 1rem; border-top: 1px solid rgb(38 52 73 / 50%); color: #65748a; font-size: .68rem; line-height: 1.55; }
+.site-footer-bottom p:last-child { max-width: 46rem; text-align: right; }
+.site-footer-bottom strong { color: #d6a950; }
+
+[data-payment-method] {
+    position: relative;
+    transition: border-color .2s ease, background .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+
+[data-payment-method]:hover { border-color: rgb(56 189 248 / 38%); background: rgb(14 165 233 / 5%); transform: translateY(-1px); }
+[data-payment-method].is-selected { border-color: rgb(34 211 238 / 58%); background: linear-gradient(135deg, rgb(14 165 233 / 14%), rgb(124 58 237 / 9%)); box-shadow: 0 0 0 3px rgb(34 211 238 / 7%), 0 12px 30px rgb(2 6 23 / 22%); }
+[data-payment-method].is-selected::after { content: 'Dipilih'; position: absolute; top: .65rem; right: .7rem; border-radius: 999px; background: rgb(34 211 238 / 14%); padding: .2rem .48rem; color: #a5f3fc; font-size: .6rem; font-weight: 850; letter-spacing: .05em; text-transform: uppercase; }
+[data-payment-method] input { accent-color: #22d3ee; }
+[data-copy-payment] { transition: border-color .2s ease, background .2s ease, color .2s ease; }
+[data-copy-payment]:hover { border-color: rgb(34 211 238 / 58%); background: rgb(34 211 238 / 10%); color: white; }
+[data-copy-payment][data-copied='true'] { border-color: rgb(52 211 153 / 45%); background: rgb(52 211 153 / 12%); color: #a7f3d0; }
 
 [data-game-card] .game-media-frame {
     position: relative;
@@ -1637,6 +1678,8 @@ html.preview-lightbox-open {
     .admin-sidebar.is-open { transform: translateX(0); }
     .admin-page { margin-left: 0; }
     .admin-mobile-menu { display: inline-flex; align-items: center; gap: .45rem; border: 1px solid #2b3a50; border-radius: .65rem; background: #101a29; padding: .48rem .68rem; color: white; font-size: .76rem; font-weight: 720; }
+    .site-footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .site-footer-brand { grid-column: 1 / -1; }
 }
 
 @media (max-width: 700px) {
@@ -1674,6 +1717,10 @@ html.preview-lightbox-open {
     .dg-pagination-mobile { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem; }
     .dg-pagination-mobile a, .dg-pagination-mobile span { display: grid; min-height: 2.65rem; place-items: center; border: 1px solid #2b3a50; border-radius: .68rem; background: #0d1624; color: #c6d3e3; font-size: .78rem; font-weight: 760; }
     .dg-pagination-mobile .is-disabled { opacity: .38; }
+    .site-footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem 1rem; }
+    .site-footer-brand { grid-column: 1 / -1; }
+    .site-footer-bottom { align-items: flex-start; flex-direction: column; }
+    .site-footer-bottom p:last-child { text-align: left; }
 }
 
 @media (max-width: 700px) {
@@ -1754,6 +1801,13 @@ html.preview-lightbox-open {
     .home-hero-image,
     .game-preview-open img,
     .preview-lightbox {
+        transform: none !important;
+    }
+
+    [data-payment-method],
+    [data-copy-payment],
+    .site-footer nav a {
+        transition: none !important;
         transform: none !important;
     }
 }

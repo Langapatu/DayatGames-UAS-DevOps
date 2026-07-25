@@ -149,9 +149,60 @@
         </div>
     @elseif(!$isAuthPage)
         <footer class="site-footer">
-            <div class="mx-auto max-w-7xl px-4 py-10 text-sm text-slate-400 sm:px-6 lg:px-8">
-                <p class="font-semibold text-slate-200">DayatGames — Temukan. Beli. Mainkan.</p>
-                <p class="mt-3 max-w-4xl leading-6">DayatGames merupakan aplikasi akademik untuk keperluan pembelajaran. Nama game, merek, dan aset terkait merupakan milik pemegang hak masing-masing. Harga yang ditampilkan merupakan data demonstrasi dan dapat berbeda dari harga toko resmi.</p>
+            <div class="site-footer-grid">
+                <section class="site-footer-brand" aria-labelledby="footer-brand-title">
+                    <a href="{{ route('home') }}" class="site-footer-logo">
+                        <span class="brand-mark"><img src="{{ asset('images/brand/dayatgames-logo.png') }}" alt=""></span>
+                        <strong id="footer-brand-title">Dayat<span>Games</span></strong>
+                    </a>
+                    <p>DayatGames — Temukan. Beli. Mainkan.</p>
+                    <p>Marketplace game digital modern untuk menjelajah katalog, membuat pesanan, dan mengelola library dalam satu tempat.</p>
+                </section>
+
+                <nav aria-labelledby="footer-shop-title">
+                    <h2 id="footer-shop-title">Shop</h2>
+                    <a href="{{ route('home') }}">Beranda</a>
+                    <a href="{{ route('catalog.index') }}">Jelajahi Game</a>
+                    @auth
+                        @if(!auth()->user()->isAdmin())
+                            <a href="{{ route('wishlist.index') }}">Wishlist</a>
+                        @endif
+                    @else
+                        <a href="{{ route('login') }}">Wishlist</a>
+                    @endauth
+                </nav>
+
+                <nav aria-labelledby="footer-customer-title">
+                    <h2 id="footer-customer-title">Customer</h2>
+                    @auth
+                        @if(!auth()->user()->isAdmin())
+                            <a href="{{ route('cart.index') }}">Cart</a>
+                            <a href="{{ route('orders.index') }}">Lacak Pesanan</a>
+                            <a href="{{ route('library.index') }}">Library</a>
+                            <a href="{{ route('profile.edit') }}">Profil</a>
+                        @else
+                            <a href="{{ route('admin.dashboard') }}">Dashboard Admin</a>
+                            <a href="{{ route('profile.edit') }}">Profil</a>
+                        @endif
+                    @else
+                        <a href="{{ route('login') }}">Masuk</a>
+                        <a href="{{ route('register') }}">Buat akun</a>
+                    @endauth
+                </nav>
+
+                <section aria-labelledby="footer-payment-title">
+                    <h2 id="footer-payment-title">Payment</h2>
+                    <ul class="site-footer-payments">
+                        <li><span aria-hidden="true">VA</span> Virtual Account</li>
+                        <li><span aria-hidden="true">BT</span> Transfer Bank</li>
+                        <li><span aria-hidden="true">EW</span> E-Wallet</li>
+                    </ul>
+                </section>
+            </div>
+
+            <div class="site-footer-bottom">
+                <p>© {{ now()->year }} DayatGames. Dibuat untuk pembelajaran.</p>
+                <p><strong>Simulasi akademik:</strong> tidak ada transaksi uang nyata. Nama, merek, dan aset game merupakan milik pemegang hak masing-masing.</p>
             </div>
         </footer>
     @endif

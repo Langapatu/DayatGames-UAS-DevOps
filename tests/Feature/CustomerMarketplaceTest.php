@@ -205,6 +205,40 @@ class CustomerMarketplaceTest extends TestCase
         $this->assertSame(2, substr_count($response->getContent(), 'data-hero-slide'));
     }
 
+    public function test_storefront_has_conventional_marketplace_footer(): void
+    {
+        $customer = User::factory()->create(['role' => 'customer']);
+
+        $this->actingAs($customer)->get(route('home'))
+            ->assertOk()
+            ->assertSee('DayatGames — Temukan. Beli. Mainkan.')
+            ->assertSee('Shop')
+            ->assertSee('Customer')
+            ->assertSee('Payment')
+            ->assertSee('Virtual Account')
+            ->assertSee('Transfer Bank')
+            ->assertSee('E-Wallet')
+            ->assertSee(route('orders.index'), false)
+            ->assertSee('Simulasi akademik');
+    }
+
+    public function test_checkout_uses_interactive_payment_cards_without_proof_field(): void
+    {
+        $customer = User::factory()->create(['role' => 'customer']);
+        $game = $this->createGame('Checkout UI Game', 'checkout-ui-game');
+        $cart = $customer->cart()->create();
+        $cart->items()->create([
+            'game_id' => $game->id,
+            'price' => $game->currentPrice(),
+        ]);
+
+        $this->actingAs($customer)->get(route('checkout.create'))
+            ->assertOk()
+            ->assertSee('data-payment-method', false)
+            ->assertSee('name="checkout_token"', false)
+            ->assertDontSee('name="payment_proof"', false);
+    }
+
     private function createGame(
         string $title,
         string $slug,

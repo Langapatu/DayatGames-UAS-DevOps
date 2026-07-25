@@ -25,6 +25,52 @@ const adminMenuButton = document.querySelector('[data-admin-menu-toggle]');
 const adminSidebar = document.querySelector('.admin-sidebar');
 const pageContent = document.querySelector('[data-page-content]');
 
+const syncPaymentMethods = () => {
+    document.querySelectorAll('[data-payment-method]').forEach((card) => {
+        const input = card.querySelector('input[type="radio"]');
+        card.classList.toggle('is-selected', input?.checked === true);
+    });
+};
+
+document.querySelectorAll('[data-payment-method] input[type="radio"]').forEach((input) => {
+    input.addEventListener('change', syncPaymentMethods);
+});
+syncPaymentMethods();
+
+document.querySelectorAll('[data-copy-payment]').forEach((button) => {
+    button.addEventListener('click', async () => {
+        const value = button.dataset.copyPayment || '';
+        let copied = false;
+
+        try {
+            await navigator.clipboard.writeText(value);
+            copied = true;
+        } catch {
+            const text = document.createElement('textarea');
+            text.value = value;
+            text.setAttribute('readonly', '');
+            text.style.position = 'fixed';
+            text.style.opacity = '0';
+            document.body.append(text);
+            text.select();
+            copied = document.execCommand('copy');
+            text.remove();
+        }
+
+        if (!copied) {
+            return;
+        }
+
+        const originalLabel = button.textContent;
+        button.dataset.copied = 'true';
+        button.textContent = 'Tersalin';
+        window.setTimeout(() => {
+            delete button.dataset.copied;
+            button.textContent = originalLabel;
+        }, 1600);
+    });
+});
+
 if (!reducedMotion && pageContent && !document.startViewTransition) {
     let pageTransitioning = false;
 

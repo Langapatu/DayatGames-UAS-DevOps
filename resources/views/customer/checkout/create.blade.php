@@ -6,7 +6,7 @@
     <header class="mb-8">
         <p class="text-sm font-semibold uppercase tracking-widest text-violet-300">Buat pesanan</p>
         <h1 class="text-4xl font-black text-white">Checkout</h1>
-        <p class="mt-2 text-slate-400">Pilih metode pembayaran. Instruksi dan unggah bukti tersedia setelah pesanan dibuat.</p>
+        <p class="mt-2 text-slate-400">Pilih metode pembayaran. Instruksi akan ditampilkan setelah pesanan dibuat. Pembayaran akan dideteksi otomatis.</p>
     </header>
 
     <div class="grid gap-8 lg:grid-cols-[1fr_400px]">

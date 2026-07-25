@@ -236,6 +236,8 @@ class CustomerMarketplaceTest extends TestCase
             ->assertOk()
             ->assertSee('data-payment-method', false)
             ->assertSee('name="checkout_token"', false)
+            ->assertSee('Pembayaran akan dideteksi otomatis', false)
+            ->assertDontSee('unggah bukti', false)
             ->assertDontSee('name="payment_proof"', false)
             ->assertDontSee('name="payment_reference"', false);
     }

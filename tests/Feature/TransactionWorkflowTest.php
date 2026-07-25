@@ -101,17 +101,13 @@ class TransactionWorkflowTest extends TestCase
             ->assertNotFound();
     }
 
-    public function test_admin_verification_adds_library_clears_cart_and_is_idempotent(): void
+    public function test_automatic_detection_adds_library_clears_cart_and_is_idempotent(): void
     {
         $order = $this->createOrder();
         $payment = $order->payment;
 
         $this->actingAs($this->customer)
-            ->post(route('admin.payments.verify', $payment))
-            ->assertForbidden();
-
-        $this->actingAs($this->admin)
-            ->post(route('admin.payments.verify', $payment))
+            ->post(route('orders.payment.submit', $order))
             ->assertSessionHas('success');
 
         $this->assertDatabaseHas('payments', ['id' => $payment->id, 'status' => 'verified']);
@@ -123,19 +119,19 @@ class TransactionWorkflowTest extends TestCase
         ]);
         $this->assertDatabaseCount('cart_items', 0);
 
-        $this->actingAs($this->admin)
-            ->post(route('admin.payments.verify', $payment->refresh()))
+        $this->actingAs($this->customer)
+            ->post(route('orders.payment.submit', $order->refresh()))
             ->assertSessionHas('success');
 
         $this->assertDatabaseCount('libraries', 1);
     }
 
-    public function test_payment_rejection_cancels_order_without_library(): void
+    public function test_customer_cancellation_fails_payment_without_library(): void
     {
         $order = $this->createOrder();
 
-        $this->actingAs($this->admin)
-            ->post(route('admin.payments.reject', $order->payment))
+        $this->actingAs($this->customer)
+            ->post(route('orders.cancel', $order))
             ->assertSessionHas('success');
 
         $this->assertDatabaseHas('payments', ['order_id' => $order->id, 'status' => 'failed']);
@@ -150,7 +146,7 @@ class TransactionWorkflowTest extends TestCase
             ->assertForbidden();
 
         $order = $this->createOrder();
-        $this->actingAs($this->admin)->post(route('admin.payments.verify', $order->payment));
+        $this->actingAs($this->customer)->post(route('orders.payment.submit', $order));
 
         $this->actingAs($this->customer)
             ->post(route('reviews.store', $this->game), ['rating' => 5, 'comment' => 'Sangat menarik'])
@@ -189,12 +185,6 @@ class TransactionWorkflowTest extends TestCase
                 'payment_method' => 'virtual_account',
             ]);
 
-        $order = Order::with('payment')->firstOrFail();
-        $order->payment->update([
-            'payment_proof' => 'storage/payment-proofs/transaction.jpg',
-            'paid_at' => now(),
-        ]);
-
-        return $order->fresh('payment');
+        return Order::with('payment')->firstOrFail();
     }
 }

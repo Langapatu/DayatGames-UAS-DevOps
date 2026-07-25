@@ -153,6 +153,55 @@ class AdminCatalogCrudTest extends TestCase
         $this->assertDatabaseCount('games', 0);
     }
 
+    public function test_admin_can_create_game_with_inline_developer_and_publisher(): void
+    {
+        $genre = Genre::create(['name' => 'Soulslike', 'slug' => 'soulslike']);
+
+        $this->actingAs($this->admin)
+            ->post(route('admin.games.store'), [
+                ...$this->inlineGamePayload($genre),
+                'new_developer_name' => '  New Studio  ',
+                'new_publisher_name' => 'New Publisher',
+            ])
+            ->assertSessionHasNoErrors();
+
+        $developer = Developer::where('slug', 'new-studio')->firstOrFail();
+        $publisher = Publisher::where('slug', 'new-publisher')->firstOrFail();
+        $this->assertSame('New Studio', $developer->name);
+        $this->assertSame('New Publisher', $publisher->name);
+        $this->assertDatabaseHas('games', [
+            'slug' => 'inline-game',
+            'developer_id' => $developer->id,
+            'publisher_id' => $publisher->id,
+        ]);
+    }
+
+    public function test_inline_metadata_reuses_existing_normalized_name(): void
+    {
+        $genre = Genre::create(['name' => 'RPG', 'slug' => 'rpg']);
+        Developer::create(['name' => 'Existing Studio', 'slug' => 'existing-studio']);
+
+        $this->actingAs($this->admin)
+            ->post(route('admin.games.store'), [
+                ...$this->inlineGamePayload($genre),
+                'new_developer_name' => ' Existing Studio ',
+                'new_publisher_name' => 'Only Publisher',
+            ])
+            ->assertSessionHasNoErrors();
+
+        $this->assertSame(1, Developer::where('slug', 'existing-studio')->count());
+        $this->assertSame(1, Publisher::where('slug', 'only-publisher')->count());
+    }
+
+    public function test_admin_sidebar_does_not_show_standalone_publisher_or_developer_tabs(): void
+    {
+        $this->actingAs($this->admin)->get(route('admin.dashboard'))
+            ->assertOk()
+            ->assertDontSee(route('admin.publishers.index'), false)
+            ->assertDontSee(route('admin.developers.index'), false)
+            ->assertSee(route('admin.games.index'), false);
+    }
+
     private function gamePayload(
         Developer $developer,
         Publisher $publisher,
@@ -173,6 +222,25 @@ class AdminCatalogCrudTest extends TestCase
             'operating_system' => 'Windows 11',
             'status' => 'published',
             'is_featured' => '1',
+            'genres' => [$genre->id],
+        ];
+    }
+
+    private function inlineGamePayload(Genre $genre): array
+    {
+        return [
+            'title' => 'Inline Game',
+            'short_description' => 'Deskripsi singkat untuk inline metadata.',
+            'description' => 'Deskripsi lengkap untuk inline metadata game.',
+            'original_price' => 150000,
+            'discount_price' => null,
+            'discount_percent' => 0,
+            'price_is_demo' => '1',
+            'release_date' => '2026-02-01',
+            'platform' => 'PC',
+            'operating_system' => 'Windows',
+            'status' => 'published',
+            'is_featured' => '0',
             'genres' => [$genre->id],
         ];
     }

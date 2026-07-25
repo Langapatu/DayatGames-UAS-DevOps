@@ -19,8 +19,6 @@
         ['label' => 'Game', 'route' => 'admin.games.index', 'match' => 'admin.games.*', 'icon' => '▦'],
         ['label' => 'Genre', 'route' => 'admin.genres.index', 'match' => 'admin.genres.*', 'icon' => '◇'],
         ['label' => 'Voucher', 'route' => 'admin.vouchers.index', 'match' => 'admin.vouchers.*', 'icon' => '%'],
-        ['label' => 'Publisher', 'route' => 'admin.publishers.index', 'match' => 'admin.publishers.*', 'icon' => 'P'],
-        ['label' => 'Developer', 'route' => 'admin.developers.index', 'match' => 'admin.developers.*', 'icon' => 'D'],
         ['label' => 'Customer', 'route' => 'admin.users.index', 'match' => 'admin.users.*', 'icon' => '◎'],
         ['label' => 'Order', 'route' => 'admin.orders.index', 'match' => 'admin.orders.*', 'icon' => '▤'],
         ['label' => 'Payment', 'route' => 'admin.payments.index', 'match' => 'admin.payments.*', 'icon' => 'Rp'],

@@ -12,6 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class GameController extends Controller
@@ -40,6 +41,16 @@ class GameController extends Controller
     {
         $game = DB::transaction(function () use ($request): Game {
             $data = $this->gameData($request);
+            $data['developer_id'] = $this->resolveParty(
+                Developer::class,
+                $request->integer('developer_id') ?: null,
+                $request->validated('new_developer_name'),
+            );
+            $data['publisher_id'] = $this->resolveParty(
+                Publisher::class,
+                $request->integer('publisher_id') ?: null,
+                $request->validated('new_publisher_name'),
+            );
             $game = Game::create($data);
             $game->genres()->sync($request->validated('genres'));
 
@@ -66,7 +77,18 @@ class GameController extends Controller
     public function update(GameRequest $request, Game $game): RedirectResponse
     {
         DB::transaction(function () use ($request, $game): void {
-            $game->update($this->gameData($request, $game));
+            $data = $this->gameData($request, $game);
+            $data['developer_id'] = $this->resolveParty(
+                Developer::class,
+                $request->integer('developer_id') ?: null,
+                $request->validated('new_developer_name'),
+            );
+            $data['publisher_id'] = $this->resolveParty(
+                Publisher::class,
+                $request->integer('publisher_id') ?: null,
+                $request->validated('new_publisher_name'),
+            );
+            $game->update($data);
             $game->genres()->sync($request->validated('genres'));
         });
 
@@ -98,7 +120,13 @@ class GameController extends Controller
 
     private function gameData(GameRequest $request, ?Game $game = null): array
     {
-        $data = $request->safe()->except(['genres', 'cover_image', 'hero_image']);
+        $data = $request->safe()->except([
+            'genres',
+            'cover_image',
+            'hero_image',
+            'new_developer_name',
+            'new_publisher_name',
+        ]);
 
         foreach (['cover_image', 'hero_image'] as $field) {
             if (! $request->hasFile($field)) {
@@ -112,6 +140,20 @@ class GameController extends Controller
         return $data;
     }
 
+    private function resolveParty(string $modelClass, ?int $id, ?string $newName): int
+    {
+        if ($id) {
+            return $id;
+        }
+
+        $name = trim((string) $newName);
+        $slug = Str::slug($name);
+
+        return $modelClass::query()
+            ->firstOrCreate(['slug' => $slug], ['name' => $name])
+            ->id;
+    }
+
     private function deleteManagedImage(?string $path): void
     {
         if ($path && str_starts_with($path, 'storage/')) {
@@ -119,4 +161,3 @@ class GameController extends Controller
         }
     }
 }
-

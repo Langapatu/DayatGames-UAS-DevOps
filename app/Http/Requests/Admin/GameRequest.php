@@ -20,14 +20,22 @@ class GameRequest extends FormRequest
             'slug' => Str::slug($this->input('slug') ?: $this->input('title')),
             'is_featured' => $this->boolean('is_featured'),
             'price_is_demo' => $this->boolean('price_is_demo'),
+            'new_developer_name' => $this->filled('new_developer_name')
+                ? trim((string) $this->input('new_developer_name'))
+                : null,
+            'new_publisher_name' => $this->filled('new_publisher_name')
+                ? trim((string) $this->input('new_publisher_name'))
+                : null,
         ]);
     }
 
     public function rules(): array
     {
         return [
-            'developer_id' => ['required', 'exists:developers,id'],
-            'publisher_id' => ['required', 'exists:publishers,id'],
+            'developer_id' => ['nullable', 'integer', 'exists:developers,id', 'required_without:new_developer_name'],
+            'new_developer_name' => ['nullable', 'string', 'max:255', 'required_without:developer_id'],
+            'publisher_id' => ['nullable', 'integer', 'exists:publishers,id', 'required_without:new_publisher_name'],
+            'new_publisher_name' => ['nullable', 'string', 'max:255', 'required_without:publisher_id'],
             'steam_app_id' => ['nullable', 'integer', 'min:1'],
             'title' => ['required', 'string', 'max:255'],
             'slug' => [
@@ -72,4 +80,3 @@ class GameRequest extends FormRequest
         });
     }
 }
-

@@ -34,23 +34,31 @@
             </div>
             <div>
                 <label for="developer_id">Developer</label>
-                <select id="developer_id" name="developer_id" required>
+                <select id="developer_id" name="developer_id">
                     <option value="">Pilih developer</option>
                     @foreach($developers as $developer)
                         <option value="{{ $developer->id }}" @selected((int) old('developer_id', $game->developer_id) === $developer->id)>{{ $developer->name }}</option>
                     @endforeach
                 </select>
                 @error('developer_id') <p role="alert">{{ $message }}</p> @enderror
+                <span>atau tambahkan developer baru</span>
+                <label for="new_developer_name" class="sr-only">Nama developer baru</label>
+                <input id="new_developer_name" name="new_developer_name" type="text" maxlength="255" value="{{ old('new_developer_name') }}" placeholder="Nama developer baru">
+                @error('new_developer_name') <p role="alert">{{ $message }}</p> @enderror
             </div>
             <div>
                 <label for="publisher_id">Publisher</label>
-                <select id="publisher_id" name="publisher_id" required>
+                <select id="publisher_id" name="publisher_id">
                     <option value="">Pilih publisher</option>
                     @foreach($publishers as $publisher)
                         <option value="{{ $publisher->id }}" @selected((int) old('publisher_id', $game->publisher_id) === $publisher->id)>{{ $publisher->name }}</option>
                     @endforeach
                 </select>
                 @error('publisher_id') <p role="alert">{{ $message }}</p> @enderror
+                <span>atau tambahkan publisher baru</span>
+                <label for="new_publisher_name" class="sr-only">Nama publisher baru</label>
+                <input id="new_publisher_name" name="new_publisher_name" type="text" maxlength="255" value="{{ old('new_publisher_name') }}" placeholder="Nama publisher baru">
+                @error('new_publisher_name') <p role="alert">{{ $message }}</p> @enderror
             </div>
             <fieldset>
                 <legend>Genre</legend>
@@ -161,4 +169,3 @@
         <a href="{{ route('admin.games.index') }}">Batal</a>
     </form>
 @endsection
-

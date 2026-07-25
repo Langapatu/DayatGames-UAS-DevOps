@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\Publisher;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class TransactionWorkflowTest extends TestCase
@@ -57,7 +58,10 @@ class TransactionWorkflowTest extends TestCase
             ->assertSessionHas('error');
 
         $this->actingAs($this->customer)
-            ->post(route('checkout.store'), ['payment_method' => 'virtual_account'])
+            ->post(route('checkout.store'), [
+                'checkout_token' => (string) Str::uuid(),
+                'payment_method' => 'virtual_account',
+            ])
             ->assertSessionHasErrors('cart');
 
         $this->assertDatabaseCount('orders', 0);
@@ -69,6 +73,7 @@ class TransactionWorkflowTest extends TestCase
 
         $this->actingAs($this->customer)
             ->post(route('checkout.store'), [
+                'checkout_token' => (string) Str::uuid(),
                 'payment_method' => 'virtual_account',
                 'price' => 1,
             ])
@@ -83,7 +88,7 @@ class TransactionWorkflowTest extends TestCase
         $this->assertSame('75000.00', $order->payment->amount);
         $this->assertStringStartsWith('8808', $order->payment->virtual_account_number);
         $this->assertSame('pending', $order->payment->status);
-        $this->assertDatabaseCount('cart_items', 1);
+        $this->assertDatabaseCount('cart_items', 0);
     }
 
     public function test_customer_cannot_read_another_customers_order(): void
@@ -179,7 +184,10 @@ class TransactionWorkflowTest extends TestCase
     {
         $this->addGameToCart();
         $this->actingAs($this->customer)
-            ->post(route('checkout.store'), ['payment_method' => 'virtual_account']);
+            ->post(route('checkout.store'), [
+                'checkout_token' => (string) Str::uuid(),
+                'payment_method' => 'virtual_account',
+            ]);
 
         return Order::with('payment')->firstOrFail();
     }

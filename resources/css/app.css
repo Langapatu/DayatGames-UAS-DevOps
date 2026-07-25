@@ -348,6 +348,355 @@ body {
     }
 }
 
+body.payment-verification-active {
+    overflow: hidden;
+}
+
+body.payment-verification-active > :not(.payment-verification) {
+    visibility: hidden;
+}
+
+form[data-auto-payment][data-processing="true"] {
+    visibility: hidden;
+}
+
+.payment-verification {
+    position: fixed;
+    z-index: 120;
+    inset: 0;
+    display: grid;
+    overflow: hidden;
+    place-items: center;
+    background: rgb(2 6 23 / 84%);
+    padding: 1.25rem;
+    opacity: 0;
+    backdrop-filter: blur(18px);
+    transition: opacity .28s ease;
+}
+
+.payment-verification[hidden] {
+    display: none;
+}
+
+.payment-verification.is-visible {
+    opacity: 1;
+}
+
+.payment-verification-aurora {
+    position: absolute;
+    width: min(46rem, 110vw);
+    height: min(46rem, 110vw);
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 35% 35%, rgb(34 211 238 / 22%), transparent 42%),
+        radial-gradient(circle at 68% 64%, rgb(139 92 246 / 24%), transparent 44%);
+    filter: blur(20px);
+    animation: paymentAurora 3.8s ease-in-out infinite alternate;
+}
+
+.payment-verification-panel {
+    position: relative;
+    width: min(100%, 36rem);
+    overflow: hidden;
+    border: 1px solid rgb(103 232 249 / 23%);
+    border-radius: 1.75rem;
+    background: linear-gradient(145deg, #0f172a, #050a18);
+    padding: clamp(1.5rem, 5vw, 2.6rem);
+    color: white;
+    text-align: center;
+    box-shadow:
+        0 35px 100px rgb(0 0 0 / 58%),
+        inset 0 1px rgb(255 255 255 / 7%),
+        0 0 70px rgb(34 211 238 / 8%);
+    transform: translateY(18px) scale(.96);
+    transition: transform .42s cubic-bezier(.2, .8, .2, 1);
+}
+
+.payment-verification-panel::before {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(115deg, transparent 25%, rgb(255 255 255 / 5%) 48%, transparent 68%);
+    content: "";
+    pointer-events: none;
+    transform: translateX(-100%);
+    animation: paymentSheen 1.8s ease-in-out infinite;
+}
+
+.payment-verification.is-visible .payment-verification-panel {
+    transform: translateY(0) scale(1);
+}
+
+.payment-verification-visual {
+    position: relative;
+    display: grid;
+    width: 8.5rem;
+    height: 8.5rem;
+    margin: 0 auto 1.35rem;
+    place-items: center;
+}
+
+.payment-verification-ring {
+    position: absolute;
+    border-radius: 50%;
+}
+
+.payment-verification-ring-outer {
+    inset: 0;
+    border: 1px solid rgb(103 232 249 / 22%);
+    border-top-color: #67e8f9;
+    border-right-color: rgb(139 92 246 / 72%);
+    box-shadow: 0 0 26px rgb(34 211 238 / 13%);
+    animation: paymentSpin 2.4s linear infinite;
+}
+
+.payment-verification-ring-inner {
+    inset: .8rem;
+    border: 1px dashed rgb(196 181 253 / 40%);
+    animation: paymentSpinReverse 3.2s linear infinite;
+}
+
+.payment-verification-orbit-dot {
+    position: absolute;
+    top: -.25rem;
+    left: calc(50% - .28rem);
+    width: .56rem;
+    height: .56rem;
+    border-radius: 50%;
+    background: #67e8f9;
+    box-shadow: 0 0 18px #22d3ee;
+    transform-origin: .28rem 4.5rem;
+    animation: paymentOrbit 1.65s linear infinite;
+}
+
+.payment-verification-core {
+    display: grid;
+    width: 5.25rem;
+    height: 5.25rem;
+    place-items: center;
+    border: 1px solid rgb(103 232 249 / 30%);
+    border-radius: 1.6rem;
+    background: linear-gradient(145deg, rgb(8 145 178 / 24%), rgb(109 40 217 / 24%));
+    color: #a5f3fc;
+    box-shadow: inset 0 1px rgb(255 255 255 / 10%), 0 0 35px rgb(34 211 238 / 13%);
+    transition: border-color .35s ease, background .35s ease, color .35s ease, box-shadow .35s ease, transform .35s ease;
+}
+
+.payment-verification-core svg {
+    width: 3rem;
+    height: 3rem;
+}
+
+.payment-verification.is-success .payment-verification-core {
+    border-color: rgb(52 211 153 / 52%);
+    background: rgb(16 185 129 / 17%);
+    color: #6ee7b7;
+    box-shadow: 0 0 42px rgb(16 185 129 / 24%);
+    transform: scale(1.06);
+}
+
+.payment-verification.is-success .payment-verification-ring-outer {
+    border-top-color: #6ee7b7;
+    border-right-color: #34d399;
+}
+
+.payment-verification-kicker {
+    color: #67e8f9;
+    font-size: .68rem;
+    font-weight: 850;
+    letter-spacing: .22em;
+}
+
+.payment-verification h2 {
+    margin-top: .55rem;
+    font-size: clamp(1.65rem, 5vw, 2.15rem);
+    font-weight: 900;
+    letter-spacing: -.04em;
+    line-height: 1.1;
+}
+
+.payment-verification h2 + p {
+    min-height: 3rem;
+    margin: .75rem auto 0;
+    max-width: 27rem;
+    color: #94a3b8;
+    font-size: .88rem;
+    line-height: 1.65;
+}
+
+.payment-verification-steps {
+    display: grid;
+    margin-top: 1.5rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .55rem;
+}
+
+.payment-verification-steps li {
+    display: grid;
+    min-width: 0;
+    justify-items: center;
+    gap: .55rem;
+    color: #64748b;
+    transition: color .28s ease, transform .28s ease;
+}
+
+.payment-verification-steps li > span {
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    border: 1px solid #334155;
+    border-radius: 50%;
+    background: #0f172a;
+    font-size: .7rem;
+    font-weight: 850;
+    transition: inherit;
+}
+
+.payment-verification-steps li > strong {
+    font-size: .68rem;
+    font-weight: 760;
+    line-height: 1.35;
+}
+
+.payment-verification-steps li.is-active {
+    color: #cffafe;
+    transform: translateY(-2px);
+}
+
+.payment-verification-steps li.is-active > span {
+    border-color: #22d3ee;
+    background: rgb(8 145 178 / 24%);
+    box-shadow: 0 0 18px rgb(34 211 238 / 25%);
+}
+
+.payment-verification-steps li.is-complete {
+    color: #6ee7b7;
+}
+
+.payment-verification-steps li.is-complete > span {
+    border-color: #34d399;
+    background: rgb(16 185 129 / 18%);
+}
+
+.payment-verification-progress {
+    height: .3rem;
+    margin-top: 1.35rem;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #172033;
+}
+
+.payment-verification-progress > span {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #22d3ee, #8b5cf6 58%, #34d399);
+    box-shadow: 0 0 16px rgb(34 211 238 / 45%);
+}
+
+.payment-verification-progress > span.is-running {
+    animation: paymentProgress 2.05s cubic-bezier(.2, .75, .25, 1) forwards;
+}
+
+.payment-verification-note {
+    margin-top: 1rem;
+    color: #64748b;
+    font-size: .72rem;
+    line-height: 1.55;
+}
+
+@keyframes paymentSpin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes paymentSpinReverse {
+    to { transform: rotate(-360deg); }
+}
+
+@keyframes paymentOrbit {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes paymentProgress {
+    0% { width: 4%; }
+    38% { width: 38%; }
+    68% { width: 73%; }
+    100% { width: 100%; }
+}
+
+@keyframes paymentAurora {
+    from { opacity: .65; transform: translate3d(-2%, -1%, 0) scale(.94); }
+    to { opacity: 1; transform: translate3d(3%, 2%, 0) scale(1.06); }
+}
+
+@keyframes paymentSheen {
+    0%, 30% { transform: translateX(-110%); }
+    72%, 100% { transform: translateX(110%); }
+}
+
+@media (max-width: 520px) {
+    .payment-verification {
+        padding: .75rem;
+    }
+
+    .payment-verification-panel {
+        border-radius: 1.35rem;
+        padding: 1.5rem 1rem;
+    }
+
+    .payment-verification-visual {
+        width: 7.25rem;
+        height: 7.25rem;
+        margin-bottom: 1rem;
+    }
+
+    .payment-verification-orbit-dot {
+        transform-origin: .28rem 3.88rem;
+    }
+
+    .payment-verification-core {
+        width: 4.55rem;
+        height: 4.55rem;
+        border-radius: 1.35rem;
+    }
+
+    .payment-verification-core svg {
+        width: 2.6rem;
+        height: 2.6rem;
+    }
+
+    .payment-verification-steps {
+        gap: .3rem;
+    }
+
+    .payment-verification-steps li > strong {
+        font-size: .61rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .payment-verification,
+    .payment-verification-panel,
+    .payment-verification-core,
+    .payment-verification-steps li {
+        transition-duration: .01ms !important;
+    }
+
+    .payment-verification-aurora,
+    .payment-verification-panel::before,
+    .payment-verification-ring,
+    .payment-verification-orbit-dot,
+    .payment-verification-progress > span.is-running {
+        animation: none !important;
+    }
+
+    .payment-verification-progress > span.is-running {
+        width: 100%;
+    }
+}
+
 /* DayatGames interface refresh */
 :root {
     --dg-panel-soft: #131e30;

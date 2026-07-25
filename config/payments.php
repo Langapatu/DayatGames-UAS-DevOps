@@ -10,7 +10,7 @@ return [
                 'Buka mobile banking atau ATM pilihan Anda.',
                 'Pilih menu pembayaran Virtual Account.',
                 'Masukkan nomor VA dan pastikan nominalnya sesuai.',
-                'Simpan bukti transaksi simulasi untuk diunggah.',
+                'Kembali ke DayatGames dan tekan Bayar sekarang untuk memulai deteksi otomatis.',
             ],
         ],
         'bank_transfer' => [
@@ -22,7 +22,7 @@ return [
                 'Pilih transfer antarbank pada aplikasi bank Anda.',
                 'Masukkan rekening demo yang ditampilkan.',
                 'Masukkan nominal tepat sesuai total pesanan.',
-                'Simpan nomor referensi dan bukti transaksi simulasi.',
+                'Kembali ke DayatGames dan tekan Bayar sekarang untuk memulai deteksi otomatis.',
             ],
         ],
         'e_wallet' => [
@@ -34,7 +34,7 @@ return [
                 'Buka aplikasi e-wallet pilihan Anda.',
                 'Pilih menu kirim saldo.',
                 'Masukkan akun demo dan nominal tepat.',
-                'Simpan nomor referensi dan bukti transaksi simulasi.',
+                'Kembali ke DayatGames dan tekan Bayar sekarang untuk memulai deteksi otomatis.',
             ],
         ],
     ],

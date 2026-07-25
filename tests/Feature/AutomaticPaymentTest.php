@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Developer;
 use App\Models\Game;
+use App\Models\Library;
 use App\Models\Order;
 use App\Models\Publisher;
 use App\Models\User;
@@ -94,6 +95,41 @@ class AutomaticPaymentTest extends TestCase
         );
         $this->assertDatabaseCount('payments', 1);
         $this->assertDatabaseCount('libraries', 1);
+    }
+
+    public function test_detection_keeps_existing_library_ownership_from_an_older_order(): void
+    {
+        [$customer, $order] = $this->pendingOrder();
+        $olderOrder = Order::create([
+            'user_id' => $customer->id,
+            'order_code' => 'DG-AUTO-OLDER',
+            'checkout_token' => (string) Str::uuid(),
+            'subtotal_amount' => 120000,
+            'voucher_discount_amount' => 0,
+            'total_amount' => 120000,
+            'status' => 'completed',
+            'ordered_at' => now()->subDay(),
+            'payment_due_at' => now()->subHours(12),
+        ]);
+        Library::create([
+            'user_id' => $customer->id,
+            'game_id' => $this->game->id,
+            'order_id' => $olderOrder->id,
+            'purchased_at' => now()->subDay(),
+        ]);
+
+        app(AutomaticPaymentService::class)->detect($order);
+
+        $this->assertDatabaseHas('orders', [
+            'id' => $order->id,
+            'status' => 'completed',
+        ]);
+        $this->assertDatabaseCount('libraries', 1);
+        $this->assertDatabaseHas('libraries', [
+            'user_id' => $customer->id,
+            'game_id' => $this->game->id,
+            'order_id' => $olderOrder->id,
+        ]);
     }
 
     public function test_cancelled_order_cannot_be_detected_as_paid(): void

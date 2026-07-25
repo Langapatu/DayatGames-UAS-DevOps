@@ -113,7 +113,8 @@ class PaymentSubmissionTest extends TestCase
                 ->assertOk()
                 ->assertSee($label)
                 ->assertSee($destination)
-                ->assertSee('Tidak perlu mengirim uang sungguhan');
+                ->assertSee('Tidak perlu mengirim uang sungguhan')
+                ->assertDontSee('diunggah');
         }
     }
 
@@ -123,7 +124,7 @@ class PaymentSubmissionTest extends TestCase
 
         $this->actingAs($customer)
             ->post(route('orders.payment.submit', $order))
-            ->assertRedirect(route('orders.show', $order))
+            ->assertRedirect(route('library.index'))
             ->assertSessionHas('success');
 
         $this->assertDatabaseHas('orders', ['id' => $order->id, 'status' => 'completed']);
@@ -162,7 +163,11 @@ class PaymentSubmissionTest extends TestCase
             ->assertOk()
             ->assertSee('Bayar sekarang')
             ->assertSee('data-auto-payment', false)
-            ->assertSee('Mendeteksi pembayaran')
+            ->assertSee('data-payment-verification', false)
+            ->assertSee('Memastikan pembayaran')
+            ->assertSee('Menghubungkan pembayaran')
+            ->assertSee('Memverifikasi transaksi')
+            ->assertSee('Pembayaran terdeteksi')
             ->assertDontSee('name="payment_proof"', false)
             ->assertDontSee('name="payment_reference"', false)
             ->assertDontSee('menunggu verifikasi admin');

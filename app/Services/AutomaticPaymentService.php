@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Library;
 use App\Models\Order;
 use App\Models\Payment;
 use Illuminate\Support\Facades\DB;
@@ -63,12 +64,15 @@ final class AutomaticPaymentService
                     continue;
                 }
 
-                $lockedOrder->libraries()->updateOrCreate(
+                Library::query()->firstOrCreate(
                     [
                         'user_id' => $lockedOrder->user_id,
                         'game_id' => $item->game_id,
                     ],
-                    ['purchased_at' => $detectedAt],
+                    [
+                        'order_id' => $lockedOrder->id,
+                        'purchased_at' => $detectedAt,
+                    ],
                 );
             }
 

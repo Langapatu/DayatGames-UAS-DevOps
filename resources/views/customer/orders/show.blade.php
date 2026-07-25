@@ -112,7 +112,7 @@
                         </div>
                     </div>
                     <p class="mt-4 text-sm leading-6 text-slate-300">
-                        Tekan tombol di bawah untuk menjalankan simulasi. Sistem akan langsung mendeteksi pembayaran dan menambahkan game ke Library.
+                        Tekan tombol di bawah untuk menjalankan simulasi. Sistem akan memeriksa pembayaran sekitar 2 detik, lalu membuka Library secara otomatis.
                     </p>
                     <p class="mt-3 rounded-xl border border-amber-500/20 bg-amber-500/10 p-3 text-xs font-semibold leading-5 text-amber-200">
                         Simulasi akademik—tidak ada uang sungguhan yang dikirim.
@@ -123,7 +123,7 @@
                             <span data-auto-payment-label>Bayar sekarang</span>
                             <span data-auto-payment-progress class="hidden items-center gap-2">
                                 <span class="size-4 animate-spin rounded-full border-2 border-white/35 border-t-white" aria-hidden="true"></span>
-                                Mendeteksi pembayaran...
+                                Memulai verifikasi...
                             </span>
                         </button>
                     </form>
@@ -147,4 +147,63 @@
             @endif
         </aside>
     </div>
+
+    @if($canPay && !$expired)
+        <section
+            data-payment-verification
+            class="payment-verification"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="payment-verification-title"
+            aria-describedby="payment-verification-description"
+            aria-hidden="true"
+            hidden
+        >
+            <div class="payment-verification-aurora" aria-hidden="true"></div>
+
+            <div class="payment-verification-panel">
+                <div class="payment-verification-visual" aria-hidden="true">
+                    <span class="payment-verification-ring payment-verification-ring-outer"></span>
+                    <span class="payment-verification-ring payment-verification-ring-inner"></span>
+                    <span class="payment-verification-orbit-dot"></span>
+                    <span class="payment-verification-core">
+                        <svg viewBox="0 0 48 48" fill="none">
+                            <rect x="7" y="12" width="34" height="24" rx="7" stroke="currentColor" stroke-width="2.5"/>
+                            <path d="M8 20h32M14 29h9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                            <path d="m29 29 3 3 6-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                </div>
+
+                <p class="payment-verification-kicker">DAYATGAMES SECURE CHECK</p>
+                <h2 id="payment-verification-title" data-verification-title>Memastikan pembayaran</h2>
+                <p id="payment-verification-description" data-verification-description>
+                    Menghubungkan transaksi simulasi dengan sistem pembayaran.
+                </p>
+
+                <ol class="payment-verification-steps" aria-label="Proses verifikasi pembayaran">
+                    <li data-verification-step class="is-active">
+                        <span>1</span>
+                        <strong>Menghubungkan pembayaran</strong>
+                    </li>
+                    <li data-verification-step>
+                        <span>2</span>
+                        <strong>Memverifikasi transaksi</strong>
+                    </li>
+                    <li data-verification-step>
+                        <span>3</span>
+                        <strong>Pembayaran terdeteksi</strong>
+                    </li>
+                </ol>
+
+                <div class="payment-verification-progress" aria-hidden="true">
+                    <span data-verification-progress></span>
+                </div>
+
+                <p class="payment-verification-note">
+                    Jangan tutup halaman. Library akan terbuka otomatis setelah proses selesai.
+                </p>
+            </div>
+        </section>
+    @endif
 @endsection

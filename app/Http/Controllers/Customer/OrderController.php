@@ -89,7 +89,7 @@ class OrderController extends Controller
 
         $this->automaticPayments->detect($order);
 
-        return redirect()->route('orders.show', $order)->with(
+        return redirect()->route('library.index')->with(
             'success',
             $alreadyCompleted
                 ? 'Pembayaran sudah terdeteksi sebelumnya. Library tetap aman tanpa duplikasi.'

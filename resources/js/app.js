@@ -72,10 +72,22 @@ document.querySelectorAll('[data-copy-payment]').forEach((button) => {
 });
 
 document.querySelectorAll('form[data-auto-payment]').forEach((form) => {
-    form.addEventListener('submit', () => {
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        if (form.dataset.processing === 'true') {
+            return;
+        }
+
+        form.dataset.processing = 'true';
         const button = form.querySelector('[data-auto-payment-button]');
         const label = form.querySelector('[data-auto-payment-label]');
         const progress = form.querySelector('[data-auto-payment-progress]');
+        const verification = document.querySelector('[data-payment-verification]');
+        const verificationTitle = verification?.querySelector('[data-verification-title]');
+        const verificationDescription = verification?.querySelector('[data-verification-description]');
+        const verificationSteps = [...(verification?.querySelectorAll('[data-verification-step]') || [])];
+        const verificationProgress = verification?.querySelector('[data-verification-progress]');
 
         if (button) {
             button.disabled = true;
@@ -85,6 +97,50 @@ document.querySelectorAll('form[data-auto-payment]').forEach((form) => {
         label?.classList.add('hidden');
         progress?.classList.remove('hidden');
         progress?.classList.add('flex');
+
+        if (verification) {
+            if (verification.parentElement !== document.body) {
+                document.body.append(verification);
+            }
+
+            verification.hidden = false;
+            verification.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('payment-verification-active');
+
+            window.requestAnimationFrame(() => {
+                verification.classList.add('is-visible');
+                verificationProgress?.classList.add('is-running');
+            });
+        }
+
+        const setStage = (activeIndex) => {
+            verificationSteps.forEach((step, index) => {
+                step.classList.toggle('is-complete', index < activeIndex);
+                step.classList.toggle('is-active', index === activeIndex);
+            });
+        };
+
+        window.setTimeout(() => {
+            setStage(1);
+            if (verificationDescription) {
+                verificationDescription.textContent = 'Mencocokkan nominal, metode, dan detail transaksi secara aman.';
+            }
+        }, 650);
+
+        window.setTimeout(() => {
+            setStage(2);
+            verification?.classList.add('is-success');
+            if (verificationTitle) {
+                verificationTitle.textContent = 'Pembayaran terdeteksi';
+            }
+            if (verificationDescription) {
+                verificationDescription.textContent = 'Berhasil diverifikasi. Menyiapkan game di Library kamu...';
+            }
+        }, 1400);
+
+        window.setTimeout(() => {
+            HTMLFormElement.prototype.submit.call(form);
+        }, 2100);
     });
 });
 

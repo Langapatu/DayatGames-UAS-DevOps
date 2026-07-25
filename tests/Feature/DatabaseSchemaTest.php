@@ -31,6 +31,7 @@ class DatabaseSchemaTest extends TestCase
             'orders',
             'order_items',
             'payments',
+            'vouchers',
             'libraries',
             'reviews',
         ];
@@ -53,6 +54,20 @@ class DatabaseSchemaTest extends TestCase
             'unit_price',
             'discount_amount',
             'subtotal',
+        ]));
+        $this->assertTrue(Schema::hasColumns('vouchers', [
+            'code',
+            'discount_percent',
+            'expires_at',
+            'is_active',
+        ]));
+        $this->assertTrue(Schema::hasColumns('orders', [
+            'checkout_token',
+            'subtotal_amount',
+            'voucher_id',
+            'voucher_code',
+            'voucher_discount_amount',
+            'payment_due_at',
         ]));
     }
 
@@ -88,4 +103,3 @@ class DatabaseSchemaTest extends TestCase
         $this->assertNotNull($user->cart);
     }
 }
-

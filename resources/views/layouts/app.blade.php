@@ -18,6 +18,7 @@
         ['label' => 'Ringkasan', 'route' => 'admin.dashboard', 'match' => 'admin.dashboard', 'icon' => '⌂'],
         ['label' => 'Game', 'route' => 'admin.games.index', 'match' => 'admin.games.*', 'icon' => '▦'],
         ['label' => 'Genre', 'route' => 'admin.genres.index', 'match' => 'admin.genres.*', 'icon' => '◇'],
+        ['label' => 'Voucher', 'route' => 'admin.vouchers.index', 'match' => 'admin.vouchers.*', 'icon' => '%'],
         ['label' => 'Publisher', 'route' => 'admin.publishers.index', 'match' => 'admin.publishers.*', 'icon' => 'P'],
         ['label' => 'Developer', 'route' => 'admin.developers.index', 'match' => 'admin.developers.*', 'icon' => 'D'],
         ['label' => 'Customer', 'route' => 'admin.users.index', 'match' => 'admin.users.*', 'icon' => '◎'],

@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\PaymentController as AdminPaymentController;
 use App\Http\Controllers\Admin\PublisherController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Customer\CartController;
@@ -64,6 +65,7 @@ Route::prefix('admin')
     ->group(function () {
         Route::get('/', DashboardController::class)->name('dashboard');
         Route::resource('genres', GenreController::class)->except('show');
+        Route::resource('vouchers', VoucherController::class)->except('show');
         Route::resource('publishers', PublisherController::class)->except('show');
         Route::resource('developers', DeveloperController::class)->except('show');
         Route::resource('games', GameController::class);

@@ -34,7 +34,7 @@ class GameController extends Controller
 
     public function create(): View
     {
-        return $this->formView(new Game());
+        return $this->formView(new Game);
     }
 
     public function store(GameRequest $request): RedirectResponse

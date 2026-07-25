@@ -33,7 +33,7 @@ class VoucherController extends Controller
 
     public function create(): View
     {
-        return view('admin.vouchers.form', ['voucher' => new Voucher()]);
+        return view('admin.vouchers.form', ['voucher' => new Voucher]);
     }
 
     public function store(VoucherRequest $request): RedirectResponse

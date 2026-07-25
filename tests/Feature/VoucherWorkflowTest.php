@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\Voucher;
 use App\Models\User;
+use App\Models\Voucher;
 use App\Services\VoucherService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

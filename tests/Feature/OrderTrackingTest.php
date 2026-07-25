@@ -61,22 +61,23 @@ class OrderTrackingTest extends TestCase
             ->assertSee('Menunggu pembayaran');
     }
 
-    public function test_tracking_detail_renders_proof_stage_and_timeline(): void
+    public function test_tracking_detail_renders_automatic_detection_stage_and_timeline(): void
     {
         $customer = User::factory()->create(['role' => 'customer']);
-        $order = $this->createOrder($customer, 'DG-TIMELINE-001', 'pending', true);
+        $order = $this->createOrder($customer, 'DG-TIMELINE-001', 'completed');
 
         $this->actingAs($customer)->get(route('orders.show', $order))
             ->assertOk()
-            ->assertSee('Menunggu verifikasi')
-            ->assertSee('Bukti pembayaran dikirim')
+            ->assertSee('Pembayaran terdeteksi')
+            ->assertSee('Selesai')
+            ->assertDontSee('Bukti pembayaran dikirim')
             ->assertSee('data-order-timeline', false);
     }
 
     public function test_completed_and_cancelled_orders_show_final_tracking_stage(): void
     {
         $customer = User::factory()->create(['role' => 'customer']);
-        $completed = $this->createOrder($customer, 'DG-DONE-001', 'completed', true);
+        $completed = $this->createOrder($customer, 'DG-DONE-001', 'completed');
         $cancelled = $this->createOrder($customer, 'DG-CANCEL-001', 'cancelled');
 
         $this->actingAs($customer)->get(route('orders.index', ['status' => 'completed']))
@@ -109,7 +110,6 @@ class OrderTrackingTest extends TestCase
         User $customer,
         string $code,
         string $status,
-        bool $withProof = false,
     ): Order {
         $order = Order::create([
             'user_id' => $customer->id,
@@ -132,10 +132,10 @@ class OrderTrackingTest extends TestCase
         $order->payment()->create([
             'payment_method' => 'virtual_account',
             'virtual_account_number' => '8808'.str_pad((string) $order->id, 12, '0', STR_PAD_LEFT),
-            'payment_proof' => $withProof ? 'storage/payment-proofs/tracking.jpg' : null,
+            'payment_reference' => $status === 'completed' ? 'SIM-20260725120000-'.$order->id : null,
             'amount' => 75000,
             'status' => $status === 'completed' ? 'verified' : ($status === 'cancelled' ? 'failed' : 'pending'),
-            'paid_at' => $withProof ? now() : null,
+            'paid_at' => $status === 'completed' ? now() : null,
             'verified_at' => $status === 'completed' ? now() : null,
         ]);
 

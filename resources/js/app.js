@@ -71,6 +71,23 @@ document.querySelectorAll('[data-copy-payment]').forEach((button) => {
     });
 });
 
+document.querySelectorAll('form[data-auto-payment]').forEach((form) => {
+    form.addEventListener('submit', () => {
+        const button = form.querySelector('[data-auto-payment-button]');
+        const label = form.querySelector('[data-auto-payment-label]');
+        const progress = form.querySelector('[data-auto-payment-progress]');
+
+        if (button) {
+            button.disabled = true;
+            button.setAttribute('aria-busy', 'true');
+        }
+
+        label?.classList.add('hidden');
+        progress?.classList.remove('hidden');
+        progress?.classList.add('flex');
+    });
+});
+
 if (!reducedMotion && pageContent && !document.startViewTransition) {
     let pageTransitioning = false;
 

@@ -222,7 +222,7 @@ class CustomerMarketplaceTest extends TestCase
             ->assertSee('Simulasi akademik');
     }
 
-    public function test_checkout_uses_interactive_payment_cards_without_proof_field(): void
+    public function test_checkout_uses_interactive_payment_cards_without_manual_payment_fields(): void
     {
         $customer = User::factory()->create(['role' => 'customer']);
         $game = $this->createGame('Checkout UI Game', 'checkout-ui-game');
@@ -236,7 +236,8 @@ class CustomerMarketplaceTest extends TestCase
             ->assertOk()
             ->assertSee('data-payment-method', false)
             ->assertSee('name="checkout_token"', false)
-            ->assertDontSee('name="payment_proof"', false);
+            ->assertDontSee('name="payment_proof"', false)
+            ->assertDontSee('name="payment_reference"', false);
     }
 
     private function createGame(

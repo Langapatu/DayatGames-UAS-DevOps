@@ -4,9 +4,8 @@
 
 @section('content')
     @php
-        $proofSubmitted = $order->hasSubmittedProof();
-        $canSubmit = $order->status === 'pending' && $order->payment->status === 'pending';
-        $expired = $order->payment_due_at?->isPast() && !$proofSubmitted;
+        $canPay = $order->status === 'pending' && $order->payment->status === 'pending';
+        $expired = $canPay && $order->payment_due_at?->isPast();
         $stage = $order->trackingStage();
     @endphp
 
@@ -19,7 +18,7 @@
         <span class="rounded-full border border-slate-700 bg-slate-900 px-4 py-2 font-semibold text-slate-200">{{ $stage }}</span>
     </div>
 
-    <ol data-order-timeline class="mb-8 grid gap-3 rounded-2xl border border-slate-800 bg-slate-900/80 p-4 sm:grid-cols-5">
+    <ol data-order-timeline class="mb-8 grid gap-3 rounded-2xl border border-slate-800 bg-slate-900/80 p-4 sm:grid-cols-4">
         @foreach($order->trackingSteps() as $step)
             <li class="rounded-xl border p-3 text-sm {{ $step['state'] === 'completed' ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-200' : ($step['state'] === 'current' ? 'border-cyan-500/40 bg-cyan-500/10 text-cyan-100' : ($step['state'] === 'failed' ? 'border-red-500/30 bg-red-500/10 text-red-200' : 'border-slate-800 bg-slate-950/50 text-slate-500')) }}">
                 <span class="mb-2 block text-xs font-black uppercase tracking-widest">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
@@ -103,34 +102,44 @@
                 </dl>
             </section>
 
-            @if($canSubmit && !$expired)
-                <section class="rounded-2xl border border-slate-800 bg-slate-900 p-6">
-                    <h2 class="text-xl font-bold text-white">{{ $proofSubmitted ? 'Ganti bukti pembayaran' : 'Kirim bukti pembayaran' }}</h2>
-                    <p class="mt-2 text-sm leading-6 text-slate-400">Admin akan memeriksa bukti sebelum game masuk ke Library.</p>
-                    <form method="POST" action="{{ route('orders.payment.submit', $order) }}" enctype="multipart/form-data" class="mt-5 space-y-4">
+            @if($canPay && !$expired)
+                <section class="overflow-hidden rounded-2xl border border-cyan-500/25 bg-gradient-to-br from-cyan-500/10 via-slate-900 to-violet-500/10 p-6">
+                    <div class="flex items-center gap-3">
+                        <span class="flex size-11 items-center justify-center rounded-2xl border border-cyan-400/30 bg-cyan-400/10 text-xl text-cyan-200">✓</span>
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-widest text-cyan-300">Deteksi otomatis</p>
+                            <h2 class="mt-1 text-xl font-black text-white">Siap melakukan pembayaran?</h2>
+                        </div>
+                    </div>
+                    <p class="mt-4 text-sm leading-6 text-slate-300">
+                        Tekan tombol di bawah untuk menjalankan simulasi. Sistem akan langsung mendeteksi pembayaran dan menambahkan game ke Library.
+                    </p>
+                    <p class="mt-3 rounded-xl border border-amber-500/20 bg-amber-500/10 p-3 text-xs font-semibold leading-5 text-amber-200">
+                        Simulasi akademik—tidak ada uang sungguhan yang dikirim.
+                    </p>
+                    <form method="POST" action="{{ route('orders.payment.submit', $order) }}" data-auto-payment class="mt-5">
                         @csrf
-                        @if(in_array($order->payment->payment_method, ['bank_transfer', 'e_wallet'], true))
-                            <label class="block">
-                                <span class="mb-1 block text-sm text-slate-300">Nomor referensi transaksi</span>
-                                <input name="payment_reference" maxlength="100" value="{{ old('payment_reference', $order->payment->payment_reference) }}" class="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-white" required>
-                            </label>
-                        @endif
-                        <label class="block">
-                            <span class="mb-1 block text-sm text-slate-300">File bukti</span>
-                            <input type="file" name="payment_proof" accept=".jpg,.jpeg,.png,.webp,.pdf" class="w-full text-sm text-slate-300" required>
-                            <small class="mt-1 block text-slate-500">JPG, PNG, WebP, atau PDF. Maksimal 4 MB.</small>
-                        </label>
-                        <button class="w-full rounded-xl bg-violet-600 px-4 py-3 font-bold text-white hover:bg-violet-500">{{ $proofSubmitted ? 'Simpan bukti baru' : 'Kirim untuk verifikasi' }}</button>
+                        <button data-auto-payment-button class="relative flex w-full items-center justify-center gap-3 overflow-hidden rounded-xl bg-gradient-to-r from-cyan-500 to-violet-600 px-4 py-3 font-black text-white shadow-lg shadow-cyan-950/30 transition hover:-translate-y-0.5 hover:shadow-cyan-900/40 disabled:cursor-wait disabled:opacity-80">
+                            <span data-auto-payment-label>Bayar sekarang</span>
+                            <span data-auto-payment-progress class="hidden items-center gap-2">
+                                <span class="size-4 animate-spin rounded-full border-2 border-white/35 border-t-white" aria-hidden="true"></span>
+                                Mendeteksi pembayaran...
+                            </span>
+                        </button>
                     </form>
-                    @if($proofSubmitted)
-                        <a href="{{ asset($order->payment->payment_proof) }}" target="_blank" rel="noopener" class="mt-4 inline-flex text-sm font-semibold text-cyan-300">Lihat bukti saat ini ↗</a>
-                    @endif
                 </section>
-            @elseif($expired && $order->status === 'pending')
-                <p class="rounded-2xl border border-red-500/20 bg-red-500/10 p-5 text-sm leading-6 text-red-200">Batas pembayaran telah lewat. Kirim bukti akan membatalkan pesanan ini, lalu Anda dapat membuat order baru.</p>
+            @elseif($expired)
+                <p class="rounded-2xl border border-red-500/20 bg-red-500/10 p-5 text-sm leading-6 text-red-200">Batas pembayaran telah lewat. Pesanan ini tidak dapat dibayar dan Anda perlu membuat pesanan baru.</p>
+            @elseif($order->status === 'completed' && $order->payment->status === 'verified')
+                <section class="rounded-2xl border border-emerald-500/25 bg-emerald-500/10 p-6">
+                    <p class="text-xs font-bold uppercase tracking-widest text-emerald-300">Terdeteksi otomatis</p>
+                    <h2 class="mt-2 text-xl font-black text-white">Pembayaran selesai</h2>
+                    <p class="mt-2 text-sm leading-6 text-emerald-100/80">Game pada pesanan ini sudah tersedia di Library Anda.</p>
+                    <a href="{{ route('library.index') }}" class="mt-5 inline-flex rounded-xl bg-emerald-500 px-4 py-3 font-bold text-slate-950 hover:bg-emerald-400">Buka Library</a>
+                </section>
             @endif
 
-            @if($order->status === 'pending' && !$proofSubmitted)
+            @if($canPay)
                 <form method="POST" action="{{ route('orders.cancel', $order) }}" data-confirm="Batalkan pesanan ini?">
                     @csrf
                     <button class="w-full rounded-xl border border-red-500/40 px-4 py-3 font-semibold text-red-300 hover:bg-red-500/10">Batalkan pesanan</button>

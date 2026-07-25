@@ -5,7 +5,7 @@
 @section('content')
     <header class="mb-8"><p class="text-sm font-semibold uppercase tracking-widest text-emerald-300">Koleksi dimiliki</p><h1 class="text-4xl font-black text-white">Library saya</h1></header>
     @if($libraries->isEmpty())
-        <x-empty-state title="Library masih kosong" message="Game masuk ke library setelah pembayaran diverifikasi admin."><a href="{{ route('orders.index') }}" class="mt-5 inline-block text-cyan-300">Lihat order</a></x-empty-state>
+        <x-empty-state title="Library masih kosong" message="Game langsung masuk ke Library setelah pembayaran simulasi terdeteksi."><a href="{{ route('orders.index') }}" class="mt-5 inline-block text-cyan-300">Lihat order</a></x-empty-state>
     @else
         <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             @foreach($libraries as $library)

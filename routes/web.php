@@ -56,7 +56,7 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
     Route::get('/orders', [CustomerOrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [CustomerOrderController::class, 'show'])->name('orders.show');
-    Route::post('/orders/{order}/payment', [CustomerOrderController::class, 'submitPayment'])->name('orders.payment.submit');
+    Route::post('/orders/{order}/payment', [CustomerOrderController::class, 'pay'])->name('orders.payment.submit');
     Route::post('/orders/{order}/cancel', [CustomerOrderController::class, 'cancel'])->name('orders.cancel');
     Route::get('/library', [LibraryController::class, 'index'])->name('library.index');
     Route::get('/library/{game}/review', [CustomerReviewController::class, 'create'])->name('reviews.create');

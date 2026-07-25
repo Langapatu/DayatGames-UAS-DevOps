@@ -61,4 +61,9 @@ class Order extends Model
     {
         return $this->hasMany(Library::class);
     }
+
+    public function hasSubmittedProof(): bool
+    {
+        return filled($this->payment?->payment_proof);
+    }
 }

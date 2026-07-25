@@ -27,6 +27,12 @@
                 <div><dt class="text-slate-500">Total</dt><dd class="text-xl font-bold text-white">Rp{{ number_format((float) $order->total_amount, 0, ',', '.') }}</dd></div>
             </dl>
             <p class="mt-5 rounded-lg bg-amber-500/10 p-3 text-xs leading-5 text-amber-200">Pembayaran ini adalah simulasi akademik. Library aktif setelah admin memverifikasi payment.</p>
+            @if($order->status === 'pending' && !$order->hasSubmittedProof())
+                <form method="POST" action="{{ route('orders.cancel', $order) }}" class="mt-4" data-confirm="Batalkan pesanan ini?">
+                    @csrf
+                    <button class="w-full rounded-xl border border-red-500/40 px-4 py-3 font-semibold text-red-300 hover:bg-red-500/10">Batalkan pesanan</button>
+                </form>
+            @endif
         </aside>
     </div>
 @endsection

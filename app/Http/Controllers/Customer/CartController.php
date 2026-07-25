@@ -26,6 +26,18 @@ class CartController extends Controller
             return back()->with('error', 'Game ini sudah ada di library Anda.');
         }
 
+        $hasPendingPurchase = $request->user()->orders()
+            ->where('status', 'pending')
+            ->whereHas('items', fn ($query) => $query->where('game_id', $game->id))
+            ->exists();
+
+        if ($hasPendingPurchase) {
+            return back()->with(
+                'error',
+                'Game ini masih menunggu pembayaran. Buka Lacak Pesanan untuk melanjutkan.',
+            );
+        }
+
         $cart = $request->user()->cart()->firstOrCreate();
         $item = $cart->items()->firstOrCreate(
             ['game_id' => $game->id],

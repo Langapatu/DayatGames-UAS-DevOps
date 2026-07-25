@@ -97,6 +97,7 @@
                             @else
                                 <a data-nav-link href="{{ route('wishlist.index') }}" class="{{ request()->routeIs('wishlist.*') ? 'is-active' : '' }}">Wishlist</a>
                                 <a data-nav-link href="{{ route('library.index') }}" class="{{ request()->routeIs('library.*') ? 'is-active' : '' }}">Library</a>
+                                <a data-nav-link href="{{ route('orders.index') }}" class="{{ request()->routeIs('orders.*') ? 'is-active' : '' }}">Lacak Pesanan</a>
                                 <a data-nav-link href="{{ route('cart.index') }}" class="nav-cart {{ request()->routeIs('cart.*') ? 'is-active' : '' }}" aria-label="Cart, {{ $cartItemCount }} game">
                                     <span>Cart</span>
                                     <span class="nav-cart-count" aria-hidden="true">{{ $cartItemCount }}</span>

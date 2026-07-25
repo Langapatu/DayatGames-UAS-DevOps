@@ -7,11 +7,7 @@
         $proofSubmitted = $order->hasSubmittedProof();
         $canSubmit = $order->status === 'pending' && $order->payment->status === 'pending';
         $expired = $order->payment_due_at?->isPast() && !$proofSubmitted;
-        $stage = $order->status === 'completed'
-            ? 'Selesai'
-            : ($order->status === 'cancelled'
-                ? 'Dibatalkan'
-                : ($proofSubmitted ? 'Menunggu verifikasi' : 'Menunggu pembayaran'));
+        $stage = $order->trackingStage();
     @endphp
 
     <div class="mb-8 flex flex-wrap items-end justify-between gap-4">
@@ -22,6 +18,15 @@
         </div>
         <span class="rounded-full border border-slate-700 bg-slate-900 px-4 py-2 font-semibold text-slate-200">{{ $stage }}</span>
     </div>
+
+    <ol data-order-timeline class="mb-8 grid gap-3 rounded-2xl border border-slate-800 bg-slate-900/80 p-4 sm:grid-cols-5">
+        @foreach($order->trackingSteps() as $step)
+            <li class="rounded-xl border p-3 text-sm {{ $step['state'] === 'completed' ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-200' : ($step['state'] === 'current' ? 'border-cyan-500/40 bg-cyan-500/10 text-cyan-100' : ($step['state'] === 'failed' ? 'border-red-500/30 bg-red-500/10 text-red-200' : 'border-slate-800 bg-slate-950/50 text-slate-500')) }}">
+                <span class="mb-2 block text-xs font-black uppercase tracking-widest">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
+                <span class="font-semibold">{{ $step['label'] }}</span>
+            </li>
+        @endforeach
+    </ol>
 
     <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_400px]">
         <div class="space-y-6">

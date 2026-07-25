@@ -22,12 +22,24 @@ class OrderController extends Controller
 
     public function index(Request $request): View
     {
+        $status = $request->string('status')->toString();
+        $allowedStatuses = ['pending', 'paid', 'completed', 'cancelled'];
+
         $orders = $request->user()
             ->orders()
-            ->with('payment')
+            ->with(['payment', 'items.game'])
             ->withCount('items')
+            ->when($request->filled('search'), fn ($query) => $query
+                ->where(
+                    'order_code',
+                    'like',
+                    '%'.trim((string) $request->string('search')).'%',
+                ))
+            ->when(in_array($status, $allowedStatuses, true), fn ($query) => $query
+                ->where('status', $status))
             ->latest('ordered_at')
-            ->paginate(10);
+            ->paginate(8)
+            ->withQueryString();
 
         return view('customer.orders.index', compact('orders'));
     }

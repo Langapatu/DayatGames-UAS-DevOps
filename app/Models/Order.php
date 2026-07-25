@@ -66,4 +66,43 @@ class Order extends Model
     {
         return filled($this->payment?->payment_proof);
     }
+
+    public function trackingStage(): string
+    {
+        return match ($this->status) {
+            'completed' => 'Selesai',
+            'cancelled' => 'Dibatalkan',
+            'paid' => 'Pembayaran diterima',
+            default => $this->hasSubmittedProof()
+                ? 'Menunggu verifikasi'
+                : 'Menunggu pembayaran',
+        };
+    }
+
+    public function trackingSteps(): array
+    {
+        $hasProof = $this->hasSubmittedProof();
+        $completed = $this->status === 'completed';
+        $cancelled = $this->status === 'cancelled';
+
+        return [
+            ['label' => 'Pesanan dibuat', 'state' => 'completed'],
+            [
+                'label' => 'Menunggu pembayaran',
+                'state' => ($hasProof || $completed) ? 'completed' : ($cancelled ? 'failed' : 'current'),
+            ],
+            [
+                'label' => 'Bukti pembayaran dikirim',
+                'state' => $hasProof ? 'completed' : ($cancelled ? 'failed' : 'future'),
+            ],
+            [
+                'label' => 'Menunggu verifikasi',
+                'state' => $completed ? 'completed' : ($hasProof && ! $cancelled ? 'current' : ($cancelled ? 'failed' : 'future')),
+            ],
+            [
+                'label' => $cancelled ? 'Ditolak / dibatalkan' : 'Selesai',
+                'state' => $completed ? 'current' : ($cancelled ? 'failed' : 'future'),
+            ],
+        ];
+    }
 }

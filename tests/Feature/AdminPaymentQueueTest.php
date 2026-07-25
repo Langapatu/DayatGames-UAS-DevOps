@@ -30,80 +30,100 @@ class AdminPaymentQueueTest extends TestCase
 
         $this->admin = User::factory()->create(['role' => 'admin']);
         $this->customer = User::factory()->create(['role' => 'customer']);
-        $developer = Developer::create(['name' => 'Queue Studio', 'slug' => 'queue-studio']);
-        $publisher = Publisher::create(['name' => 'Queue Publisher', 'slug' => 'queue-publisher']);
-        $this->firstGame = $this->createGame($developer->id, $publisher->id, 'Queue Alpha', 'queue-alpha', 'images/games/queue-alpha.webp');
-        $this->secondGame = $this->createGame($developer->id, $publisher->id, 'Queue Bravo', 'queue-bravo', 'images/games/queue-bravo.webp');
+        $developer = Developer::create(['name' => 'History Studio', 'slug' => 'history-studio']);
+        $publisher = Publisher::create(['name' => 'History Publisher', 'slug' => 'history-publisher']);
+        $this->firstGame = $this->createGame($developer->id, $publisher->id, 'History Alpha', 'history-alpha', 'images/games/history-alpha.webp');
+        $this->secondGame = $this->createGame($developer->id, $publisher->id, 'History Bravo', 'history-bravo', 'images/games/history-bravo.webp');
     }
 
-    public function test_default_queue_only_shows_pending_payments_with_proof(): void
+    public function test_default_history_shows_every_payment_status_and_game_cover(): void
     {
-        $ready = $this->createPayment('DG-READY-001', true, [$this->firstGame]);
-        $waiting = $this->createPayment('DG-WAIT-001', false, [$this->secondGame]);
+        $pending = $this->createPayment('DG-PENDING-001', 'pending', [$this->firstGame]);
+        $verified = $this->createPayment('DG-DETECTED-001', 'verified', [$this->secondGame]);
+        $failed = $this->createPayment('DG-FAILED-001', 'failed', [$this->firstGame]);
 
         $this->actingAs($this->admin)->get(route('admin.payments.index'))
             ->assertOk()
-            ->assertSee($ready->order->order_code)
-            ->assertDontSee($waiting->order->order_code)
+            ->assertSee('Riwayat payment')
+            ->assertSee($pending->order->order_code)
+            ->assertSee($verified->order->order_code)
+            ->assertSee($failed->order->order_code)
             ->assertSee($this->firstGame->coverUrl(), false)
-            ->assertSee('Siap diverifikasi');
+            ->assertSee($this->secondGame->coverUrl(), false)
+            ->assertSee('Menunggu pembayaran')
+            ->assertSee('Terdeteksi otomatis')
+            ->assertSee('Gagal / dibatalkan')
+            ->assertDontSee('Siap diverifikasi')
+            ->assertDontSee('Menunggu customer');
     }
 
-    public function test_waiting_filter_shows_only_payments_without_proof(): void
+    public function test_verified_filter_only_shows_detected_payments(): void
     {
-        $ready = $this->createPayment('DG-READY-002', true, [$this->firstGame]);
-        $waiting = $this->createPayment('DG-WAIT-002', false, [$this->secondGame]);
+        $pending = $this->createPayment('DG-PENDING-002', 'pending', [$this->firstGame]);
+        $verified = $this->createPayment('DG-DETECTED-002', 'verified', [$this->secondGame]);
 
-        $this->actingAs($this->admin)->get(route('admin.payments.index', ['queue' => 'waiting']))
+        $this->actingAs($this->admin)
+            ->get(route('admin.payments.index', ['status' => 'verified']))
             ->assertOk()
-            ->assertSee($waiting->order->order_code)
-            ->assertDontSee($ready->order->order_code)
-            ->assertSee('Menunggu customer');
+            ->assertSee($verified->order->order_code)
+            ->assertDontSee($pending->order->order_code);
     }
 
-    public function test_payment_detail_renders_cover_for_every_ordered_game(): void
+    public function test_payment_detail_is_read_only_and_renders_every_game_cover(): void
     {
         $payment = $this->createPayment(
             'DG-COVERS-001',
-            true,
+            'verified',
             [$this->firstGame, $this->secondGame],
+            'storage/payment-proofs/legacy.jpg',
         );
 
         $response = $this->actingAs($this->admin)
             ->get(route('admin.payments.show', $payment))
-            ->assertOk();
+            ->assertOk()
+            ->assertSee('Terdeteksi otomatis')
+            ->assertDontSee('Buka bukti pembayaran')
+            ->assertDontSee('Verify payment')
+            ->assertDontSee('Reject');
 
         foreach ([$this->firstGame, $this->secondGame] as $game) {
             $response->assertSee($game->coverUrl(), false)->assertSee($game->title);
         }
     }
 
-    public function test_dashboard_separates_ready_and_waiting_payment_counts(): void
+    public function test_dashboard_shows_payment_status_metrics(): void
     {
-        $this->createPayment('DG-READY-003', true, [$this->firstGame]);
-        $this->createPayment('DG-WAIT-003', false, [$this->secondGame]);
+        $this->createPayment('DG-PENDING-003', 'pending', [$this->firstGame]);
+        $this->createPayment('DG-DETECTED-003', 'verified', [$this->secondGame]);
+        $this->createPayment('DG-FAILED-003', 'failed', [$this->firstGame]);
 
         $this->actingAs($this->admin)->get(route('admin.dashboard'))
             ->assertOk()
-            ->assertSee('Siap diverifikasi')
-            ->assertSee('Menunggu customer');
+            ->assertSee('Payment menunggu')
+            ->assertSee('Payment terdeteksi')
+            ->assertSee('Payment gagal')
+            ->assertDontSee('Siap diverifikasi')
+            ->assertDontSee('Menunggu customer');
     }
 
-    public function test_admin_cannot_verify_payment_without_proof(): void
+    public function test_manual_verification_and_rejection_endpoints_are_unavailable(): void
     {
-        $payment = $this->createPayment('DG-NOPROOF-001', false, [$this->firstGame]);
+        $payment = $this->createPayment('DG-NOMANUAL-001', 'pending', [$this->firstGame]);
 
         $this->actingAs($this->admin)
-            ->post(route('admin.payments.verify', $payment))
-            ->assertSessionHasErrors('payment');
-
-        $this->assertDatabaseHas('payments', ['id' => $payment->id, 'status' => 'pending']);
-        $this->assertDatabaseHas('orders', ['id' => $payment->order_id, 'status' => 'pending']);
-        $this->assertDatabaseCount('libraries', 0);
+            ->post('/admin/payments/'.$payment->id.'/verify')
+            ->assertNotFound();
+        $this->actingAs($this->admin)
+            ->post('/admin/payments/'.$payment->id.'/reject')
+            ->assertNotFound();
     }
 
-    private function createPayment(string $code, bool $withProof, array $games): Payment
-    {
+    private function createPayment(
+        string $code,
+        string $status,
+        array $games,
+        ?string $legacyProof = null,
+    ): Payment {
         $total = count($games) * 75000;
         $order = Order::create([
             'user_id' => $this->customer->id,
@@ -112,7 +132,7 @@ class AdminPaymentQueueTest extends TestCase
             'subtotal_amount' => $total,
             'voucher_discount_amount' => 0,
             'total_amount' => $total,
-            'status' => 'pending',
+            'status' => $status === 'verified' ? 'completed' : ($status === 'failed' ? 'cancelled' : 'pending'),
             'ordered_at' => now(),
             'payment_due_at' => now()->addDay(),
         ]);
@@ -130,10 +150,13 @@ class AdminPaymentQueueTest extends TestCase
         return $order->payment()->create([
             'payment_method' => 'virtual_account',
             'virtual_account_number' => '8808'.str_pad((string) $order->id, 12, '0', STR_PAD_LEFT),
-            'payment_proof' => $withProof ? 'storage/payment-proofs/'.$order->id.'.jpg' : null,
+            'payment_reference' => $status === 'verified' ? 'SIM-20260725120000-'.$order->id : null,
+            'payment_proof' => $legacyProof,
             'amount' => $total,
-            'status' => 'pending',
-            'paid_at' => $withProof ? now() : null,
+            'status' => $status,
+            'paid_at' => $status === 'verified' ? now() : null,
+            'verified_at' => $status === 'verified' ? now() : null,
+            'verified_by' => null,
         ])->load('order.items.game');
     }
 

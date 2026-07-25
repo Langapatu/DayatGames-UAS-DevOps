@@ -12,9 +12,9 @@
                 ['Customer', $stats['customers']],
                 ['Order', $stats['orders']],
                 ['Order pending', $stats['pending_orders']],
-                ['Siap diverifikasi', $stats['payments_ready']],
-                ['Menunggu customer', $stats['payments_waiting']],
-                ['Payment verified', $stats['verified_payments']],
+                ['Payment menunggu', $stats['pending_payments']],
+                ['Payment terdeteksi', $stats['detected_payments']],
+                ['Payment gagal', $stats['failed_payments']],
                 ['Pendapatan', 'Rp'.number_format((float) $stats['revenue'], 0, ',', '.')],
             ] as [$label, $value])
                 <div class="rounded-2xl border border-slate-800 bg-slate-900 p-5">

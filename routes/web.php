@@ -76,7 +76,5 @@ Route::prefix('admin')
         Route::resource('users', AdminUserController::class)->only(['index', 'show']);
         Route::resource('orders', AdminOrderController::class)->only(['index', 'show', 'update']);
         Route::resource('payments', AdminPaymentController::class)->only(['index', 'show']);
-        Route::post('payments/{payment}/verify', [AdminPaymentController::class, 'verify'])->name('payments.verify');
-        Route::post('payments/{payment}/reject', [AdminPaymentController::class, 'reject'])->name('payments.reject');
         Route::resource('reviews', AdminReviewController::class)->only(['index', 'update']);
     });

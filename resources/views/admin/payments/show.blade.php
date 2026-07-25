@@ -3,47 +3,48 @@
 @section('title', 'Payment '.$payment->order->order_code.' — Admin')
 
 @section('content')
+    @php
+        $state = match ($payment->status) {
+            'verified' => $payment->verified_by ? 'Diverifikasi admin' : 'Terdeteksi otomatis',
+            'failed' => 'Gagal / dibatalkan',
+            default => 'Menunggu pembayaran',
+        };
+    @endphp
+
     <header>
         <div>
-            <p>Verifikasi payment</p>
+            <p>Riwayat payment</p>
             <h1>{{ $payment->order->order_code }}</h1>
-            <p>Periksa customer, nominal, bukti, dan setiap game sebelum verifikasi.</p>
+            <p>Detail transaksi simulasi bersifat read-only dan tidak memerlukan verifikasi manual.</p>
         </div>
-        <a href="{{ route('admin.payments.index') }}">Kembali ke antrean</a>
+        <a href="{{ route('admin.payments.index') }}">Kembali ke riwayat</a>
     </header>
 
     <div class="grid gap-6 lg:grid-cols-[360px_minmax(0,1fr)]">
         <section class="h-fit rounded-2xl border border-slate-800 bg-slate-900 p-5">
-            <h2 class="font-bold text-white">Data pembayaran</h2>
+            <div class="flex items-start justify-between gap-3">
+                <h2 class="font-bold text-white">Data pembayaran</h2>
+                <span class="rounded-full border border-cyan-500/25 bg-cyan-500/10 px-3 py-1 text-xs font-bold text-cyan-200">{{ $state }}</span>
+            </div>
             <dl class="mt-4 space-y-4 text-sm">
                 <div><dt class="text-slate-500">Customer</dt><dd class="text-slate-200">{{ $payment->order->user->name }} · {{ $payment->order->user->email }}</dd></div>
                 <div><dt class="text-slate-500">Metode</dt><dd class="text-slate-200">{{ str_replace('_', ' ', strtoupper($payment->payment_method)) }}</dd></div>
                 <div><dt class="text-slate-500">Jumlah</dt><dd class="text-xl font-bold text-cyan-300">Rp{{ number_format((float) $payment->amount, 0, ',', '.') }}</dd></div>
-                <div><dt class="text-slate-500">Referensi / VA</dt><dd class="break-all font-mono text-slate-200">{{ $payment->payment_reference ?: $payment->virtual_account_number ?: '-' }}</dd></div>
+                <div><dt class="text-slate-500">Referensi simulasi / VA</dt><dd class="break-all font-mono text-slate-200">{{ $payment->payment_reference ?: $payment->virtual_account_number ?: '-' }}</dd></div>
+                <div><dt class="text-slate-500">Terdeteksi pada</dt><dd class="text-slate-200">{{ $payment->paid_at?->format('d/m/Y H:i') ?: '-' }}</dd></div>
                 <div><dt class="text-slate-500">Status</dt><dd class="text-slate-200">{{ strtoupper($payment->status) }}</dd></div>
             </dl>
 
-            @if($payment->payment_proof)
-                <a href="{{ asset($payment->payment_proof) }}" target="_blank" rel="noopener" class="mt-5 inline-flex rounded-xl bg-cyan-500/10 px-4 py-3 font-semibold text-cyan-200">Buka bukti pembayaran ↗</a>
+            @if($payment->status === 'verified')
+                <p class="mt-6 rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-3 text-sm leading-6 text-emerald-200">
+                    {{ $payment->verified_by
+                        ? 'Pembayaran legacy diverifikasi oleh '.$payment->verifier?->name.'.'
+                        : 'Pembayaran terdeteksi otomatis oleh simulasi DayatGames.' }}
+                </p>
+            @elseif($payment->status === 'pending')
+                <p class="mt-6 rounded-xl border border-amber-500/20 bg-amber-500/10 p-3 text-sm leading-6 text-amber-200">Customer belum menjalankan simulasi pembayaran.</p>
             @else
-                <p class="mt-5 rounded-xl bg-amber-500/10 p-3 text-sm text-amber-200">Customer belum mengirim bukti. Payment ini belum dapat diverifikasi.</p>
-            @endif
-
-            @if($payment->status === 'pending')
-                <div class="mt-6 flex flex-wrap gap-3">
-                    @if($payment->payment_proof)
-                        <form method="POST" action="{{ route('admin.payments.verify', $payment) }}">
-                            @csrf
-                            <button class="rounded-lg bg-emerald-600 px-4 py-2 font-bold text-white">Verify payment</button>
-                        </form>
-                    @endif
-                    <form method="POST" action="{{ route('admin.payments.reject', $payment) }}">
-                        @csrf
-                        <button class="rounded-lg bg-red-600 px-4 py-2 font-bold text-white">Reject</button>
-                    </form>
-                </div>
-            @elseif($payment->status === 'verified')
-                <p class="mt-6 rounded-lg bg-emerald-500/10 p-3 text-emerald-300">Verified oleh {{ $payment->verifier?->name }} pada {{ $payment->verified_at?->format('d/m/Y H:i') }}.</p>
+                <p class="mt-6 rounded-xl border border-red-500/20 bg-red-500/10 p-3 text-sm leading-6 text-red-200">Payment gagal atau order telah dibatalkan.</p>
             @endif
         </section>
 

@@ -7,18 +7,33 @@ use App\Models\Payment;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class PaymentController extends Controller
 {
     public function index(Request $request): View
     {
+        $queue = in_array(
+            $request->string('queue')->toString(),
+            ['ready', 'waiting', 'verified', 'failed', 'all'],
+            true,
+        ) ? $request->string('queue')->toString() : 'ready';
+
         $payments = Payment::query()
-            ->with(['order.user', 'verifier'])
-            ->when($request->filled('status'), fn ($query) => $query
-                ->where('status', (string) $request->string('status')))
+            ->with(['order.user', 'order.items.game', 'verifier'])
+            ->when($queue === 'ready', fn ($query) => $query
+                ->where('status', 'pending')
+                ->whereNotNull('payment_proof'))
+            ->when($queue === 'waiting', fn ($query) => $query
+                ->where('status', 'pending')
+                ->whereNull('payment_proof'))
+            ->when($queue === 'verified', fn ($query) => $query
+                ->where('status', 'verified'))
+            ->when($queue === 'failed', fn ($query) => $query
+                ->where('status', 'failed'))
             ->when($request->filled('search'), function ($query) use ($request): void {
-                $search = (string) $request->string('search');
+                $search = trim((string) $request->string('search'));
                 $query->where(fn ($query) => $query
                     ->where('payment_reference', 'like', '%'.$search.'%')
                     ->orWhere('virtual_account_number', 'like', '%'.$search.'%')
@@ -29,7 +44,7 @@ class PaymentController extends Controller
             ->paginate(15)
             ->withQueryString();
 
-        return view('admin.payments.index', compact('payments'));
+        return view('admin.payments.index', compact('payments', 'queue'));
     }
 
     public function show(Payment $payment): View
@@ -49,6 +64,12 @@ class PaymentController extends Controller
 
             if ($payment->status === 'verified') {
                 return;
+            }
+
+            if (! $payment->payment_proof) {
+                throw ValidationException::withMessages([
+                    'payment' => 'Bukti pembayaran belum dikirim customer.',
+                ]);
             }
 
             $payment->update([
@@ -73,9 +94,6 @@ class PaymentController extends Controller
                 );
             }
 
-            $payment->order->user->cart?->items()
-                ->whereIn('game_id', $payment->order->items->pluck('game_id')->filter())
-                ->delete();
         });
 
         return back()->with('success', $alreadyVerified

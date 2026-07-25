@@ -189,6 +189,12 @@ class TransactionWorkflowTest extends TestCase
                 'payment_method' => 'virtual_account',
             ]);
 
-        return Order::with('payment')->firstOrFail();
+        $order = Order::with('payment')->firstOrFail();
+        $order->payment->update([
+            'payment_proof' => 'storage/payment-proofs/transaction.jpg',
+            'paid_at' => now(),
+        ]);
+
+        return $order->fresh('payment');
     }
 }

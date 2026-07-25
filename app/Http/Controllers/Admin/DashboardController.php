@@ -18,6 +18,12 @@ class DashboardController extends Controller
             'customers' => User::where('role', 'customer')->count(),
             'orders' => Order::count(),
             'pending_orders' => Order::where('status', 'pending')->count(),
+            'payments_ready' => Payment::where('status', 'pending')
+                ->whereNotNull('payment_proof')
+                ->count(),
+            'payments_waiting' => Payment::where('status', 'pending')
+                ->whereNull('payment_proof')
+                ->count(),
             'verified_payments' => Payment::where('status', 'verified')->count(),
             'revenue' => Payment::where('status', 'verified')->sum('amount'),
         ];

@@ -12,6 +12,8 @@
                 ['Customer', $stats['customers']],
                 ['Order', $stats['orders']],
                 ['Order pending', $stats['pending_orders']],
+                ['Siap diverifikasi', $stats['payments_ready']],
+                ['Menunggu customer', $stats['payments_waiting']],
                 ['Payment verified', $stats['verified_payments']],
                 ['Pendapatan', 'Rp'.number_format((float) $stats['revenue'], 0, ',', '.')],
             ] as [$label, $value])

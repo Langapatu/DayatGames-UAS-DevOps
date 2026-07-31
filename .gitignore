@@ -21,6 +21,10 @@
 /storage/*.key
 /storage/pail
 /vendor
+/docs/report/*.docx
+/docs/report/*.pdf
+/docs/report/~$*
+/docs/report/~WRL*.tmp
 _ide_helper.php
 Homestead.json
 Homestead.yaml

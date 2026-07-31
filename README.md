@@ -101,9 +101,7 @@ Rincian skenario, hasil aktual, dan status pengujian tercantum pada laporan akhi
 | Administrator | `admin@dayatgames.test` | `password` |
 | Pelanggan | `customer@dayatgames.test` | `password` |
 
-## Laporan Akhir
+## Diagram Sistem
 
-- [Laporan akhir format DOCX](docs/report/Laporan_Akhir_DevOps_Agile_DayatGames_Galang_Rispai.docx)
-- [Laporan akhir format PDF](docs/report/Laporan_Akhir_DevOps_Agile_DayatGames_Galang_Rispai.pdf)
 - [Diagram Hubungan Entitas](docs/ERD_DevOps_Final.png)
 - [Diagram arsitektur kontainer](docs/ARCHITECTURE_DevOps_Final.png)

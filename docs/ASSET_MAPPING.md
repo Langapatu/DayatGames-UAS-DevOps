@@ -2,7 +2,7 @@
 
 Tanggal pembaruan: 25 Juli 2026
 
-Folder sumber `C:\.Kuliah\TugasMatkul\DevOPS\UAS\ImageGames` hanya dibaca. Delapan belas gambar terbaru berukuran 1080×1350 (rasio 4:5), lalu dibuatkan turunan WebP quality 90 di `public/images/games`. File sumber tidak dihapus, dipindahkan, atau ditimpa.
+Delapan belas gambar sumber berukuran 1080×1350 (rasio 4:5) diolah menjadi aset WebP berkualitas 90 pada `public/images/games`.
 
 | File sumber | Resolusi | Rasio | Game | File final |
 |---|---:|---:|---|---|

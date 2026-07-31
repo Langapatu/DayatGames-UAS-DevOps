@@ -1,134 +1,109 @@
 # DayatGames
 
-DayatGames adalah marketplace game digital berbasis Laravel untuk project UAS DevOps dan Pengembangan Agile. Aplikasi menyediakan katalog, wishlist, cart, checkout, pembayaran simulasi, library, review, serta panel admin.
+DayatGames adalah aplikasi *marketplace* game digital berbasis Laravel yang dikembangkan sebagai proyek Ujian Akhir Semester mata kuliah DevOps dan Pengembangan Agile. Sistem mengintegrasikan katalog game, transaksi, pembayaran simulasi, kepemilikan game, ulasan pelanggan, dan administrasi data dalam satu aplikasi berbasis basis data relasional.
 
-## Stack
+## Identitas Proyek
 
-- Laravel 13 dan Blade
-- PHP 8.4 FPM
-- MySQL 8.0
-- Nginx
-- phpMyAdmin
-- Docker Compose
-- Vite, Tailwind CSS, dan JavaScript
+| Keterangan | Informasi |
+|---|---|
+| Mata kuliah | DevOps dan Pengembangan Agile (R.02) |
+| Dosen pengampu | Lili Dwi Yulianto, S.Kom., M.Kom. |
+| Mahasiswa | Galang Rispai |
+| NPM | 237006516020 |
+| Tema aplikasi | *Marketplace* game digital |
 
-## Requirement
+## Fitur Sistem
 
-- Docker Desktop dengan Docker Compose v2
-- Port host 8080, 8081, dan 3306 tersedia
-- Git
+### Pengunjung
 
-Node.js 22+ pada host diperlukan untuk mengembangkan/build frontend dan motion dependency.
+- Melihat beranda, katalog, detail, galeri pratinjau, dan ulasan game.
+- Melakukan pencarian, penyaringan, pengurutan, dan navigasi halaman katalog.
+- Membuat akun dan masuk ke dalam sistem.
 
-## Instalasi
+### Pelanggan
 
-```powershell
-Copy-Item .env.example .env
-docker compose config
-docker compose build
-docker compose up -d
-docker compose exec app php artisan key:generate
-docker compose exec app php artisan migrate --seed
-docker compose exec app php artisan storage:link
-npm install
-npm run build
-```
+- Mengelola profil dan avatar.
+- Menyimpan game ke *wishlist* dan keranjang.
+- Melakukan *checkout* dengan kode voucher.
+- Memilih metode pembayaran simulasi berupa *Virtual Account*, transfer bank, atau dompet digital.
+- Melacak status pesanan dan memperoleh game pada *library* setelah pembayaran terdeteksi.
+- Memberikan ulasan terhadap game yang dimiliki.
 
-## URL
+### Administrator
 
-- Aplikasi: http://localhost:8080
-- phpMyAdmin: http://localhost:8081
-- MySQL host: `127.0.0.1:3306`
-- MySQL dari container: `db:3306`
+- Melihat ringkasan data melalui *dashboard*.
+- Mengelola game, genre, voucher, pelanggan, pesanan, pembayaran, dan ulasan.
+- Menambahkan data pengembang dan penerbit melalui formulir game.
+- Memantau riwayat transaksi beserta gambar game dan status pembayaran.
 
-`DB_HOST=db` digunakan karena Docker menyediakan DNS internal berdasarkan nama service. Mapping `8080:80` berarti port 8080 pada Windows diteruskan ke port 80 Nginx. Prinsip yang sama berlaku untuk `3306:3306` dan `8081:80`.
+## Teknologi
 
-## Akun demo
+| Komponen | Teknologi |
+|---|---|
+| Kerangka aplikasi | Laravel 13 dan Blade |
+| Bahasa pemrograman | PHP 8.4 dan JavaScript |
+| Basis data | MySQL 8.0 |
+| Webserver | Nginx dan PHP-FPM |
+| Administrasi basis data | phpMyAdmin |
+| Kontainerisasi | Docker Compose |
+| Antarmuka | Tailwind CSS, Vite, GSAP, Lenis, dan Swiper |
 
-Setelah seeder final tersedia:
+## Arsitektur Kontainer
 
-| Role | Email | Password |
+DayatGames dijalankan melalui empat layanan Docker Compose:
+
+| Layanan | Fungsi | Akses |
 |---|---|---|
-| Admin | `admin@dayatgames.test` | `password` |
-| Customer | `customer@dayatgames.test` | `password` |
+| `app` | Menjalankan Laravel melalui PHP-FPM | Port internal 9000 |
+| `webserver` | Melayani aplikasi melalui Nginx | `http://localhost:8080` |
+| `db` | Menyimpan data aplikasi pada MySQL | `localhost:3306` |
+| `phpmyadmin` | Menampilkan dan mengelola basis data | `http://localhost:8081` |
 
-Akun dan password tersebut hanya untuk lingkungan lokal/demo.
+Komunikasi antarkontainer menggunakan jaringan Docker dengan nama layanan sebagai *hostname*. Aplikasi terhubung ke MySQL melalui `DB_HOST=db`.
 
-## Perintah harian
+## Basis Data
 
-```powershell
-docker compose up -d
-docker compose ps
-docker compose exec app php artisan migrate
-docker compose exec app php artisan db:seed
-docker compose exec app php artisan test
-docker compose logs --tail=100 app webserver db
-docker compose stop
-```
+Implementasi DayatGames menggunakan 16 tabel bisnis inti dengan 21 *foreign key*. Tabel tersebut mencakup `users`, `developers`, `publishers`, `genres`, `games`, `game_genre`, `game_images`, `carts`, `cart_items`, `wishlists`, `vouchers`, `orders`, `order_items`, `payments`, `libraries`, dan `reviews`.
 
-`docker compose down -v` tidak digunakan karena menghapus volume database.
+Relasi basis data, atribut tabel, tipe data, dan keterkaitan antar-entitas disajikan pada [ERD DayatGames](docs/ERD_DevOps_Final.png).
 
-## Struktur ringkas
+## Pengujian
 
-- `app/` — controller, model, middleware, dan Form Request
-- `database/` — migration, factory, dan seeder
-- `resources/` — Blade, CSS, dan JavaScript
-- `public/` — entry point dan aset publik
-- `docker/nginx/` — konfigurasi Nginx
-- `docs/` — spesifikasi, bukti, diagram, testing, dan laporan
+Hasil verifikasi akhir menunjukkan:
 
-## Testing dan build
+- 70 pengujian berhasil dengan 627 asersi.
+- Seluruh service Docker berstatus aktif dan MySQL berstatus sehat.
+- Proses CRUD game, genre, voucher, transaksi, pembayaran, dan ulasan berfungsi sesuai kebutuhan.
+- Proses pembayaran simulasi bersifat idempoten dan tidak menggandakan pesanan maupun kepemilikan game.
+- Antarmuka telah diuji pada tampilan desktop dan perangkat bergerak.
+- Penyimpanan data tetap tersedia setelah container dijalankan ulang.
 
-```powershell
-docker compose exec app php artisan test
-npm run build
-npm audit --audit-level=high
-```
+Rincian skenario, hasil aktual, dan status pengujian tercantum pada laporan akhir.
 
-## Troubleshooting singkat
+## Struktur Repositori
 
-- Jika MySQL gagal bind ke port 3306, periksa service MySQL/XAMPP yang sedang menggunakan port itu. Jangan menghentikannya tanpa memastikan dampak.
-- Jika aplikasi belum memiliki key, jalankan `docker compose exec app php artisan key:generate`.
-- Jika permission cache bermasalah, periksa akses tulis `storage` dan `bootstrap/cache`.
-- Jika tampilan tanpa CSS, jalankan build Vite dan periksa `public/build/manifest.json`.
+| Direktori/Berkas | Isi |
+|---|---|
+| `app/` | Pengendali, model, *middleware*, permintaan, dan layanan aplikasi |
+| `database/` | Migrasi, *factory*, dan *seeder* |
+| `resources/` | Blade, CSS, dan JavaScript |
+| `public/` | Aset publik dan hasil kompilasi antarmuka |
+| `docker/nginx/` | Konfigurasi Nginx |
+| `tests/` | Pengujian unit dan fitur |
+| `docs/` | Spesifikasi, diagram, bukti, dan dokumentasi pengujian |
+| `compose.yaml` | Definisi layanan Docker Compose |
+| `Dockerfile` | Konfigurasi citra aplikasi PHP-FPM |
 
-Dokumentasi lebih lengkap tersedia di folder `docs`.
+## Akun Pengujian
 
-## Fitur
+| Peran | Surel | Kata sandi |
+|---|---|---|
+| Administrator | `admin@dayatgames.test` | `password` |
+| Pelanggan | `customer@dayatgames.test` | `password` |
 
-- Guest: home, katalog published, search/filter/sort, detail dan review published.
-- Customer: profil/avatar, wishlist, cart digital, checkout, tiga payment simulasi, order, library, dan review pemilik.
-- Admin: dashboard statistik, CRUD game/genre/publisher/developer, customer, order, verify/reject payment, dan moderasi review.
-- UI: responsive navigation, GSAP/ScrollTrigger, Lenis, Swiper keyboard/touch, focus state, dan reduced motion.
+## Laporan Akhir
 
-## Hasil verifikasi terakhir
-
-- 15 tabel bisnis inti dan 20 foreign key.
-- 18 game seeded dari aset pengguna.
-- 26 test lulus dengan 148 assertion.
-- Vite build lulus; npm audit 0 vulnerability.
-- Service `app`, `webserver`, `db`, dan `phpmyadmin` Up; MySQL healthy.
-- Record `QA Persistence` ID 13 tetap ada setelah seluruh Compose direstart.
-
-Detail aktual tersedia di [docs/TESTING.md](docs/TESTING.md), [docs/COMMAND_LOG.md](docs/COMMAND_LOG.md), dan [docs/SCREENSHOT_CHECKLIST.md](docs/SCREENSHOT_CHECKLIST.md).
-
-## Laporan akhir
-
-- DOCX: `docs/report/Laporan_Akhir_DayatGames_Galang_Rispai.docx` (53 halaman pada render Microsoft Word).
-- PDF: `docs/report/Laporan_Akhir_DayatGames_Galang_Rispai.pdf` (48 halaman A4).
-- Keduanya memuat daftar isi, daftar gambar, daftar tabel, BAB I-VII, daftar pustaka, lampiran konfigurasi, diagram, dan bukti aplikasi.
-- DOCX lolos validasi struktur dan tidak memuat placeholder indeks; seluruh 48 halaman PDF diraster dan diperiksa tanpa clipping, overlap, atau halaman kosong.
-
-## Commit lokal
-
-Branch kerja: `feature/dayatgames-uas`. Lihat riwayat dengan:
-
-```powershell
-git log --oneline --decorate
-```
-
-Repository GitHub belum diklaim tersedia sampai autentikasi dan push benar-benar dilakukan.
-
-## Disclaimer
-
-DayatGames merupakan aplikasi akademik untuk keperluan pembelajaran. Nama game, merek, dan aset terkait merupakan milik pemegang hak masing-masing. Harga yang ditampilkan merupakan data demonstrasi dan dapat berbeda dari harga toko resmi.
+- [Laporan akhir format DOCX](docs/report/Laporan_Akhir_DevOps_Agile_DayatGames_Galang_Rispai.docx)
+- [Laporan akhir format PDF](docs/report/Laporan_Akhir_DevOps_Agile_DayatGames_Galang_Rispai.pdf)
+- [Diagram Hubungan Entitas](docs/ERD_DevOps_Final.png)
+- [Diagram arsitektur kontainer](docs/ARCHITECTURE_DevOps_Final.png)
